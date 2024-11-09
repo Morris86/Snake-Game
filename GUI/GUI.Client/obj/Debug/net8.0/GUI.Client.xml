@@ -1,0 +1,326 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GUI.Client</name>
+    </assembly>
+    <members>
+        <member name="T:CS3500.Networking.NetworkConnection">
+            <summary>
+            Wraps the StreamReader, StreamWriter, and TcpClient together to provide
+            a unified interface for network actions.
+            </summary>
+        </member>
+        <member name="F:CS3500.Networking.NetworkConnection._tcpClient">
+            <summary>
+            Represents the underlying TCP client used for the connection.
+            </summary>
+        </member>
+        <member name="F:CS3500.Networking.NetworkConnection._reader">
+            <summary>
+            The reader for incoming messages.
+            </summary>
+        </member>
+        <member name="F:CS3500.Networking.NetworkConnection._writer">
+            <summary>
+            The writer for outgoing messages.
+            </summary>
+        </member>
+        <member name="M:CS3500.Networking.NetworkConnection.#ctor(System.Net.Sockets.TcpClient)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CS3500.Networking.NetworkConnection"/> class
+            with an existing TCP client.
+            </summary>
+            <param name="tcpClient">An already connected TcpClient.</param>
+        </member>
+        <member name="M:CS3500.Networking.NetworkConnection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CS3500.Networking.NetworkConnection"/> class.
+            Creates a new, unconnected TcpClient.
+            </summary>
+        </member>
+        <member name="P:CS3500.Networking.NetworkConnection.IsConnected">
+            <summary>
+            Gets a value indicating whether the connection is currently active.
+            </summary>
+        </member>
+        <member name="M:CS3500.Networking.NetworkConnection.Connect(System.String,System.Int32)">
+            <summary>
+            Connects to a remote host and port.
+            </summary>
+            <param name="host">The remote host's URL or IP address.</param>
+            <param name="port">The port number to connect to.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if already connected.</exception>
+        </member>
+        <member name="M:CS3500.Networking.NetworkConnection.Send(System.String)">
+            <summary>
+            Sends a message to the remote endpoint. Appends a newline character to
+            treat it as a complete message.
+            </summary>
+            <param name="message">The message to send.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if not connected.</exception>
+        </member>
+        <member name="M:CS3500.Networking.NetworkConnection.ReadLine">
+            <summary>
+            Reads a message from the remote endpoint up to the first newline.
+            </summary>
+            <returns>The message received from the remote endpoint.</returns>
+            <exception cref="T:System.InvalidOperationException">Thrown if not connected.</exception>
+            <exception cref="T:System.IO.IOException">Thrown if the connection is closed by the remote host.</exception>
+        </member>
+        <member name="M:CS3500.Networking.NetworkConnection.Disconnect">
+            <summary>
+            Disconnects the connection and disposes of the resources.
+            </summary>
+        </member>
+        <member name="M:CS3500.Networking.NetworkConnection.Dispose">
+            <summary>
+            Releases all resources used by the NetworkConnection.
+            </summary>
+        </member>
+        <member name="T:GameLab.Models.Player">
+            <summary>
+            One of the types of objects in the game (part of the Model of MVC)
+            </summary>
+        </member>
+        <member name="P:GameLab.Models.Player.Position">
+            <summary>
+            This player's position
+            </summary>
+        </member>
+        <member name="P:GameLab.Models.Player.Direction">
+            <summary>
+            This player's direction of travel
+            </summary>
+        </member>
+        <member name="P:GameLab.Models.Player.ID">
+            <summary>
+            This player's unique ID
+            </summary>
+        </member>
+        <member name="P:GameLab.Models.Player.Active">
+            <summary>
+            Whether or not this player is active and part of the live game
+            </summary>
+        </member>
+        <member name="F:GameLab.Models.Player.rand">
+            <summary>
+            RNG used to pick a new direction when they turn
+            </summary>
+        </member>
+        <member name="F:GameLab.Models.Player.nextDirChange">
+            <summary>
+            Keeps track of the next frame on which this player will change direction
+            </summary>
+        </member>
+        <member name="F:GameLab.Models.Player.frameNum">
+            <summary>
+            Keeps track of the current frame
+            </summary>
+        </member>
+        <member name="M:GameLab.Models.Player.#ctor(System.Int32,System.Int32,System.Int32,System.Double)">
+            <summary>
+            Creates a new player with the given ID, x,y location and direction (angle)
+            </summary>
+            <param name="id"></param>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="angle"></param>
+        </member>
+        <member name="M:GameLab.Models.Player.Step(System.Int32)">
+            <summary>
+            Updates this player for one frame of the game
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="T:GameLab.Models.Powerup">
+            <summary>
+            One of the types of objects in the game (part of the Model of MVC)
+            </summary>
+        </member>
+        <member name="P:GameLab.Models.Powerup.Position">
+            <summary>
+            This powerup's position
+            </summary>
+        </member>
+        <member name="F:GameLab.Models.Powerup.rand">
+            <summary>
+            RNG used to decide when a powerup goes away
+            </summary>
+        </member>
+        <member name="P:GameLab.Models.Powerup.ID">
+            <summary>
+            This powerup's unique ID
+            </summary>
+        </member>
+        <member name="P:GameLab.Models.Powerup.Active">
+            <summary>
+            Whether or not this powerup is active and part of the live game
+            </summary>
+        </member>
+        <member name="M:GameLab.Models.Powerup.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Creates a new powerup with the given ID and x,y location
+            </summary>
+            <param name="id"></param>
+            <param name="x"></param>
+            <param name="y"></param>
+        </member>
+        <member name="M:GameLab.Models.Powerup.Step">
+            <summary>
+            Updates this powerup for one frame of the game.
+            </summary>
+        </member>
+        <member name="T:GameLab.Models.Vector2D">
+            <summary>
+            A class to represent a Vector in 2D space
+            </summary>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.#ctor">
+            <summary>
+            Default constructor, needed for JSON serialize/deserialize
+            </summary>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.#ctor(System.Double,System.Double)">
+            <summary>
+            Two param constructor for x and y.
+            </summary>
+            <param name="_x"></param>
+            <param name="_y"></param>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.#ctor(GameLab.Models.Vector2D)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="other"></param>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.Equals(System.Object)">
+            <summary>
+            Determine if this vector is equal to another
+            </summary>
+            <param name="obj">The other vector</param>
+            <returns></returns>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.GetHashCode">
+            <summary>
+            Determine the hashcode for this vector
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.ToString">
+            <summary>
+            Return a string representation of this vector for debug printing
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.Clamp">
+            <summary>
+            Clamp x and y to be within the range -1 .. 1
+            </summary>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.Rotate(System.Double)">
+            <summary>
+            Rotate this vector clockwise by degrees
+            Requires that this vector be normalized
+            </summary>
+            <param name="degrees"></param>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.ToAngleDegrees">
+            <summary>
+            Return the angle as measured in degrees clockwise from up
+            Requires that this vector be normalized
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.ToAngleRadians">
+            <summary>
+            Return the angle as measured in degrees clockwise from up
+            Requires that this vector be normalized
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.AngleBetweenPoints(GameLab.Models.Vector2D,GameLab.Models.Vector2D)">
+            <summary>
+            Compute the clockwise angle of the vector pointing from b to a
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.op_Addition(GameLab.Models.Vector2D,GameLab.Models.Vector2D)">
+            <summary>
+            Add two vectors with the + operator
+            </summary>
+            <param name="v1">The left hand side</param>
+            <param name="v2">The right hand side</param>
+            <returns></returns>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.op_Subtraction(GameLab.Models.Vector2D,GameLab.Models.Vector2D)">
+            <summary>
+            Subtract two vectors with the - operator
+            </summary>
+            <param name="v1">The left hand side</param>
+            <param name="v2">The right hand side</param>
+            <returns></returns>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.op_Multiply(GameLab.Models.Vector2D,System.Double)">
+            <summary>
+            Multiply a vector by a scalar
+            This has the effect of growing (if s greater than 1) or shrinking (if s less than 1),
+            without changing the direction.
+            </summary>
+            <param name="v">The vector (left-hand side of the operator)</param>
+            <param name="s">The scalar (right-hand side of the operator)</param>
+            <returns></returns>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.Length">
+            <summary>
+            Compute the length of this vector
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.Normalize">
+            <summary>
+            Set this vector's length to 1 without changing its direction
+            </summary>
+        </member>
+        <member name="M:GameLab.Models.Vector2D.Dot(GameLab.Models.Vector2D)">
+            <summary>
+            Compute the dot product of this vector with another vector
+            </summary>
+            <param name="v">The other vector</param>
+            <returns></returns>
+        </member>
+        <member name="T:GameLab.Models.World">
+            <summary>
+            The Model part of MVC, represents all objects in the "game"
+            </summary>
+        </member>
+        <member name="F:GameLab.Models.World.Players">
+            <summary>
+            The players in the game
+            </summary>
+        </member>
+        <member name="F:GameLab.Models.World.Powerups">
+            <summary>
+            The powerups in the game
+            </summary>
+        </member>
+        <member name="P:GameLab.Models.World.Size">
+            <summary>
+            The size of a single side of the square world
+            </summary>
+        </member>
+        <member name="M:GameLab.Models.World.#ctor(System.Int32)">
+            <summary>
+            Creates a new world with the given size
+            </summary>
+            <param name="_size"></param>
+        </member>
+        <member name="M:GameLab.Models.World.#ctor(GameLab.Models.World)">
+            <summary>
+            Shallow copy constructor
+            </summary>
+            <param name="world"></param>
+        </member>
+    </members>
+</doc>

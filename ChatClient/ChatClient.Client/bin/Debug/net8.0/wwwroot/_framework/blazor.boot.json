@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "ChatClient.Client",
   "resources": {
-    "hash": "sha256-7BPc7lvKvDkxczy4JZo6HSfksU8IMToJ0V2AAlNSKTc=",
+    "hash": "sha256-Y4G1e7PmMdfXhRUHA5Gix3nbLnj+JcGZs1X1pxY2WSI=",
     "jsModuleNative": {
       "dotnet.native.8.0.10.bi4ad9c4xp.js": "sha256-QVxMlY7ohmjgde/bZMA0dlWDAeuUP+tEfkiSdg4DFcE="
     },
@@ -208,12 +208,12 @@
       "mscorlib.wasm": "sha256-KvqZaNpjwhrOuzE4b4aMFsI+VUTyiWfoDI4zn4l9BM8=",
       "netstandard.wasm": "sha256-v+s7sWxtOM6bnOvC0jFrtnm6uMfbDymwl2nHNgbS2LM=",
       "System.Private.CoreLib.wasm": "sha256-pklll63uFQoY6vaD3vbluS9osYiJWLLLmob1yHFgepI=",
-      "Networking.wasm": "sha256-EY4wCoQAfMj+D95zDaBjoNszQdmj9/S2JyS5aNZgs+0=",
-      "ChatClient.Client.wasm": "sha256-Ke+MWva3Tlx0cfxKqCkVDjvGtcirIuXtODDzqSfW3Jg="
+      "Networking.wasm": "sha256-sQ0H8LtsZPVeqrm92gw5OpMEWkxkMW1g/NHXpcSt2h0=",
+      "ChatClient.Client.wasm": "sha256-/aUMksIsUy0OKPrUdTz/lNdSC9SQ0Kwi76T5jElzbqE="
     },
     "pdb": {
-      "Networking.pdb": "sha256-oaMy+aRv8LbZgR6VzJlS8yllwdCknWFgQXnx4XcEEwo=",
-      "ChatClient.Client.pdb": "sha256-XhRP4vpONvUcd3/v+s0OiWIK/G3v6nliV9C8Mvlzh8E="
+      "Networking.pdb": "sha256-5nB8F/CVLxkgb3CTmxhdSrati+06e8ob4uuwyzasetI=",
+      "ChatClient.Client.pdb": "sha256-7DQPq56f/2T2voDQg0N93ZmeFyVRK9bYzzUcJc4HhiA="
     }
   },
   "cacheBootResources": true,
