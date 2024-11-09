@@ -1,0 +1,132 @@
+body[b-a724046m1c]
+{
+    background-color: aqua;
+}
+
+/* Style for the main display of messages*/
+#Messages[b-a724046m1c]
+{
+    width: 450px;
+    height: 800px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Drop shadow */
+    resize: none; /* Prevent resizing */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    white-space: pre-wrap;
+    overflow-y:auto;
+}
+
+.grayedOut[b-a724046m1c]
+{
+    background-color: lightgrey;
+    color: black;
+}
+
+.container[b-a724046m1c]
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.meClass[b-a724046m1c]
+{
+    text-align: right;
+    align-self: flext-end;
+    color: green;
+}
+
+.themClass[b-a724046m1c]
+{
+    text-align: left;
+    align-self: flex-start;
+}
+
+#Participants[b-a724046m1c]
+{
+    width: 300px;
+    height: 800px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Drop shadow */
+    resize: none; /* Prevent resizing */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+    Messages:focus[b-a724046m1c]
+    {
+        border-color: #007bff;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow on focus */
+        outline: none;
+    }
+
+/* Spinner styles */
+.spinner[b-a724046m1c]
+{
+    display: inline-block;
+    width: 50px; 
+    height: 50px; 
+    border: 8px solid #f3f3f3; 
+    border-top: 8px solid #3498db; 
+    border-radius: 50%; /* Circular shape */
+    animation: spin-b-a724046m1c 1s linear infinite; 
+}
+
+/* Keyframes for the spinning animation */
+@keyframes spin-b-a724046m1c
+{
+    0%    { transform: rotate(0deg);    }
+    100%  { transform: rotate(360deg);  }
+}
+
+#ConnectionInputs[b-a724046m1c]
+{
+    display: flex; /* Use flexbox for alignment */
+    flex-direction: column;
+}
+
+    #ConnectionInputs input[b-a724046m1c] {
+        border: 1px solid #ccc;      /* Border styling */
+        border-radius: 4px;          /* Rounded corners */
+        margin: 5px;
+    }
+
+    #ConnectionInputs .port[b-a724046m1c]
+    {
+        width:100px;
+    }
+
+    #ConnectionInputs button[b-a724046m1c]
+    {
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 4px;
+        background-color: #007bff;
+
+    }
+
+        #ConnectionInputs button:hover[b-a724046m1c]
+        {
+            background-color: #0056b3; 
+        }
+
+
+.input-row[b-a724046m1c]
+{
+    display: flex; /* Align inputs in a row */
+    align-items: center; /* Vertically center elements */
+    gap: 10px; /* Space between inputs */
+}
+
+.input-col[b-a724046m1c]
+{
+    flex-direction: column;
+    display: flex; /* Align inputs in a row */
+    gap: 10px; /* Space between inputs */
+}

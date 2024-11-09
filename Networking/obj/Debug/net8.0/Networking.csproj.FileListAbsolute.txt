@@ -1,0 +1,14 @@
+C:\Users\morri\Desktop\PS8 v1.6\Networking\bin\Debug\net8.0\Networking.deps.json
+C:\Users\morri\Desktop\PS8 v1.6\Networking\bin\Debug\net8.0\Networking.dll
+C:\Users\morri\Desktop\PS8 v1.6\Networking\bin\Debug\net8.0\Networking.pdb
+C:\Users\morri\Desktop\PS8 v1.6\Networking\bin\Debug\net8.0\Networking.xml
+C:\Users\morri\Desktop\PS8 v1.6\Networking\obj\Debug\net8.0\Networking.csproj.AssemblyReference.cache
+C:\Users\morri\Desktop\PS8 v1.6\Networking\obj\Debug\net8.0\Networking.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\morri\Desktop\PS8 v1.6\Networking\obj\Debug\net8.0\Networking.AssemblyInfoInputs.cache
+C:\Users\morri\Desktop\PS8 v1.6\Networking\obj\Debug\net8.0\Networking.AssemblyInfo.cs
+C:\Users\morri\Desktop\PS8 v1.6\Networking\obj\Debug\net8.0\Networking.csproj.CoreCompileInputs.cache
+C:\Users\morri\Desktop\PS8 v1.6\Networking\obj\Debug\net8.0\Networking.dll
+C:\Users\morri\Desktop\PS8 v1.6\Networking\obj\Debug\net8.0\refint\Networking.dll
+C:\Users\morri\Desktop\PS8 v1.6\Networking\obj\Debug\net8.0\Networking.xml
+C:\Users\morri\Desktop\PS8 v1.6\Networking\obj\Debug\net8.0\Networking.pdb
+C:\Users\morri\Desktop\PS8 v1.6\Networking\obj\Debug\net8.0\ref\Networking.dll

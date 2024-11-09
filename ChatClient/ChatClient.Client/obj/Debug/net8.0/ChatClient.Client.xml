@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ChatClient.Client</name>
+    </assembly>
+    <members>
+        <member name="F:ChatClient.Client.Pages.ChatClient.ServerNameOrAddress">
+            <summary>
+            Default server name
+            </summary>
+        </member>
+        <member name="F:ChatClient.Client.Pages.ChatClient.ServerPort">
+            <summary>
+            Default server port
+            </summary>
+        </member>
+        <member name="F:ChatClient.Client.Pages.ChatClient.network">
+            <summary>
+            The NetworkConnection object representing a connection with the server
+            </summary>
+        </member>
+        <member name="F:ChatClient.Client.Pages.ChatClient.messageCounter">
+            <summary>
+            Keep track of the amount of messages sent
+            </summary>
+        </member>
+        <member name="F:ChatClient.Client.Pages.ChatClient.isFirstMessage">
+            <summary>
+            Track if it's the first message
+            </summary>
+        </member>
+        <member name="P:ChatClient.Client.Pages.ChatClient.MessageDisplayTextAreaData">
+            <summary>
+            The string shown in the message display area, representing all messages seen
+            </summary>
+        </member>
+        <member name="F:ChatClient.Client.Pages.ChatClient.AllMessages">
+            <summary>
+            All of the messages seen by the server
+            </summary>
+        </member>
+        <member name="M:ChatClient.Client.Pages.ChatClient.DisconnectFromServer">
+            <summary>
+            Disconnect the network object from the server.
+            </summary>
+        </member>
+        <member name="M:ChatClient.Client.Pages.ChatClient.ConnectToServer">
+            <summary>
+            Handler for the connect button
+            Attempt to connect to the server, then start an asynchronous loop
+            to receive and display messages.
+            </summary>
+        </member>
+        <member name="M:ChatClient.Client.Pages.ChatClient.HandleSendMessage(Microsoft.AspNetCore.Components.ChangeEventArgs)">
+            <summary>
+              When the user types a message and presses enter, send the message
+              to the server. Also keep track of the message sent by user.
+            </summary>
+            <param name="e"> Event data containing the message. </param>
+        </member>
+        <member name="M:ChatClient.Client.Pages.ChatClient.OnInitialized">
+            <summary>
+              Create a default network object
+            </summary>
+        </member>
+    </members>
+</doc>

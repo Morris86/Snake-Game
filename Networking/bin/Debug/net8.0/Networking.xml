@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Networking</name>
+    </assembly>
+    <members>
+        <member name="T:CS3500.Networking.NetworkConnection">
+            <summary>
+            Wraps the StreamReader, StreamWriter, and TcpClient together to provide
+            a unified interface for network actions.
+            </summary>
+        </member>
+        <member name="F:CS3500.Networking.NetworkConnection._tcpClient">
+            <summary>
+            Represents the underlying TCP client used for the connection.
+            </summary>
+        </member>
+        <member name="F:CS3500.Networking.NetworkConnection._reader">
+            <summary>
+            The reader for incoming messages.
+            </summary>
+        </member>
+        <member name="F:CS3500.Networking.NetworkConnection._writer">
+            <summary>
+            The writer for outgoing messages.
+            </summary>
+        </member>
+        <member name="M:CS3500.Networking.NetworkConnection.#ctor(System.Net.Sockets.TcpClient)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CS3500.Networking.NetworkConnection"/> class
+            with an existing TCP client.
+            </summary>
+            <param name="tcpClient">An already connected TcpClient.</param>
+        </member>
+        <member name="M:CS3500.Networking.NetworkConnection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CS3500.Networking.NetworkConnection"/> class.
+            Creates a new, unconnected TcpClient.
+            </summary>
+        </member>
+        <member name="P:CS3500.Networking.NetworkConnection.IsConnected">
+            <summary>
+            Gets a value indicating whether the connection is currently active.
+            </summary>
+        </member>
+        <member name="M:CS3500.Networking.NetworkConnection.Connect(System.String,System.Int32)">
+            <summary>
+            Connects to a remote host and port.
+            </summary>
+            <param name="host">The remote host's URL or IP address.</param>
+            <param name="port">The port number to connect to.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if already connected.</exception>
+        </member>
+        <member name="M:CS3500.Networking.NetworkConnection.Send(System.String)">
+            <summary>
+            Sends a message to the remote endpoint. Appends a newline character to
+            treat it as a complete message.
+            </summary>
+            <param name="message">The message to send.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if not connected.</exception>
+        </member>
+        <member name="M:CS3500.Networking.NetworkConnection.ReadLine">
+            <summary>
+            Reads a message from the remote endpoint up to the first newline.
+            </summary>
+            <returns>The message received from the remote endpoint.</returns>
+            <exception cref="T:System.InvalidOperationException">Thrown if not connected.</exception>
+            <exception cref="T:System.IO.IOException">Thrown if the connection is closed by the remote host.</exception>
+        </member>
+        <member name="M:CS3500.Networking.NetworkConnection.Disconnect">
+            <summary>
+            Disconnects the connection and disposes of the resources.
+            </summary>
+        </member>
+        <member name="M:CS3500.Networking.NetworkConnection.Dispose">
+            <summary>
+            Releases all resources used by the NetworkConnection.
+            </summary>
+        </member>
+        <member name="T:CS3500.Networking.Server">
+            <summary>
+              Represents a server task that waits for connections on a given
+              port and calls the provided delegate when a connection is made.
+            </summary>
+        </member>
+        <member name="M:CS3500.Networking.Server.StartServer(System.Action{CS3500.Networking.NetworkConnection},System.Int32)">
+            <summary>
+              Wait on a TcpListener for new connections. Alert the main program
+              via a callback (delegate) mechanism.
+            </summary>
+            <param name="handleConnect">
+              Handler for what the user wants to do when a connection is made.
+              This should be run asynchronously via a new thread.
+            </param>
+            <param name="port"> The port (e.g., 11000) to listen on. </param>
+        </member>
+    </members>
+</doc>
