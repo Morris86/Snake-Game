@@ -6,13 +6,34 @@
 @using System.Numerics
 @using System.Diagnostics
 @using System.Text.Json
+@using CS3500.Networking
 @inject IJSRuntime JsRuntime;
 
 <PageTitle> Snake </PageTitle>
 
-<div id="snakeCanvas" style="position: fixed; width: 100%; height: 100%">
+<!-- Snake Game Connection -->
+<div style="padding: 10px; background-color: #f3f3f3;">
+    <label>Server Address:</label>
+    <input @bind="serverAddress" placeholder="Enter Server IP" style="margin-right: 5px;" />
+
+    <label>Port Number:</label>
+    <input @bind="portNumber" type="number" placeholder="Enter Port" style="margin-right: 5px;" />
+
+    <label>Player Name:</label>
+    <input @bind="playerName" placeholder="Enter Player Name" style="margin-right: 5px;" />
+
+    <button @onclick="ConnectToServer">Connect</button>
+    <button @onclick="DisconnectFromServer" style="margin-left: 5px;">Disconnect</button>
+
+    <p>@statusMessage</p>
+</div>
+
+<!-- Snake Canvas with Top Margin -->
+<div id="snakeCanvas" style="margin-top: 20px;">
     <BECanvas Width="1000" Height="1000" @ref="canvasReference"></BECanvas>
 </div>
+
+<p>@statusMessage</p>
 
 @code
 {
@@ -20,6 +41,11 @@
     private Canvas2DContext context = null!;
     private IJSObjectReference jsModule = null!;
 
+    private string serverAddress = "localhost"; // Default IP
+    private int portNumber = 11000; // Default Port
+    private string playerName = "";
+    private string statusMessage = "";
+    private NetworkConnection? networkConnection;
 
 
     protected override async Task OnAfterRenderAsync( bool firstRender )
@@ -50,6 +76,41 @@
 
         // TODO: Remove this, which is just here to show you what the 'key' string is for whatever key you pressed
         Debug.WriteLine("key pressed: " + key);
+    }
+
+
+    private void ConnectToServer()
+    {
+        if (string.IsNullOrWhiteSpace(playerName))
+        {
+            statusMessage = "Player name is required!";
+            return;
+        }
+
+        try
+        {
+            networkConnection = new NetworkConnection();
+            networkConnection.Connect(serverAddress, portNumber);
+            networkConnection.Send(playerName); // Send the player's name upon connecting
+            statusMessage = $"Connected to {serverAddress}:{portNumber} as {playerName}.";
+        }
+        catch (Exception ex)
+        {
+            statusMessage = $"Failed to connect: {ex.Message}";
+        }
+    }
+
+    private void DisconnectFromServer()
+    {
+        if (networkConnection != null && networkConnection.IsConnected)
+        {
+            networkConnection.Disconnect();
+            statusMessage = "Disconnected from server.";
+        }
+        else
+        {
+            statusMessage = "No active connection to disconnect.";
+        }
     }
 
 }
