@@ -7,7 +7,7 @@
 using System.Net.Sockets;
 using System.Text;
 
-namespace CS3500.Networking
+namespace CS3500.NetworkLibrary
 {
     /// <summary>
     /// Wraps the StreamReader, StreamWriter, and TcpClient together to provide

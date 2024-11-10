@@ -1,6 +1,7 @@
 ﻿// Author: Daniel Kopta, Fall 2017
 // CS 3500 game lab
 // University of Utah
+using System.Collections.Generic;
 
 namespace CS3500.Models
 {
@@ -10,63 +11,55 @@ namespace CS3500.Models
     public class Player
     {
         /// <summary>
-        /// The current position of the player's head (the front of the snake).
+        /// The unique ID of the snake/player (from the "snake" field in JSON).
         /// </summary>
-        public Vector2D Position => Body.Count > 0 ? Body[0] : new Vector2D(0, 0);
+        public int ID { get; set; }
 
         /// <summary>
-        /// The body segments of the snake, where the first element is the head, and the last is the tail.
+        /// The segments of the snake's body.
+        /// The first element represents the head of the snake.
         /// </summary>
-        public List<Vector2D> Body { get; private set; } = new List<Vector2D>();
+        public List<Vector2D> Body { get; set; } = new List<Vector2D>();
 
         /// <summary>
-        /// This player's direction of travel
+        /// The direction of the snake's movement.
         /// </summary>
-        public Vector2D Direction { get; private set; }
+        public Vector2D Direction { get; set; }
 
         /// <summary>
-        /// This player's unique ID
+        /// The player's name.
         /// </summary>
-        public int ID { get; private set; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// Whether or not this player is active and part of the live game
+        /// The player's score.
         /// </summary>
-        public bool Active { get; set; } = true;
+        public int Score { get; set; }
 
         /// <summary>
-        /// RNG used to pick a new direction when they turn
+        /// Indicates if the snake died in the current frame.
         /// </summary>
-        private Random rand = new();
+        public bool Died { get; set; }
 
         /// <summary>
-        /// Keeps track of the next frame on which this player will change direction
+        /// Indicates if the snake is currently alive.
         /// </summary>
-        private int nextDirChange;
+        public bool Alive { get; set; }
 
         /// <summary>
-        /// Keeps track of the current frame
+        /// Indicates if the player has disconnected.
         /// </summary>
-        private int frameNum;
+        public bool Disconnected { get; set; }
 
         /// <summary>
-        /// Creates a new player with the given ID, x,y location and direction (angle)
+        /// Indicates if the player has just joined.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="angle"></param>
-        public Player( int id, int x, int y, double angle )
-        {
-            ID = id;
-            Direction = new Vector2D(1, 0);
-            Direction.Rotate(angle);
+        public bool JustJoined { get; set; }
 
-            // Initialize the body with the starting head position
-            Body.Add(new Vector2D(x, y));
-
-            nextDirChange = rand.Next(300);
-        }
+        /// <summary>
+        /// Default constructor required for JSON deserialization.
+        /// </summary>
+        public Player() { }
 
         /// <summary>
         /// Moves the snake in the current direction, updating its body segments.
@@ -93,32 +86,7 @@ namespace CS3500.Models
         }
 
         /// <summary>
-        /// Updates this player for one frame of the game
-        /// </summary>
-        /// <param name="size"></param>
-        public void Step( int size )
-        {
-            // Change direction if it's time
-            if (frameNum == nextDirChange)
-            {
-                frameNum = 0;
-                nextDirChange = rand.Next(300);
-                Direction.Rotate(rand.NextDouble() * 360);
-            }
-
-            // Move the snake forward by updating the head and body
-            Move();
-
-            // Check if the head has gone out of bounds; deactivate if necessary
-            Vector2D head = Body[0];
-            if (head.X < -20 || head.X > size + 20 || head.Y < -20 || head.Y > size + 20)
-                Active = false;
-
-            frameNum++;
-        }
-
-        /// <summary>
-        /// Rotates the snake's direction.
+        /// Rotates the snake's direction by a specified number of degrees.
         /// </summary>
         /// <param name="degrees">The degrees to rotate the direction vector.</param>
         public void Rotate(double degrees)

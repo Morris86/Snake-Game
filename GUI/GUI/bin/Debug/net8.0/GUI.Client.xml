@@ -4,46 +4,46 @@
         <name>GUI.Client</name>
     </assembly>
     <members>
-        <member name="T:CS3500.Networking.NetworkConnection">
+        <member name="T:CS3500.NetworkLibrary.NetworkConnection">
             <summary>
             Wraps the StreamReader, StreamWriter, and TcpClient together to provide
             a unified interface for network actions.
             </summary>
         </member>
-        <member name="F:CS3500.Networking.NetworkConnection._tcpClient">
+        <member name="F:CS3500.NetworkLibrary.NetworkConnection._tcpClient">
             <summary>
             Represents the underlying TCP client used for the connection.
             </summary>
         </member>
-        <member name="F:CS3500.Networking.NetworkConnection._reader">
+        <member name="F:CS3500.NetworkLibrary.NetworkConnection._reader">
             <summary>
             The reader for incoming messages.
             </summary>
         </member>
-        <member name="F:CS3500.Networking.NetworkConnection._writer">
+        <member name="F:CS3500.NetworkLibrary.NetworkConnection._writer">
             <summary>
             The writer for outgoing messages.
             </summary>
         </member>
-        <member name="M:CS3500.Networking.NetworkConnection.#ctor(System.Net.Sockets.TcpClient)">
+        <member name="M:CS3500.NetworkLibrary.NetworkConnection.#ctor(System.Net.Sockets.TcpClient)">
             <summary>
-            Initializes a new instance of the <see cref="T:CS3500.Networking.NetworkConnection"/> class
+            Initializes a new instance of the <see cref="T:CS3500.NetworkLibrary.NetworkConnection"/> class
             with an existing TCP client.
             </summary>
             <param name="tcpClient">An already connected TcpClient.</param>
         </member>
-        <member name="M:CS3500.Networking.NetworkConnection.#ctor">
+        <member name="M:CS3500.NetworkLibrary.NetworkConnection.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:CS3500.Networking.NetworkConnection"/> class.
+            Initializes a new instance of the <see cref="T:CS3500.NetworkLibrary.NetworkConnection"/> class.
             Creates a new, unconnected TcpClient.
             </summary>
         </member>
-        <member name="P:CS3500.Networking.NetworkConnection.IsConnected">
+        <member name="P:CS3500.NetworkLibrary.NetworkConnection.IsConnected">
             <summary>
             Gets a value indicating whether the connection is currently active.
             </summary>
         </member>
-        <member name="M:CS3500.Networking.NetworkConnection.Connect(System.String,System.Int32)">
+        <member name="M:CS3500.NetworkLibrary.NetworkConnection.Connect(System.String,System.Int32)">
             <summary>
             Connects to a remote host and port.
             </summary>
@@ -51,7 +51,7 @@
             <param name="port">The port number to connect to.</param>
             <exception cref="T:System.InvalidOperationException">Thrown if already connected.</exception>
         </member>
-        <member name="M:CS3500.Networking.NetworkConnection.Send(System.String)">
+        <member name="M:CS3500.NetworkLibrary.NetworkConnection.Send(System.String)">
             <summary>
             Sends a message to the remote endpoint. Appends a newline character to
             treat it as a complete message.
@@ -59,7 +59,7 @@
             <param name="message">The message to send.</param>
             <exception cref="T:System.InvalidOperationException">Thrown if not connected.</exception>
         </member>
-        <member name="M:CS3500.Networking.NetworkConnection.ReadLine">
+        <member name="M:CS3500.NetworkLibrary.NetworkConnection.ReadLine">
             <summary>
             Reads a message from the remote endpoint up to the first newline.
             </summary>
@@ -67,12 +67,12 @@
             <exception cref="T:System.InvalidOperationException">Thrown if not connected.</exception>
             <exception cref="T:System.IO.IOException">Thrown if the connection is closed by the remote host.</exception>
         </member>
-        <member name="M:CS3500.Networking.NetworkConnection.Disconnect">
+        <member name="M:CS3500.NetworkLibrary.NetworkConnection.Disconnect">
             <summary>
             Disconnects the connection and disposes of the resources.
             </summary>
         </member>
-        <member name="M:CS3500.Networking.NetworkConnection.Dispose">
+        <member name="M:CS3500.NetworkLibrary.NetworkConnection.Dispose">
             <summary>
             Releases all resources used by the NetworkConnection.
             </summary>
@@ -82,54 +82,56 @@
             One of the types of objects in the game (part of the Model of MVC)
             </summary>
         </member>
-        <member name="P:CS3500.Models.Player.Position">
+        <member name="P:CS3500.Models.Player.ID">
             <summary>
-            The current position of the player's head (the front of the snake).
+            The unique ID of the snake/player (from the "snake" field in JSON).
             </summary>
         </member>
         <member name="P:CS3500.Models.Player.Body">
             <summary>
-            The body segments of the snake, where the first element is the head, and the last is the tail.
+            The segments of the snake's body.
+            The first element represents the head of the snake.
             </summary>
         </member>
         <member name="P:CS3500.Models.Player.Direction">
             <summary>
-            This player's direction of travel
+            The direction of the snake's movement.
             </summary>
         </member>
-        <member name="P:CS3500.Models.Player.ID">
+        <member name="P:CS3500.Models.Player.Name">
             <summary>
-            This player's unique ID
+            The player's name.
             </summary>
         </member>
-        <member name="P:CS3500.Models.Player.Active">
+        <member name="P:CS3500.Models.Player.Score">
             <summary>
-            Whether or not this player is active and part of the live game
+            The player's score.
             </summary>
         </member>
-        <member name="F:CS3500.Models.Player.rand">
+        <member name="P:CS3500.Models.Player.Died">
             <summary>
-            RNG used to pick a new direction when they turn
+            Indicates if the snake died in the current frame.
             </summary>
         </member>
-        <member name="F:CS3500.Models.Player.nextDirChange">
+        <member name="P:CS3500.Models.Player.Alive">
             <summary>
-            Keeps track of the next frame on which this player will change direction
+            Indicates if the snake is currently alive.
             </summary>
         </member>
-        <member name="F:CS3500.Models.Player.frameNum">
+        <member name="P:CS3500.Models.Player.Disconnected">
             <summary>
-            Keeps track of the current frame
+            Indicates if the player has disconnected.
             </summary>
         </member>
-        <member name="M:CS3500.Models.Player.#ctor(System.Int32,System.Int32,System.Int32,System.Double)">
+        <member name="P:CS3500.Models.Player.JustJoined">
             <summary>
-            Creates a new player with the given ID, x,y location and direction (angle)
+            Indicates if the player has just joined.
             </summary>
-            <param name="id"></param>
-            <param name="x"></param>
-            <param name="y"></param>
-            <param name="angle"></param>
+        </member>
+        <member name="M:CS3500.Models.Player.#ctor">
+            <summary>
+            Default constructor required for JSON deserialization.
+            </summary>
         </member>
         <member name="M:CS3500.Models.Player.Move">
             <summary>
@@ -141,15 +143,9 @@
             Grows the snake by adding a new segment at the end of the body.
             </summary>
         </member>
-        <member name="M:CS3500.Models.Player.Step(System.Int32)">
-            <summary>
-            Updates this player for one frame of the game
-            </summary>
-            <param name="size"></param>
-        </member>
         <member name="M:CS3500.Models.Player.Rotate(System.Double)">
             <summary>
-            Rotates the snake's direction.
+            Rotates the snake's direction by a specified number of degrees.
             </summary>
             <param name="degrees">The degrees to rotate the direction vector.</param>
         </member>

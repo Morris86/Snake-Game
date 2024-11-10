@@ -6,7 +6,7 @@
 @using System.Numerics
 @using System.Diagnostics
 @using System.Text.Json
-@using CS3500.Networking
+@using CS3500.NetworkController
 @using CS3500.Models
 @inject IJSRuntime JsRuntime;
 
@@ -46,175 +46,8 @@
     private int portNumber = 11000; // Default Port
     private string playerName = "";
     private string statusMessage = "";
-    private NetworkConnection? networkConnection;
-
-    // Instantiate World instance for managing players and powerups
-    private World TheWorld = new World(2000);  // Adjust world size as needed
-    private int playerID;
-
-    protected override async Task OnAfterRenderAsync( bool firstRender )
-    {
-        if ( firstRender )
-        {
-            jsModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./Pages/SnakeGUI.razor.js");
-            await jsModule.InvokeVoidAsync("initRenderJS", DotNetObjectReference.Create(this));
-            context = await canvasReference.CreateCanvas2DAsync();        
-
-            // TODO: Start the game loop
-            // Start the network loop and game loop
-            new Thread(() => NetworkLoop()).Start();
-            GameLoop();
-
-            // in the meantime, draw something to initialize the canvas
-            // you may want to remove this after you are drawing something
-            await context.SetFillStyleAsync( "lightblue" );
-            await context.FillRectAsync( 0, 0, 1000, 1000 );
-        }
-    }
-
-    private void NetworkLoop()
-    {
-        Console.WriteLine("NetworkLoop started"); // Log start of loop
-        while (networkConnection != null && networkConnection.IsConnected)
-        {
-            try
-            {
-                string data = networkConnection.ReadLine();
-                Console.WriteLine($"Data received: {data}"); // Log received data
-                ProcessServerData(data);  // Update World instance based on incoming data
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Network error: {ex.Message}");
-            }
-        }
-    }
-
-
-
-    private async void GameLoop()
-    {
-        Console.WriteLine("GameLoop started"); // Log start of loop
-        while (true)
-        {
-            await DrawFrame();
-            Thread.Sleep(20);  // Targeting 50 FPS
-        }
-    }
-
-    private void ProcessServerData(string data)
-    {
-        Console.WriteLine($"Processing data: {data}");
-
-        if (data.Contains("player"))
-        {
-            var player = JsonSerializer.Deserialize<Player>(data);
-            Console.WriteLine($"Processed player: ID = {player?.ID}");
-            TheWorld.UpdatePlayer(player);
-        }
-        else if (data.Contains("powerup"))
-        {
-            var powerup = JsonSerializer.Deserialize<Powerup>(data);
-            Console.WriteLine($"Processed powerup: ID = {powerup?.ID}");
-            TheWorld.UpdatePowerup(powerup);
-        }
-        else
-        {
-            Console.WriteLine("Unrecognized data format");
-        }
-    }
-
-    private async Task DrawFrame()
-    {
-        await context.BeginBatchAsync();
-
-        // Background
-        await context.SetFillStyleAsync("lightblue");
-        await context.FillRectAsync(0, 0, 1000, 1000);
-
-        // Draw each player (snake) and power-up
-        foreach (var player in TheWorld.Players.Values)
-        {
-            Console.WriteLine($"Drawing player at {player.Position}"); // Log player positions
-            await DrawSnake(player);
-        }
-
-        foreach (var powerup in TheWorld.Powerups.Values)
-        {
-            await DrawPowerup(powerup);
-        }
-
-        await context.EndBatchAsync();
-    }
-
-    private async Task DrawSnake(Player player)
-    {
-        await context.SetStrokeStyleAsync("green");  // Color for snake
-        await context.BeginPathAsync();
-
-        // Draw each segment as a continuous line
-        if (player.Body.Count > 1)
-        {
-            await context.MoveToAsync(player.Body[0].X, player.Body[0].Y);
-            foreach (var segment in player.Body)
-            {
-                await context.LineToAsync(segment.X, segment.Y);
-            }
-        }
-        await context.StrokeAsync();
-    }
-
-    private async Task DrawPowerup(Powerup powerup)
-    {
-        await context.SetFillStyleAsync("red");  // Color for power-up
-        await context.FillRectAsync(powerup.Position.X, powerup.Position.Y, 16, 16);  // Power-up size
-    }
-
-    [JSInvokable]
-    public void HandleKeyPress( string key )
-    {
-        // TODO: Once the client is connected and the handshake is complete,
-        //       invoke some controller method to send the appropriate command to the server
-        Console.WriteLine($"Key pressed: {key}");
-        string direction = key switch
-        {
-            "w" => "up",
-            "s" => "down",
-            "a" => "left",
-            "d" => "right",
-            _ => "none"
-        };
-
-        // Assume `TheWorld.Players` contains the current player's ID
-        if (TheWorld.Players.TryGetValue(playerID, out var currentPlayer))
-        {
-            Console.WriteLine($"Current player before movement: {currentPlayer.Position}");
-            switch (direction)
-            {
-                case "up":
-                    currentPlayer.Rotate(-90);
-                    break;
-                case "down":
-                    currentPlayer.Rotate(90);
-                    break;
-                case "left":
-                    currentPlayer.Rotate(180);
-                    break;
-                case "right":
-                    currentPlayer.Rotate(0);
-                    break;
-            }
-
-            // Send movement command to the server
-            var command = JsonSerializer.Serialize(new { moving = direction });
-            networkConnection?.Send(command);
-            Console.WriteLine($"Direction sent to server: {direction}");
-        }
-
-        // TODO: Remove this, which is just here to show you what the 'key' string is for whatever key you pressed
-        Debug.WriteLine("key pressed: " + key);
-        Console.WriteLine($"Key pressed in C#: {key}");  // This should appear in server console
-    }
+    private NetworkController networkController;
+    private World TheWorld;
 
 
     private void ConnectToServer()
@@ -224,12 +57,15 @@
             statusMessage = "Player name is required!";
             return;
         }
-
         try
         {
-            networkConnection = new NetworkConnection();
-            networkConnection.Connect(serverAddress, portNumber);
-            networkConnection.Send(playerName); // Send the player's name upon connecting
+            // Initialize networkController only when connecting
+            networkController = new NetworkController(serverAddress, portNumber);
+            networkController.OnError = errorMessage => statusMessage = errorMessage;
+            // Define actions for updating game state when data is received
+            networkController.OnPlayerUpdate = player => TheWorld.UpdatePlayer(player);
+            networkController.OnPowerupUpdate = powerup => TheWorld.UpdatePowerup(powerup);
+            networkController.SendPlayerName(playerName); // Send the player's name upon connecting
             statusMessage = $"Connected to {serverAddress}:{portNumber} as {playerName}.";
         }
         catch (Exception ex)
@@ -240,15 +76,52 @@
 
     private void DisconnectFromServer()
     {
-        if (networkConnection != null && networkConnection.IsConnected)
+        networkController.Close();
+    }
+
+
+    protected override async Task OnAfterRenderAsync( bool firstRender )
+    {
+        if ( firstRender )
         {
-            networkConnection.Disconnect();
-            statusMessage = "Disconnected from server.";
+            jsModule = await JsRuntime.InvokeAsync<IJSObjectReference>( "import", "./Pages/SnakeGUI.razor.js" );
+            context = await canvasReference.CreateCanvas2DAsync();
+            await JsRuntime.InvokeAsync<object>( "initRenderJS", DotNetObjectReference.Create( this ) );           
+
+            // TODO: Start the game loop
+
+            // in the meantime, draw something to initialize the canvas
+            // you may want to remove this after you are drawing something
+            await context.SetFillStyleAsync( "lightblue" );
+            await context.FillRectAsync( 0, 0, 1000, 1000 );
         }
-        else
+    }
+
+    [JSInvokable]
+    public void HandleKeyPress(string key)
+    {
+        if (networkController == null)
         {
-            statusMessage = "No active connection to disconnect.";
+            Debug.WriteLine("Error: networkController is not initialized.");
+            statusMessage = "Error: Not connected to server.";
+            return;
         }
+
+        string direction = key switch
+        {
+            "w" => "up",
+            "s" => "down",
+            "a" => "left",
+            "d" => "right",
+            _ => "none"
+        };
+
+        if (direction != "none")
+        {
+            networkController.SendMoveCommand(direction);
+        }
+
+        Debug.WriteLine("key pressed: " + key);
     }
 
 }

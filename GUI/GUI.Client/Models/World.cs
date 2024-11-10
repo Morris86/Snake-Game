@@ -14,7 +14,7 @@ namespace CS3500.Models
         /// <summary>
         /// The players in the game
         /// </summary>
-        public Dictionary<int, Player> Players { get; private set; }
+        public Dictionary<int, Player> Players { get; private set; } = new Dictionary<int, Player>();
 
         /// <summary>
         /// The powerups in the game
@@ -50,9 +50,15 @@ namespace CS3500.Models
 
         public void UpdatePlayer(Player player)
         {
-            if (player != null)
+            if (Players.ContainsKey(player.ID))
             {
+                // Update existing player data
                 Players[player.ID] = player;
+            }
+            else
+            {
+                // Add new player
+                Players.Add(player.ID, player);
             }
         }
 
