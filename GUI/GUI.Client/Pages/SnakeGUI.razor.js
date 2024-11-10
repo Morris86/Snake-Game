@@ -1,14 +1,12 @@
-﻿
-window.initRenderJS = (instance) => {
-    window.theInstance = instance;
-};
+﻿// Store the instance globally if you need to reference it elsewhere
+export function initRenderJS(dotNetHelper) {
+    // Attach keydown event listener
+    document.addEventListener('keydown', (event) => {
+        // Log key press for debugging
+        console.log('Key pressed:', event.key);
 
-document.addEventListener('keydown', function (event)
-{
-    // Optionally log the key for testing
-    console.log('Key pressed:', event.key);
+        // Invoke C# method asynchronously
+        dotNetHelper.invokeMethodAsync('HandleKeyPress', event.key);
+    });
+}
 
-    // Call the C# method and pass the key pressed
-    theInstance.invokeMethodAsync('HandleKeyPress', event.key);
-
-});

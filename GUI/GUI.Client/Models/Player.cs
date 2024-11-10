@@ -2,7 +2,7 @@
 // CS 3500 game lab
 // University of Utah
 
-namespace GameLab.Models
+namespace CS3500.Models
 {
     /// <summary>
     /// One of the types of objects in the game (part of the Model of MVC)
@@ -10,9 +10,14 @@ namespace GameLab.Models
     public class Player
     {
         /// <summary>
-        /// This player's position
+        /// The current position of the player's head (the front of the snake).
         /// </summary>
-        public Vector2D Position { get; private set; }
+        public Vector2D Position => Body.Count > 0 ? Body[0] : new Vector2D(0, 0);
+
+        /// <summary>
+        /// The body segments of the snake, where the first element is the head, and the last is the tail.
+        /// </summary>
+        public List<Vector2D> Body { get; private set; } = new List<Vector2D>();
 
         /// <summary>
         /// This player's direction of travel
@@ -54,12 +59,37 @@ namespace GameLab.Models
         public Player( int id, int x, int y, double angle )
         {
             ID = id;
-            Position = new Vector2D( x, y );
-            Direction = new Vector2D( 1, 0 );
+            Direction = new Vector2D(1, 0);
+            Direction.Rotate(angle);
 
-            Direction.Rotate( angle );
+            // Initialize the body with the starting head position
+            Body.Add(new Vector2D(x, y));
 
-            nextDirChange = rand.Next( 300 );
+            nextDirChange = rand.Next(300);
+        }
+
+        /// <summary>
+        /// Moves the snake in the current direction, updating its body segments.
+        /// </summary>
+        public void Move()
+        {
+            // Calculate new head position based on direction
+            Vector2D newHead = Body[0] + Direction;
+
+            // Insert new head position at the beginning of the body
+            Body.Insert(0, newHead);
+
+            // Remove the last segment to simulate forward movement
+            Body.RemoveAt(Body.Count - 1);
+        }
+
+        /// <summary>
+        /// Grows the snake by adding a new segment at the end of the body.
+        /// </summary>
+        public void Grow()
+        {
+            // Duplicate the last segment to grow the body
+            Body.Add(new Vector2D(Body[^1]));
         }
 
         /// <summary>
@@ -68,22 +98,32 @@ namespace GameLab.Models
         /// <param name="size"></param>
         public void Step( int size )
         {
-            // change directions if it's time
-            if ( frameNum == nextDirChange )
+            // Change direction if it's time
+            if (frameNum == nextDirChange)
             {
                 frameNum = 0;
-                nextDirChange = rand.Next( 300 );
-                Direction.Rotate( rand.NextDouble() * 360 );
+                nextDirChange = rand.Next(300);
+                Direction.Rotate(rand.NextDouble() * 360);
             }
 
-            // move forward
-            Position = Position + Direction;
+            // Move the snake forward by updating the head and body
+            Move();
 
-            // let them go a little beyond the bounds of the world
-            if ( Position.X < -20 || Position.X > size + 20 || Position.Y < 20 || Position.Y > size + 20 ) 
+            // Check if the head has gone out of bounds; deactivate if necessary
+            Vector2D head = Body[0];
+            if (head.X < -20 || head.X > size + 20 || head.Y < -20 || head.Y > size + 20)
                 Active = false;
 
             frameNum++;
+        }
+
+        /// <summary>
+        /// Rotates the snake's direction.
+        /// </summary>
+        /// <param name="degrees">The degrees to rotate the direction vector.</param>
+        public void Rotate(double degrees)
+        {
+            Direction.Rotate(degrees);
         }
     }
 }

@@ -4,7 +4,7 @@
 
 using System;
 
-namespace GameLab.Models
+namespace CS3500.Models
 {
     /// <summary>
     /// A class to represent a Vector in 2D space

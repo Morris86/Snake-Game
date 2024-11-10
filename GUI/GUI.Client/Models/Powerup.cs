@@ -1,7 +1,7 @@
 ﻿// Author: Daniel Kopta, Fall 2017
 // Staff solution for CS 3500 final project
 // University of Utah
-namespace GameLab.Models
+namespace CS3500.Models
 {
     /// <summary>
     /// One of the types of objects in the game (part of the Model of MVC)

@@ -4,7 +4,7 @@
 
 using System.Numerics;
 
-namespace GameLab.Models
+namespace CS3500.Models
 {
     /// <summary>
     /// The Model part of MVC, represents all objects in the "game"
@@ -14,18 +14,17 @@ namespace GameLab.Models
         /// <summary>
         /// The players in the game
         /// </summary>
-        public Dictionary<int, Player> Players;
+        public Dictionary<int, Player> Players { get; private set; }
 
         /// <summary>
         /// The powerups in the game
         /// </summary>
-        public Dictionary<int, Powerup> Powerups;
+        public Dictionary<int, Powerup> Powerups { get; private set; }
 
         /// <summary>
         /// The size of a single side of the square world
         /// </summary>
-        public int Size
-        { get; private set; }
+        public int Size { get; private set; }
 
         /// <summary>
         /// Creates a new world with the given size
@@ -49,5 +48,20 @@ namespace GameLab.Models
             Size = world.Size;
         }
 
+        public void UpdatePlayer(Player player)
+        {
+            if (player != null)
+            {
+                Players[player.ID] = player;
+            }
+        }
+
+        public void UpdatePowerup(Powerup powerup)
+        {
+            if (powerup != null)
+            {
+                Powerups[powerup.ID] = powerup;
+            }
+        }
     }
 }
