@@ -38,13 +38,15 @@
     <div class="input-row">
         <div class="input-col">
             <div id="Messages" class="container @grayedOut">
-                @foreach ( var line in AllMessages )
+                @lock (messagesLock)
                 {
-                    <span class="themClass">
-                        @line
-                    </span>
+                    @foreach (var line in AllMessages)
+                    {
+                        <span class="themClass">
+                            @line
+                        </span>
+                    }
                 }
-
             </div>
         </div>
     </div>
@@ -77,6 +79,11 @@
     /// Track if it's the first message
     /// </summary>
     private bool isFirstMessage = true;
+
+    /// <summary>
+    /// Lock the messages to prevent race condition
+    /// </summary>
+    private readonly object messagesLock = new object();
 
     /// <summary>
     /// The string shown in the message display area, representing all messages seen
@@ -125,7 +132,13 @@
                         var message = network.ReadLine();
 
                         message = $"{DateTime.Now:HH:mm tt} - {message}";
-                        AllMessages.Insert( 0, message );
+
+                        // Lock when modifying AllMessages
+                        lock (messagesLock)
+
+                        {
+                            AllMessages.Insert(0, message);
+                        }
 
                         // Since we are changing the UI from another thread, we need to 
                         // use the dispatcher for StateHasChanged

@@ -29,6 +29,11 @@
             Track if it's the first message
             </summary>
         </member>
+        <member name="F:ChatClient.Client.Pages.ChatClient.messagesLock">
+            <summary>
+            Lock the messages to prevent race condition
+            </summary>
+        </member>
         <member name="P:ChatClient.Client.Pages.ChatClient.MessageDisplayTextAreaData">
             <summary>
             The string shown in the message display area, representing all messages seen

@@ -57,11 +57,43 @@
             await JsRuntime.InvokeAsync<object>( "initRenderJS", DotNetObjectReference.Create( this ) );           
 
             // TODO: Start the game loop
+            
+            new Thread(() => NetworkLoop()).Start(); // Start the network loop on a new thread
+            GameLoop(); // Start the game loop asynchronously
 
             // in the meantime, draw something to initialize the canvas
             // you may want to remove this after you are drawing something
             await context.SetFillStyleAsync( "lightblue" );
             await context.FillRectAsync( 0, 0, 1000, 1000 );
+        }
+    }
+
+    private void NetworkLoop()
+    {
+        while (networkConnection != null && networkConnection.IsConnected)
+        {
+            try
+            {
+                string data = networkConnection.ReadLine();
+                ProcessServerData(data);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Network error: {ex.Message}");
+                isNetworkLoopRunning = false;
+            }
+        }
+    }
+
+
+    private async void GameLoop()
+    {
+        while (true)
+        {
+            await DrawFrame();
+
+            // Control the frame rate to ~50 FPS
+            Thread.Sleep(20);
         }
     }
 
