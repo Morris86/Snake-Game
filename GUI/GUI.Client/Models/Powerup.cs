@@ -1,6 +1,8 @@
 ﻿// Author: Daniel Kopta, Fall 2017
 // Staff solution for CS 3500 final project
 // University of Utah
+using System.Text.Json.Serialization;
+
 namespace CS3500.Models
 {
     /// <summary>
@@ -9,9 +11,16 @@ namespace CS3500.Models
     public class Powerup
     {
         /// <summary>
+        /// This powerup's unique ID
+        /// </summary>
+        [JsonPropertyName("power")]
+        public int ID { get; set; }
+
+        /// <summary>
         /// This powerup's position
         /// </summary>
-        public Vector2D Position { get; private set; }
+        [JsonPropertyName("loc")]
+        public Vector2D Position { get; set; }
 
         /// <summary>
         /// RNG used to decide when a powerup goes away
@@ -19,14 +28,10 @@ namespace CS3500.Models
         private Random rand = new();
 
         /// <summary>
-        /// This powerup's unique ID
-        /// </summary>
-        public int ID { get; private set; }
-
-        /// <summary>
         /// Whether or not this powerup is active and part of the live game
         /// </summary>
-        public bool Active { get; set; } = true;
+        [JsonPropertyName("died")]
+        public bool Died { get; set; }
 
 
         /// <summary>
@@ -49,7 +54,7 @@ namespace CS3500.Models
             // 0.1% chance to deactivate on each frame
             if ( rand.Next( 1000 ) == 0 )
             {
-                Active = false;
+                Died = false;
                 return;
             }
         }

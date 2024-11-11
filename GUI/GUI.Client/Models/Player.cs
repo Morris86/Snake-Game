@@ -2,6 +2,7 @@
 // CS 3500 game lab
 // University of Utah
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CS3500.Models
 {
@@ -13,53 +14,65 @@ namespace CS3500.Models
         /// <summary>
         /// The unique ID of the snake/player (from the "snake" field in JSON).
         /// </summary>
+        [JsonPropertyName("snake")]
         public int ID { get; set; }
+
+        /// <summary>
+        /// The player's name.
+        /// </summary>
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// The segments of the snake's body.
         /// The first element represents the head of the snake.
         /// </summary>
-        public List<Vector2D> Body { get; set; } = new List<Vector2D>();
+        [JsonPropertyName("body")]
+        public List<Vector2D> Body { get; set; }
 
         /// <summary>
         /// The direction of the snake's movement.
         /// </summary>
+        [JsonPropertyName("dir")]
         public Vector2D Direction { get; set; }
-
-        /// <summary>
-        /// The player's name.
-        /// </summary>
-        public string Name { get; set; }
 
         /// <summary>
         /// The player's score.
         /// </summary>
+        [JsonPropertyName("score")]
         public int Score { get; set; }
 
         /// <summary>
         /// Indicates if the snake died in the current frame.
         /// </summary>
+        [JsonPropertyName("died")]
         public bool Died { get; set; }
 
         /// <summary>
         /// Indicates if the snake is currently alive.
         /// </summary>
+        [JsonPropertyName("alive")]
         public bool Alive { get; set; }
 
         /// <summary>
         /// Indicates if the player has disconnected.
         /// </summary>
+        [JsonPropertyName("dc")]
         public bool Disconnected { get; set; }
 
         /// <summary>
         /// Indicates if the player has just joined.
         /// </summary>
+        [JsonPropertyName("join")]
         public bool JustJoined { get; set; }
 
         /// <summary>
         /// Default constructor required for JSON deserialization.
         /// </summary>
-        public Player() { }
+        public Player()
+        {
+            Body = new List<Vector2D>();
+        }
 
         /// <summary>
         /// Moves the snake in the current direction, updating its body segments.

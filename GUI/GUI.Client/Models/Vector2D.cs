@@ -3,6 +3,7 @@
 // University of Utah
 
 using System;
+using System.Text.Json.Serialization;
 
 namespace CS3500.Models
 {
@@ -11,16 +12,19 @@ namespace CS3500.Models
     /// </summary>
     public class Vector2D
     {
-        public double X { get; private set; }
-        public double Y { get; private set; }
+        [JsonPropertyName("X")]
+        public double X { get; set; }
+
+        [JsonPropertyName("Y")]
+        public double Y { get; set; }
 
         /// <summary>
         /// Default constructor, needed for JSON serialize/deserialize
         /// </summary>
         public Vector2D()
         {
-            X = -1;
-            Y = -1;
+            X = 0;
+            Y = 0;
         }
 
         /// <summary>

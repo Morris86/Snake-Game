@@ -48,7 +48,6 @@
     private string playerName = "";
     private string statusMessage = "";
     private NetworkController networkController;
-    private World TheWorld;
 
 
     private void ConnectToServer()
@@ -66,12 +65,6 @@
 
             networkController.SendPlayerName(playerName); // Send the player's name upon connecting
             statusMessage = $"Connected to {serverAddress}:{portNumber} as {playerName}.";
-
-            // // Define actions for updating game state when data is received
-            // networkController.OnPlayerUpdate = player => TheWorld.UpdatePlayer(player);
-            // networkController.OnPowerupUpdate = powerup => TheWorld.UpdatePowerup(powerup);
-            // networkController.SendPlayerName(playerName); // Send the player's name upon connecting
-            // statusMessage = $"Connected to {serverAddress}:{portNumber} as {playerName}.";
         }
         catch (Exception ex)
         {
@@ -94,6 +87,7 @@
             await JsRuntime.InvokeAsync<object>( "initRenderJS", DotNetObjectReference.Create( this ) );           
 
             // TODO: Start the game loop
+
             GameLoop();
 
             // in the meantime, draw something to initialize the canvas
@@ -107,8 +101,11 @@
     {
         while (true)
         {
-            //Console.WriteLine("Drawing frames");
-            await DrawFrame();
+            if (networkController?.TheWorld != null) // Only draw when TheWorld is initialized
+            {
+                await DrawFrame();
+                //Console.WriteLine("Drawing frames");
+            }
             await Task.Delay(20); // 50 FPS
         }
     }
@@ -116,7 +113,7 @@
     private async Task DrawFrame()
     {
         // Exit early if TheWorld is not initialized yet (e.g., before connecting)
-        if (TheWorld == null)
+        if (networkController?.TheWorld == null)
         {
             //Console.WriteLine("TheWorld is Null");
             return;
@@ -129,13 +126,13 @@
         await context.FillRectAsync(0, 0, 1000, 1000);
 
         // Draw each player
-        foreach (var player in TheWorld.Players.Values)
+        foreach (var player in networkController.TheWorld.Players.Values)
         {
             await DrawSnake(player);
         }
 
         // Draw each powerup
-        foreach (var powerup in TheWorld.Powerups.Values)
+        foreach (var powerup in networkController.TheWorld.Powerups.Values)
         {
             await DrawPowerup(powerup);
         }
