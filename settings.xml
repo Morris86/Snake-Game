@@ -1,31 +1,6 @@
 <GameSettings>
   <UniverseSize>2000</UniverseSize>
-  <MSPerFrame>20</MSPerFrame>
+  <MSPerFrame>2000</MSPerFrame>
   <RespawnRate>200</RespawnRate> 
-  
-  
-  <!-- top border -->
-  <Wall>
-    <p1><x>-975</x><y>-975</y></p1>
-	<p2><x>975</x><y>-975</y></p2>
-  </Wall>
-  
-  <!-- left border -->
-  <Wall>
-	<p2><x>-975</x><y>975</y></p2>
-    <p1><x>-975</x><y>-975</y></p1>
-  </Wall>
-  
-  <!-- right border -->
-  <Wall>
-    <p1><x>975</x><y>975</y></p1>
-	<p2><x>975</x><y>-975</y></p2>
-  </Wall>
-  
-  <!-- bottom border -->
-  <Wall>
-    <p1><x>975</x><y>975</y></p1>
-	<p2><x>-975</x><y>975</y></p2>
-  </Wall> 
 
 </GameSettings>

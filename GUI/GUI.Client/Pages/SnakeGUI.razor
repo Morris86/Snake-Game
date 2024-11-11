@@ -38,6 +38,7 @@
 
 @code
 {
+
     private BECanvasComponent canvasReference = null!;
     private Canvas2DContext context = null!;
     private IJSObjectReference jsModule = null!;
@@ -62,11 +63,15 @@
             // Initialize networkController only when connecting
             networkController = new NetworkController(serverAddress, portNumber);
             networkController.OnError = errorMessage => statusMessage = errorMessage;
-            // Define actions for updating game state when data is received
-            networkController.OnPlayerUpdate = player => TheWorld.UpdatePlayer(player);
-            networkController.OnPowerupUpdate = powerup => TheWorld.UpdatePowerup(powerup);
+
             networkController.SendPlayerName(playerName); // Send the player's name upon connecting
             statusMessage = $"Connected to {serverAddress}:{portNumber} as {playerName}.";
+
+            // // Define actions for updating game state when data is received
+            // networkController.OnPlayerUpdate = player => TheWorld.UpdatePlayer(player);
+            // networkController.OnPowerupUpdate = powerup => TheWorld.UpdatePowerup(powerup);
+            // networkController.SendPlayerName(playerName); // Send the player's name upon connecting
+            // statusMessage = $"Connected to {serverAddress}:{portNumber} as {playerName}.";
         }
         catch (Exception ex)
         {
@@ -89,13 +94,79 @@
             await JsRuntime.InvokeAsync<object>( "initRenderJS", DotNetObjectReference.Create( this ) );           
 
             // TODO: Start the game loop
+            GameLoop();
 
             // in the meantime, draw something to initialize the canvas
             // you may want to remove this after you are drawing something
-            await context.SetFillStyleAsync( "lightblue" );
-            await context.FillRectAsync( 0, 0, 1000, 1000 );
+            //await context.SetFillStyleAsync( "lightblue" );
+            //await context.FillRectAsync( 0, 0, 1000, 1000 );
         }
     }
+
+    private async void GameLoop()
+    {
+        while (true)
+        {
+            //Console.WriteLine("Drawing frames");
+            await DrawFrame();
+            await Task.Delay(20); // 50 FPS
+        }
+    }
+
+    private async Task DrawFrame()
+    {
+        // Exit early if TheWorld is not initialized yet (e.g., before connecting)
+        if (TheWorld == null)
+        {
+            //Console.WriteLine("TheWorld is Null");
+            return;
+        }
+
+        await context.BeginBatchAsync();
+
+        // Clear the canvas for redrawing
+        await context.SetFillStyleAsync("lightblue");
+        await context.FillRectAsync(0, 0, 1000, 1000);
+
+        // Draw each player
+        foreach (var player in TheWorld.Players.Values)
+        {
+            await DrawSnake(player);
+        }
+
+        // Draw each powerup
+        foreach (var powerup in TheWorld.Powerups.Values)
+        {
+            await DrawPowerup(powerup);
+        }
+
+        await context.EndBatchAsync();
+    }
+
+
+    private async Task DrawSnake(Player player)
+    {
+        await context.SetStrokeStyleAsync("green");
+        await context.BeginPathAsync();
+
+        if (player.Body.Count > 0)
+        {
+            await context.MoveToAsync(player.Body[0].X, player.Body[0].Y);
+            foreach (var segment in player.Body)
+            {
+                await context.LineToAsync(segment.X, segment.Y);
+            }
+        }
+        await context.StrokeAsync();
+    }
+
+    private async Task DrawPowerup(Powerup powerup)
+    {
+        await context.SetFillStyleAsync("red");
+        await context.FillRectAsync(powerup.Position.X, powerup.Position.Y, 16, 16);
+    }
+
+
 
     [JSInvokable]
     public void HandleKeyPress(string key)

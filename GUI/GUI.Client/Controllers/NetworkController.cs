@@ -8,14 +8,16 @@ namespace CS3500.NetworkController
 {
     public class NetworkController
     {
-        private NetworkConnection networkConnection;
+        private readonly NetworkConnection networkConnection;
         public Action<string> OnError { get; set; }
         public Action<Player> OnPlayerUpdate { get; set; }
         public Action<Powerup> OnPowerupUpdate { get; set; }
 
-        private bool receivedInitialData = false;
         private int playerID;
         private int worldSize;
+        private World TheWorld; // Ensure this is initialized after server handshake
+        private bool receivedInitialData = false;
+        private bool playerIDReceived = false; // Track if player ID is received
 
         public NetworkController(string serverAddress, int port)
         {
@@ -23,7 +25,8 @@ namespace CS3500.NetworkController
             {
                 networkConnection = new NetworkConnection();
                 networkConnection.Connect(serverAddress, port);
-                // Start receiving data in a separate thread to avoid blocking
+
+                // Start receiving data asynchronously
                 new Thread(StartReceivingData).Start();
             }
             catch (Exception ex)
@@ -56,38 +59,59 @@ namespace CS3500.NetworkController
                 catch (Exception ex)
                 {
                     OnError?.Invoke($"Network error: {ex.Message}");
+                    break;
                 }
             }
         }
 
         private void ProcessServerData(string data)
         {
+            // If we haven't received the initial integer data fully, handle it
             if (!receivedInitialData)
             {
-                if (int.TryParse(data, out int value))
+                if (int.TryParse(data, out int parsedValue))
                 {
-                    if (playerID == 0)
+                    if (!playerIDReceived)
                     {
-                        playerID = value;
+                        // First integer from the server is treated as the player ID
+                        playerID = parsedValue;
+                        playerIDReceived = true;
+                        Console.WriteLine($"Player ID received from server: {playerID}");
                     }
                     else
                     {
-                        worldSize = value;
-                        receivedInitialData = true;
+                        // Second integer is the world size
+                        worldSize = parsedValue;
+                        TheWorld = new World(worldSize);
+                        receivedInitialData = true; // Now we have both initial values
+                        Console.WriteLine($"World size received and set: {worldSize}");
+
+                        // Now that TheWorld is initialized, set the update actions
+                        OnPlayerUpdate = player => TheWorld.UpdatePlayer(player);
+                        OnPowerupUpdate = powerup => TheWorld.UpdatePowerup(powerup);
                     }
                 }
             }
             else
             {
+                // Handle JSON game entities (snakes, powerups) as usual
                 if (data.Contains("\"snake\""))
                 {
                     var player = JsonSerializer.Deserialize<Player>(data);
-                    OnPlayerUpdate?.Invoke(player);
+                    if (player != null)
+                    {
+                        TheWorld.UpdatePlayer(player);
+                        OnPlayerUpdate?.Invoke(player); // Notify view
+                    }
                 }
                 else if (data.Contains("\"power\""))
                 {
                     var powerup = JsonSerializer.Deserialize<Powerup>(data);
-                    OnPowerupUpdate?.Invoke(powerup);
+                    if (powerup != null)
+                    {
+                        TheWorld.UpdatePowerup(powerup);
+                        OnPowerupUpdate?.Invoke(powerup); // Notify view
+                    }
                 }
             }
         }
