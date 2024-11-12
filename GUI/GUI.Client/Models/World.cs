@@ -73,6 +73,16 @@ namespace CS3500.Models
             else
             {
                 Powerups.Add(powerup.ID, powerup);
+                //Console.WriteLine($"Powerup {powerup.ID} updated. Current power-ups: {string.Join(", ", Powerups.Keys)}");
+            }
+        }
+
+        public void RemovePowerup(int powerupID)
+        {
+            if (Powerups.ContainsKey(powerupID))
+            {
+                Powerups.Remove(powerupID); // This removes the power-up from the dictionary
+                //Console.WriteLine($"Powerup {powerupID} removed from game world. Remaining power-ups: {string.Join(", ", Powerups.Keys)}");
             }
         }
 

@@ -103,7 +103,7 @@ namespace CS3500.NetworkController
                         var player = JsonSerializer.Deserialize<Player>(data);
                         if (player != null)
                         {
-                            Console.WriteLine($"Snake JSON detected. Updating player {player.ID}, Name: {player.Name}, Position: {player.Body.FirstOrDefault()}");
+                            //Console.WriteLine($"Snake JSON detected. Updating player {player.ID}, Name: {player.Name}, Position: {player.Body.FirstOrDefault()}");
                             TheWorld.UpdatePlayer(player);  // Make sure UpdatePlayer does not reset existing players
                             OnPlayerUpdate?.Invoke(player); // Notify view
                         }
@@ -113,9 +113,17 @@ namespace CS3500.NetworkController
                         var powerup = JsonSerializer.Deserialize<Powerup>(data);
                         if (powerup != null)
                         {
-                            Console.WriteLine($"Powerup JSON detected. Updating powerup ID: {powerup.ID}, Location: {powerup.Position}");
-                            TheWorld.UpdatePowerup(powerup);  // Make sure UpdatePowerup adds without removing other powerups
-                            OnPowerupUpdate?.Invoke(powerup); // Notify view
+                            //Console.WriteLine($"Powerup JSON detected. Updating powerup ID: {powerup.ID}, Location: {powerup.Position}");
+                            if (powerup.Died) // If the power-up is marked as "died" by the server, it should be removed
+                            {
+                                //Console.WriteLine($"Powerup with ID {powerup.ID} has been consumed. Removing from game.");
+                                TheWorld.RemovePowerup(powerup.ID); // Remove it from the game's state
+                            }
+                            else
+                            {
+                                TheWorld.UpdatePowerup(powerup); // Otherwise, just update its position
+                                OnPowerupUpdate?.Invoke(powerup);    // Notify the view, if necessary
+                            }
                         }
                     }
                     else
