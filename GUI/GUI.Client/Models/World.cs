@@ -64,10 +64,17 @@ namespace CS3500.Models
 
         public void UpdatePowerup(Powerup powerup)
         {
-            if (powerup != null)
+            if (powerup == null) return;
+
+            if (Powerups.ContainsKey(powerup.ID))
             {
                 Powerups[powerup.ID] = powerup;
             }
+            else
+            {
+                Powerups.Add(powerup.ID, powerup);
+            }
         }
+
     }
 }

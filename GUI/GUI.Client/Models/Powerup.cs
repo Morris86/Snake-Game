@@ -23,16 +23,18 @@ namespace CS3500.Models
         public Vector2D Position { get; set; }
 
         /// <summary>
-        /// RNG used to decide when a powerup goes away
-        /// </summary>
-        private Random rand = new();
-
-        /// <summary>
         /// Whether or not this powerup is active and part of the live game
         /// </summary>
         [JsonPropertyName("died")]
         public bool Died { get; set; }
 
+        /// <summary>
+        /// RNG used to decide when a powerup goes away
+        /// </summary>
+        private Random rand = new();
+
+        // Parameterless constructor for JSON deserialization
+        public Powerup() { }
 
         /// <summary>
         /// Creates a new powerup with the given ID and x,y location
@@ -40,10 +42,10 @@ namespace CS3500.Models
         /// <param name="id"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public Powerup( int id, int x, int y )
+        public Powerup(int id, int x, int y)
         {
             ID = id;
-            Position = new Vector2D( x, y );
+            Position = new Vector2D(x, y);
         }
 
         /// <summary>

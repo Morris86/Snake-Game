@@ -11,7 +11,7 @@
 @inject IJSRuntime JsRuntime;
 
 <PageTitle> Snake </PageTitle>
-
+<img @ref="backgroundImage" id="bgImage" src="images/Background.png" alt="image" style="display:none;" />
 <!-- Snake Game Connection -->
 <div style="padding: 10px; background-color: #f3f3f3;">
     <label>Server Address:</label>
@@ -48,6 +48,14 @@
     private string playerName = "";
     private string statusMessage = "";
     private NetworkController networkController;
+
+    /// <summary>
+    /// C# reference to the html element for the background image
+    /// </summary>
+    private ElementReference backgroundImage;
+    private const int ViewWidth = 1000;
+    private const int ViewHeight = 1000;
+
 
 
     private void ConnectToServer()
@@ -86,14 +94,7 @@
             context = await canvasReference.CreateCanvas2DAsync();
             await JsRuntime.InvokeAsync<object>( "initRenderJS", DotNetObjectReference.Create( this ) );           
 
-            // TODO: Start the game loop
-
-            GameLoop();
-
-            // in the meantime, draw something to initialize the canvas
-            // you may want to remove this after you are drawing something
-            //await context.SetFillStyleAsync( "lightblue" );
-            //await context.FillRectAsync( 0, 0, 1000, 1000 );
+            GameLoop(); // Start the game loop
         }
     }
 
@@ -112,30 +113,65 @@
 
     private async Task DrawFrame()
     {
-        // Exit early if TheWorld is not initialized yet (e.g., before connecting)
+        // Exit early if TheWorld is not initialized yet
         if (networkController?.TheWorld == null)
         {
-            //Console.WriteLine("TheWorld is Null");
             return;
         }
 
         await context.BeginBatchAsync();
 
-        // Clear the canvas for redrawing
-        await context.SetFillStyleAsync("lightblue");
-        await context.FillRectAsync(0, 0, 1000, 1000);
+        //await context.DrawImageAsync(backgroundImage, 0, 0, ViewWidth, ViewHeight);
+        //Console.WriteLine($"Number of players in TheWorld: {networkController.TheWorld.Players.Count}");
 
-        // Draw each player
+        // Clip the view to avoid drawing outside the canvas
+        await context.BeginPathAsync();
+        await context.RectAsync(0, 0, ViewWidth, ViewHeight);
+        await context.ClipAsync();
+
+        // Save the context state before applying transformations
+        await context.SaveAsync();
+
+        // Centering based on the player's head position
+        if (networkController.TheWorld.Players.TryGetValue(networkController.playerID, out Player currentPlayer))
+        {
+            // Get the head coordinates of the player
+            double headX = currentPlayer.Body.Last().X;
+            double headY = currentPlayer.Body.Last().Y;
+
+            // Calculate offsets to center the view on the player's head
+            double offsetX = -(headX - (ViewWidth / 2));
+            double offsetY = -(headY - (ViewHeight / 2));
+
+            // Center on origin and move to player's head position
+            await context.TranslateAsync(ViewWidth / 2, ViewHeight / 2);
+            await context.TranslateAsync(-headX, -headY);
+
+            // Set the scale and calculate the center offset for background centering
+            double largeBackgroundSize = networkController.TheWorld.Size * 1.2; // Example: 1.2x world size for a buffer
+
+            // Draw a larger solid background to avoid empty edges
+            await context.SetFillStyleAsync("lightblue"); // Or any background color you prefer
+            await context.FillRectAsync( -largeBackgroundSize / 2, -largeBackgroundSize / 2, largeBackgroundSize, largeBackgroundSize);
+
+            // Draw the image background:
+            await context.DrawImageAsync(backgroundImage, -networkController.TheWorld.Size / 2, -networkController.TheWorld.Size / 2, networkController.TheWorld.Size, networkController.TheWorld.Size);
+        }
+
+        // Draw each player in TheWorld
         foreach (var player in networkController.TheWorld.Players.Values)
         {
             await DrawSnake(player);
         }
 
-        // Draw each powerup
+        // Draw each powerup in TheWorld
         foreach (var powerup in networkController.TheWorld.Powerups.Values)
         {
             await DrawPowerup(powerup);
         }
+
+        // Restore the transformation matrix to the original state after drawing
+        await context.RestoreAsync();
 
         await context.EndBatchAsync();
     }
@@ -144,23 +180,33 @@
     private async Task DrawSnake(Player player)
     {
         await context.SetStrokeStyleAsync("green");
+        await context.SetLineWidthAsync(10); // Set line width for snake
+
         await context.BeginPathAsync();
 
         if (player.Body.Count > 0)
         {
-            await context.MoveToAsync(player.Body[0].X, player.Body[0].Y);
+            double startX = player.Body[0].X;
+            double startY = player.Body[0].Y;
+            await context.MoveToAsync(startX, startY);
+
             foreach (var segment in player.Body)
             {
                 await context.LineToAsync(segment.X, segment.Y);
+                //Console.WriteLine($"Drawing segment at ({segment.X}, {segment.Y})"); // Debugging
             }
         }
+
         await context.StrokeAsync();
     }
 
     private async Task DrawPowerup(Powerup powerup)
     {
         await context.SetFillStyleAsync("red");
-        await context.FillRectAsync(powerup.Position.X, powerup.Position.Y, 16, 16);
+        // Draw a 16x16 pixel powerup
+        double powerupX = powerup.Position.X - 8; // Center 16x16 powerup on position
+        double powerupY = powerup.Position.Y - 8;
+        await context.FillRectAsync(powerupX, powerupY, 16, 16);
     }
 
 

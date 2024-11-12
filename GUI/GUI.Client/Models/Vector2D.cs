@@ -21,21 +21,17 @@ namespace CS3500.Models
         /// <summary>
         /// Default constructor, needed for JSON serialize/deserialize
         /// </summary>
-        public Vector2D()
-        {
-            X = 0;
-            Y = 0;
-        }
+        public Vector2D() { }
 
         /// <summary>
         /// Two param constructor for x and y.
         /// </summary>
         /// <param name="_x"></param>
         /// <param name="_y"></param>
-        public Vector2D( double _x, double _y )
+        public Vector2D(double x, double y)
         {
-            X = _x;
-            Y = _y;
+            X = x;
+            Y = y;
         }
 
         /// <summary>

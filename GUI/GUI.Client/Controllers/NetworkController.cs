@@ -13,9 +13,8 @@ namespace CS3500.NetworkController
         public Action<string> OnError { get; set; }
         public Action<Player> OnPlayerUpdate { get; set; }
         public Action<Powerup> OnPowerupUpdate { get; set; }
-
         public World TheWorld { get; private set; }
-        private int playerID;
+        public int playerID { get; private set; }
         private int worldSize;
         private bool receivedInitialData = false;
         private bool playerIDReceived = false; // Track if player ID is received
@@ -96,40 +95,38 @@ namespace CS3500.NetworkController
             }
             else
             {
-                // Handle JSON game entities (snakes, powerups) as usual
-                if (data.Contains("\"snake\""))
+                try
                 {
-                    Console.WriteLine("Snake JSON detected.");
-                    var player = JsonSerializer.Deserialize<Player>(data);
-                    if (player != null)
+                    // Detect and process each type of JSON object correctly
+                    if (data.Contains("\"snake\""))
                     {
-                        Console.WriteLine($"Updating player {player.ID}, Name: {player.Name}, Position: {player.Body.FirstOrDefault()}");
-                        TheWorld.UpdatePlayer(player);
-                        OnPlayerUpdate?.Invoke(player); // Notify view
+                        var player = JsonSerializer.Deserialize<Player>(data);
+                        if (player != null)
+                        {
+                            Console.WriteLine($"Snake JSON detected. Updating player {player.ID}, Name: {player.Name}, Position: {player.Body.FirstOrDefault()}");
+                            TheWorld.UpdatePlayer(player);  // Make sure UpdatePlayer does not reset existing players
+                            OnPlayerUpdate?.Invoke(player); // Notify view
+                        }
+                    }
+                    else if (data.Contains("\"power\""))
+                    {
+                        var powerup = JsonSerializer.Deserialize<Powerup>(data);
+                        if (powerup != null)
+                        {
+                            Console.WriteLine($"Powerup JSON detected. Updating powerup ID: {powerup.ID}, Location: {powerup.Position}");
+                            TheWorld.UpdatePowerup(powerup);  // Make sure UpdatePowerup adds without removing other powerups
+                            OnPowerupUpdate?.Invoke(powerup); // Notify view
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("Failed to deserialize player JSON.");
+                        // Log unrecognized data only once
+                        Console.WriteLine("Unrecognized data received: " + data);
                     }
                 }
-                else if (data.Contains("\"power\""))
+                catch (JsonException ex)
                 {
-                    Console.WriteLine("Powerup JSON detected.");
-                    var powerup = JsonSerializer.Deserialize<Powerup>(data);
-                    if (powerup != null)
-                    {
-                        Console.WriteLine($"Updating powerup ID: {powerup.ID}, Location: {powerup.Position}");
-                        TheWorld.UpdatePowerup(powerup);
-                        OnPowerupUpdate?.Invoke(powerup); // Notify view
-                    }
-                    else
-                    {
-                        Console.WriteLine("Failed to deserialize powerup JSON.");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Unrecognized data received: " + data);
+                    Console.WriteLine($"JSON parsing error: {ex.Message} - Data: {data}");
                 }
             }
         }

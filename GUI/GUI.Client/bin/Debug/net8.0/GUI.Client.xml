@@ -164,14 +164,14 @@
             This powerup's position
             </summary>
         </member>
-        <member name="F:CS3500.Models.Powerup.rand">
-            <summary>
-            RNG used to decide when a powerup goes away
-            </summary>
-        </member>
         <member name="P:CS3500.Models.Powerup.Died">
             <summary>
             Whether or not this powerup is active and part of the live game
+            </summary>
+        </member>
+        <member name="F:CS3500.Models.Powerup.rand">
+            <summary>
+            RNG used to decide when a powerup goes away
             </summary>
         </member>
         <member name="M:CS3500.Models.Powerup.#ctor(System.Int32,System.Int32,System.Int32)">
@@ -338,6 +338,11 @@
             Shallow copy constructor
             </summary>
             <param name="world"></param>
+        </member>
+        <member name="F:GUI.Client.Pages.SnakeGUI.backgroundImage">
+            <summary>
+            C# reference to the html element for the background image
+            </summary>
         </member>
     </members>
 </doc>
