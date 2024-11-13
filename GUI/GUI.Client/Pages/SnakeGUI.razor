@@ -150,7 +150,7 @@
             await context.TranslateAsync(-headX, -headY);
 
             // Set the scale and calculate the center offset for background centering
-            double largeBackgroundSize = networkController.TheWorld.Size * 1.2; // Example: 1.2x world size for a buffer
+            double largeBackgroundSize = networkController.TheWorld.Size * 1.5; // Example: 1.5x world size for a buffer
 
             // Draw a larger solid background to avoid empty edges
             await context.SetFillStyleAsync("lightblue"); // Or any background color you prefer
