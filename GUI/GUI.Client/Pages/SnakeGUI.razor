@@ -12,6 +12,7 @@
 
 <PageTitle> Snake </PageTitle>
 <img @ref="backgroundImage" id="bgImage" src="images/Background.png" alt="image" style="display:none;" />
+<img @ref="wallImage" id="wallImage" src="images/Wall.png" alt="wall" style="display:none;" />
 <!-- Snake Game Connection -->
 <div style="padding: 10px; background-color: #f3f3f3;">
     <label>Server Address:</label>
@@ -53,6 +54,7 @@
     /// C# reference to the html element for the background image
     /// </summary>
     private ElementReference backgroundImage;
+    private ElementReference wallImage;
     private const int ViewWidth = 1000;
     private const int ViewHeight = 1000;
 
@@ -170,6 +172,12 @@
             await DrawPowerup(powerup);
         }
 
+        // Draw each wall segment
+        foreach (var wall in networkController.TheWorld.Walls.Values)
+        {
+            await DrawWall(wall);
+        }
+
         // Restore the transformation matrix to the original state after drawing
         await context.RestoreAsync();
 
@@ -209,6 +217,30 @@
         await context.FillRectAsync(powerupX, powerupY, 16, 16);
     }
 
+    private async Task DrawWall(Wall wall)
+    {
+        // Calculate the distance between Point1 and Point2
+        double deltaX = wall.Point2.X - wall.Point1.X;
+        double deltaY = wall.Point2.Y - wall.Point1.Y;
+        double distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        // Calculate the number of 50x50 segments needed along the line
+        int segmentCount = (int)(distance / 50);
+
+        // Calculate the direction vector for each segment
+        double stepX = deltaX / distance * 50;
+        double stepY = deltaY / distance * 50;
+
+        // Draw each 50x50 image segment along the line
+        for (int i = 0; i < segmentCount; i++)
+        {
+            double posX = wall.Point1.X + i * stepX - distance / 80;
+            double posY = wall.Point1.Y + i * stepY - distance / 80;
+
+            // Draw the wall image at each segment position
+            await context.DrawImageAsync(wallImage, posX, posY, 50, 50);
+        }
+    }
 
 
     [JSInvokable]
@@ -235,7 +267,7 @@
             networkController.SendMoveCommand(direction);
         }
 
-        Debug.WriteLine("key pressed: " + key);
+        Console.WriteLine("key pressed: " + key);
     }
 
 }

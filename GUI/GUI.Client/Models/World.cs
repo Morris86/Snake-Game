@@ -22,6 +22,11 @@ namespace CS3500.Models
         public Dictionary<int, Powerup> Powerups { get; private set; }
 
         /// <summary>
+        /// The walls in the game
+        /// </summary>
+        public Dictionary<int, Wall> Walls { get; private set; } = new Dictionary<int, Wall>();
+
+        /// <summary>
         /// The size of a single side of the square world
         /// </summary>
         public int Size { get; private set; }
@@ -86,5 +91,12 @@ namespace CS3500.Models
             }
         }
 
+        public void AddWall(Wall wall)
+        {
+            if (!Walls.ContainsKey(wall.ID))
+            {
+                Walls[wall.ID] = wall;
+            }
+        }
     }
 }

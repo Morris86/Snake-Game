@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "TRAQ8UVC4zOd9pkpGhyHsZ3WOvAWv1oXo3+L2g1n2Z8=",
+  "Hash": "myzcr42Y96UmWk9uiCjHc6Bes+3iyToWdzDppWjke4s=",
   "Source": "GUI.Client",
   "BasePath": "/",
   "Mode": "Default",
@@ -7959,12 +7959,12 @@
       "OriginalItemSpec": "wwwroot\\images\\grass.jpg"
     },
     {
-      "Identity": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\images\\WallSprite.png",
+      "Identity": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\images\\Wall.png",
       "SourceId": "GUI.Client",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\",
       "BasePath": "/",
-      "RelativePath": "images/WallSprite.png",
+      "RelativePath": "images/Wall.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -7975,7 +7975,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\WallSprite.png"
+      "OriginalItemSpec": "wwwroot\\images\\Wall.png"
     }
   ]
 }

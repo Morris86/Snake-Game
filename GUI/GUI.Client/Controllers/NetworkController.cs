@@ -13,6 +13,7 @@ namespace CS3500.NetworkController
         public Action<string> OnError { get; set; }
         public Action<Player> OnPlayerUpdate { get; set; }
         public Action<Powerup> OnPowerupUpdate { get; set; }
+        public Action<Wall> OnWallUpdate { get; set; }
         public World TheWorld { get; private set; }
         public int playerID { get; private set; }
         private int worldSize;
@@ -124,6 +125,15 @@ namespace CS3500.NetworkController
                                 TheWorld.UpdatePowerup(powerup); // Otherwise, just update its position
                                 OnPowerupUpdate?.Invoke(powerup);    // Notify the view, if necessary
                             }
+                        }
+                    }
+                    else if (data.Contains("\"wall\""))
+                    {
+                        var wall = JsonSerializer.Deserialize<Wall>(data);
+                        if (wall != null)
+                        {
+                            TheWorld.AddWall(wall);
+                            OnWallUpdate?.Invoke(wall); // Trigger an update for the UI to redraw with the new wall data.
                         }
                     }
                     else

@@ -322,6 +322,11 @@
             The powerups in the game
             </summary>
         </member>
+        <member name="P:CS3500.Models.World.Walls">
+            <summary>
+            The walls in the game
+            </summary>
+        </member>
         <member name="P:CS3500.Models.World.Size">
             <summary>
             The size of a single side of the square world
