@@ -232,10 +232,10 @@
         double stepY = deltaY / distance * 50;
 
         // Draw each 50x50 image segment along the line
-        for (int i = 0; i < segmentCount; i++)
+        for (int i = 0; i < segmentCount + 1; i++)
         {
-            double posX = wall.Point1.X + i * stepX - distance / 80;
-            double posY = wall.Point1.Y + i * stepY - distance / 80;
+            double posX = wall.Point1.X + i * stepX - 25;
+            double posY = wall.Point1.Y + i * stepY - 25;
 
             // Draw the wall image at each segment position
             await context.DrawImageAsync(wallImage, posX, posY, 50, 50);

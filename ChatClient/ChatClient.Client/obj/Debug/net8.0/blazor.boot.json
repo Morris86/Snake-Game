@@ -1,15 +1,15 @@
 {
   "mainAssemblyName": "ChatClient.Client",
   "resources": {
-    "hash": "sha256-nmZW/thTBT5v1Ao/KPNN2enhmyxyOYudg721KxnumvM=",
+    "hash": "sha256-36/ZiUuAGdGTeZM7+nV/fW2H11dPB8iukYNDUss25FQ=",
     "jsModuleNative": {
-      "dotnet.native.8.0.10.bi4ad9c4xp.js": "sha256-QVxMlY7ohmjgde/bZMA0dlWDAeuUP+tEfkiSdg4DFcE="
+      "dotnet.native.8.0.8.5blmwodr0e.js": "sha256-juC5sA7gHTLXFEhAKgdM2/RavswpwCtDfjYGsAz2FXg="
     },
     "jsModuleRuntime": {
-      "dotnet.runtime.8.0.10.g49e23booh.js": "sha256-FjrgL9dY6dc2yUoXDWowSfachSgM8O29qUMWDQOJKRI="
+      "dotnet.runtime.8.0.8.n8fzr0m9lk.js": "sha256-0Dpj/NkVD5WqSC16ZvJLmlc38iv9+Je+umYBVOycPVU="
     },
     "wasmNative": {
-      "dotnet.native.wasm": "sha256-4ymhDbG5daKbi9yL1L574jRRiFFQhiOrDJU5YAYALU4="
+      "dotnet.native.wasm": "sha256-OcUTcd7qQceenWEF93409WZcaXp2qQbEyhdchog4RUE="
     },
     "icu": {
       "icudt_CJK.dat": "sha256-SZLtQnRc0JkwqHab0VUVP7T3uBPSeYzxzDnpxPpUnHk=",
@@ -208,12 +208,12 @@
       "mscorlib.wasm": "sha256-KvqZaNpjwhrOuzE4b4aMFsI+VUTyiWfoDI4zn4l9BM8=",
       "netstandard.wasm": "sha256-v+s7sWxtOM6bnOvC0jFrtnm6uMfbDymwl2nHNgbS2LM=",
       "System.Private.CoreLib.wasm": "sha256-pklll63uFQoY6vaD3vbluS9osYiJWLLLmob1yHFgepI=",
-      "Networking.wasm": "sha256-z+Jy8Ok9NlNKt/aei4D6RL6Q5e52V/dx2S59iVQLpt4=",
-      "ChatClient.Client.wasm": "sha256-4IFmYBlRDmHyvJKUs1GTaBeSB17T154m3VyyH6vXS14="
+      "Networking.wasm": "sha256-7dzKFV4HuWzIaOWUCQaTAeEuFAL8PeYyvL4vc0hs/+I=",
+      "ChatClient.Client.wasm": "sha256-vUmGcDmkzsJUX/GZme6CqVz+Tm9C0Ge+ZcX74U2a7cQ="
     },
     "pdb": {
-      "Networking.pdb": "sha256-VEIlC8y43FTZJuk0cBxMzNAgq/nzKkg05R7ITTCYTv0=",
-      "ChatClient.Client.pdb": "sha256-ueMp9D2ZNPsoY2XGYw2mgXDIZlIH+oXF8i2YiMZ8MeM="
+      "Networking.pdb": "sha256-nIOsWVU278sgILyuNxXYzT3lgNG2Eb4C9BGzG8jSBTQ=",
+      "ChatClient.Client.pdb": "sha256-cTlbxyPBSTphqFMOURmqKvRi3fSQ7ZJ1VmPYRAUAnZw="
     }
   },
   "cacheBootResources": true,

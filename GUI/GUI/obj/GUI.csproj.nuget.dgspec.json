@@ -105,7 +105,7 @@
         "projectName": "GUI",
         "projectPath": "C:\\Users\\Morris\\source\\repos\\Snake-Game\\GUI\\GUI\\GUI.csproj",
         "packagesPath": "C:\\Users\\Morris\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Morris\\Source\\Repos\\Snake-Game\\GUI\\GUI\\obj\\",
+        "outputPath": "C:\\Users\\Morris\\source\\repos\\Snake-Game\\GUI\\GUI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Morris\\AppData\\Roaming\\NuGet\\NuGet.Config",

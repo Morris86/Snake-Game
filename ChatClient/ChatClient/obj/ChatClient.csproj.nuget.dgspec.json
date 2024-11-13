@@ -11,7 +11,7 @@
         "projectName": "ChatClient.Client",
         "projectPath": "C:\\Users\\Morris\\source\\repos\\Snake-Game\\ChatClient\\ChatClient.Client\\ChatClient.Client.csproj",
         "packagesPath": "C:\\Users\\Morris\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Morris\\Source\\Repos\\Snake-Game\\ChatClient\\ChatClient.Client\\obj\\",
+        "outputPath": "C:\\Users\\Morris\\source\\repos\\Snake-Game\\ChatClient\\ChatClient.Client\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Morris\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -105,7 +105,7 @@
         "projectName": "ChatClient",
         "projectPath": "C:\\Users\\Morris\\source\\repos\\Snake-Game\\ChatClient\\ChatClient\\ChatClient.csproj",
         "packagesPath": "C:\\Users\\Morris\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Morris\\Source\\Repos\\Snake-Game\\ChatClient\\ChatClient\\obj\\",
+        "outputPath": "C:\\Users\\Morris\\source\\repos\\Snake-Game\\ChatClient\\ChatClient\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Morris\\AppData\\Roaming\\NuGet\\NuGet.Config",
