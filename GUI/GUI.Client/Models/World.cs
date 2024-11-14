@@ -82,6 +82,14 @@ namespace CS3500.Models
             }
         }
 
+        public void RemovePlayer(int playerID)
+        {
+            if (Players.ContainsKey(playerID))
+            {
+                Players.Remove(playerID);
+            }
+        }
+
         public void RemovePowerup(int powerupID)
         {
             if (Powerups.ContainsKey(powerupID))

@@ -99,9 +99,17 @@ namespace CS3500.NetworkController
                         var player = JsonSerializer.Deserialize<Player>(data);
                         if (player != null)
                         {
-                            //Console.WriteLine($"Snake JSON detected. Updating player {player.ID}, Name: {player.Name}, Position: {player.Body.FirstOrDefault()}");
-                            TheWorld.UpdatePlayer(player);  // Make sure UpdatePlayer does not reset existing players
-                            OnPlayerUpdate?.Invoke(player); // Notify view
+                            if (player.Disconnected)
+                            {
+                                // Remove the player from the world if they disconnected
+                                TheWorld.RemovePlayer(player.ID);
+                            }
+                            else
+                            {
+                                // Otherwise, update or add the player normally
+                                TheWorld.UpdatePlayer(player);
+                                OnPlayerUpdate?.Invoke(player); // Notify view
+                            }
                         }
                     }
                     else if (data.Contains("\"power\""))
