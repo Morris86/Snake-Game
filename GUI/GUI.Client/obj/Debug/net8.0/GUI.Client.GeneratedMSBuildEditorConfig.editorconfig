@@ -13,19 +13,19 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = browser
 build_property.RootNamespace = GUI.Client
 build_property.RootNamespace = GUI.Client
-build_property.ProjectDir = C:\Users\Morris\source\repos\Snake-Game\GUI\GUI.Client\
+build_property.ProjectDir = C:\Users\morri\source\repos\Snake-Game\GUI\GUI.Client\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = false
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\Morris\source\repos\Snake-Game\GUI\GUI.Client
+build_property.MSBuildProjectDirectory = C:\Users\morri\source\repos\Snake-Game\GUI\GUI.Client
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/Morris/source/repos/Snake-Game/GUI/GUI.Client/Pages/SnakeGUI.razor]
+[C:/Users/morri/source/repos/Snake-Game/GUI/GUI.Client/Pages/SnakeGUI.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU25ha2VHVUkucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Morris/source/repos/Snake-Game/GUI/GUI.Client/_Imports.razor]
+[C:/Users/morri/source/repos/Snake-Game/GUI/GUI.Client/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 

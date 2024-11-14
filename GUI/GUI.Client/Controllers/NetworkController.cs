@@ -11,6 +11,7 @@ namespace CS3500.NetworkController
     {
         private readonly NetworkConnection networkConnection;
         public Action<string> OnError { get; set; }
+        public Action OnDisconnected { get; set; }
         public Action<Player> OnPlayerUpdate { get; set; }
         public Action<Powerup> OnPowerupUpdate { get; set; }
         public Action<Wall> OnWallUpdate { get; set; }
@@ -38,14 +39,7 @@ namespace CS3500.NetworkController
 
         public void SendPlayerName(string name)
         {
-            if (name.Length <= 16)
-            {
-                networkConnection.Send(name);
-            }
-            else
-            {
-                OnError?.Invoke("Player name must be 16 characters or less.");
-            }
+            networkConnection.Send(name);
         }
 
         private void StartReceivingData()
@@ -60,6 +54,7 @@ namespace CS3500.NetworkController
                 catch (Exception ex)
                 {
                     OnError?.Invoke($"Network error: {ex.Message}");
+                    OnDisconnected?.Invoke();
                     break;
                 }
             }

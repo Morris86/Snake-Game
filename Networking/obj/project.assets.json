@@ -152,19 +152,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Morris\\.nuget\\packages\\": {}
+    "C:\\Users\\morri\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Morris\\Source\\Repos\\Snake-Game\\Networking\\Networking.csproj",
+      "projectUniqueName": "C:\\Users\\morri\\Source\\Repos\\Snake-Game\\Networking\\Networking.csproj",
       "projectName": "Networking",
-      "projectPath": "C:\\Users\\Morris\\Source\\Repos\\Snake-Game\\Networking\\Networking.csproj",
-      "packagesPath": "C:\\Users\\Morris\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Morris\\Source\\Repos\\Snake-Game\\Networking\\obj\\",
+      "projectPath": "C:\\Users\\morri\\Source\\Repos\\Snake-Game\\Networking\\Networking.csproj",
+      "packagesPath": "C:\\Users\\morri\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\morri\\Source\\Repos\\Snake-Game\\Networking\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Morris\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\morri\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -218,7 +218,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

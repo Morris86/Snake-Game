@@ -35,8 +35,6 @@
     <BECanvas Width="1000" Height="1000" @ref="canvasReference"></BECanvas>
 </div>
 
-<p>@statusMessage</p>
-
 @code
 {
 
@@ -48,7 +46,7 @@
     private int portNumber = 11000; // Default Port
     private string playerName = "";
     private string statusMessage = "";
-    private NetworkController networkController;
+    private NetworkController? networkController;
 
     /// <summary>
     /// C# reference to the html element for the background image
@@ -67,11 +65,17 @@
             statusMessage = "Player name is required!";
             return;
         }
+        if (playerName.Length > 16)
+        {
+            statusMessage = "Player name must be 16 characters or less.";
+            return;
+        }
         try
         {
             // Initialize networkController only when connecting
             networkController = new NetworkController(serverAddress, portNumber);
             networkController.OnError = errorMessage => statusMessage = errorMessage;
+            networkController.OnDisconnected = DisconnectFromServer;
 
             networkController.SendPlayerName(playerName); // Send the player's name upon connecting
             statusMessage = $"Connected to {serverAddress}:{portNumber} as {playerName}.";
@@ -82,9 +86,21 @@
         }
     }
 
-    private void DisconnectFromServer()
+    private async void DisconnectFromServer()
     {
-        networkController.Close();
+        if (networkController != null)
+        {
+            networkController.Close();
+            statusMessage = "Disconnected from the server.";
+
+            networkController = null;
+        }
+        else
+        {
+            statusMessage = "Already disconnected.";
+        }
+
+        await InvokeAsync(StateHasChanged);
     }
 
 
@@ -246,10 +262,8 @@
     [JSInvokable]
     public void HandleKeyPress(string key)
     {
-        if (networkController == null)
+        if (networkController?.TheWorld == null)
         {
-            Debug.WriteLine("Error: networkController is not initialized.");
-            statusMessage = "Error: Not connected to server.";
             return;
         }
 

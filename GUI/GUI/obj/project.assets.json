@@ -1252,19 +1252,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Morris\\.nuget\\packages\\": {}
+    "C:\\Users\\morri\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Morris\\source\\repos\\Snake-Game\\GUI\\GUI\\GUI.csproj",
+      "projectUniqueName": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI\\GUI.csproj",
       "projectName": "GUI",
-      "projectPath": "C:\\Users\\Morris\\source\\repos\\Snake-Game\\GUI\\GUI\\GUI.csproj",
-      "packagesPath": "C:\\Users\\Morris\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Morris\\Source\\Repos\\Snake-Game\\GUI\\GUI\\obj\\",
+      "projectPath": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI\\GUI.csproj",
+      "packagesPath": "C:\\Users\\morri\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\morri\\Source\\Repos\\Snake-Game\\GUI\\GUI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Morris\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\morri\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1279,8 +1279,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Morris\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\GUI.Client.csproj": {
-              "projectPath": "C:\\Users\\Morris\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\GUI.Client.csproj"
+            "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\GUI.Client.csproj": {
+              "projectPath": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\GUI.Client.csproj"
             }
           }
         }
@@ -1330,7 +1330,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
