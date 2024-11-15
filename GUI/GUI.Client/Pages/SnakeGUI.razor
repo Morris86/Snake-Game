@@ -55,7 +55,7 @@
     private ElementReference wallImage;
     private const int ViewWidth = 1000;
     private const int ViewHeight = 1000;
-    private readonly string[] playerColors = { "blue", "orange", "purple", "yellow", "cyan", "pink", "lime", "brown" };
+    private readonly string[] playerColors = { "cyan", "yellow", "blue", "orange", "purple", "pink", "lime", "green" };
 
 
     private void ConnectToServer()
@@ -189,7 +189,7 @@
             double largeBackgroundSize = networkController.TheWorld.Size * 1.5; // Example: 1.5x world size for a buffer
 
             // Draw a larger solid background to avoid empty edges
-            await context.SetFillStyleAsync("lightblue"); // Or any background color you prefer
+            await context.SetFillStyleAsync("black"); // Or any background color you prefer
             await context.FillRectAsync( -largeBackgroundSize / 2, -largeBackgroundSize / 2, largeBackgroundSize, largeBackgroundSize);
 
             // Draw the image background:

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "myzcr42Y96UmWk9uiCjHc6Bes+3iyToWdzDppWjke4s=",
+  "Hash": "RDFrZubDAAXo7hwU1DOyeQLyvW/BRJnlvZw++M/9WIc=",
   "Source": "GUI.Client",
   "BasePath": "/",
   "Mode": "Default",
@@ -7938,25 +7938,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\Background.png"
-    },
-    {
-      "Identity": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\images\\grass.jpg",
-      "SourceId": "GUI.Client",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\",
-      "BasePath": "/",
-      "RelativePath": "images/grass.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\grass.jpg"
     },
     {
       "Identity": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\images\\Wall.png",
