@@ -13,6 +13,7 @@
 <PageTitle> Snake </PageTitle>
 <img @ref="backgroundImage" id="bgImage" src="images/Background.png" alt="image" style="display:none;" />
 <img @ref="wallImage" id="wallImage" src="images/Wall.png" alt="wall" style="display:none;" />
+<img @ref="powerupImage" id="powerupImage" src="images/Powerup.png" alt="powerup" style="display:none;" />
 <!-- Snake Game Connection -->
 <div style="padding: 10px; background-color: #f3f3f3;">
     <label>Server Address:</label>
@@ -53,6 +54,7 @@
     /// </summary>
     private ElementReference backgroundImage;
     private ElementReference wallImage;
+    private ElementReference powerupImage;
     private const int ViewWidth = 1000;
     private const int ViewHeight = 1000;
     private readonly string[] playerColors = { "cyan", "yellow", "blue", "orange", "purple", "pink", "lime", "green" };
@@ -227,12 +229,14 @@
         if (!player.Alive)
         {
             await context.SetStrokeStyleAsync("red"); // Use red for dead snakes
+            await context.SetFillStyleAsync("red");
         }
         else
         {
             // Use a unique color for the first 8 players; reuse colors for others
             string color = player.ID < 8 ? playerColors[player.ID] : playerColors[player.ID % 8];
             await context.SetStrokeStyleAsync(color);
+            await context.SetFillStyleAsync(color);
         }
 
         await context.SetLineWidthAsync(10); // Set line width for snake
@@ -248,20 +252,28 @@
             foreach (var segment in player.Body)
             {
                 await context.LineToAsync(segment.X, segment.Y);
-                //Console.WriteLine($"Drawing segment at ({segment.X}, {segment.Y})"); // Debugging
             }
         }
 
         await context.StrokeAsync();
+
+        // Draw each segment as a circle
+        foreach (var segment in player.Body)
+        {
+            await context.BeginPathAsync();
+            await context.ArcAsync(segment.X, segment.Y, 5, 0, 2 * Math.PI); // Draw a circle with radius 5
+            await context.FillAsync();
+        }
     }
 
     private async Task DrawPowerup(Powerup powerup)
     {
-        await context.SetFillStyleAsync("red");
-        // Draw a 16x16 pixel powerup
-        double powerupX = powerup.Position.X - 8; // Center 16x16 powerup on position
+        // Calculate the position to center the image
+        double powerupX = powerup.Position.X - 8; // Center 16x16 image on position
         double powerupY = powerup.Position.Y - 8;
-        await context.FillRectAsync(powerupX, powerupY, 16, 16);
+
+        // Draw the powerup image
+        await context.DrawImageAsync(powerupImage, powerupX, powerupY, 16, 16);
     }
 
     private async Task DrawWall(Wall wall)
@@ -311,8 +323,6 @@
         {
             networkController.SendMoveCommand(direction);
         }
-
-        Console.WriteLine("key pressed: " + key);
     }
 
 }

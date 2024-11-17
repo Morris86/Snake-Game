@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Vw26KfMlQZ3mj4GCF4lKcfJVp8h0eWiTxza1EN0pjCs=",
+  "Hash": "jfUwnDv94XjhfacoG9zHfyCzlyGtR4l8mDbj3vPoeK8=",
   "Source": "GUI",
   "BasePath": "_content/GUI",
   "Mode": "Default",
@@ -7957,6 +7957,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\Background.png"
+    },
+    {
+      "Identity": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\images\\Powerup.png",
+      "SourceId": "GUI.Client",
+      "SourceType": "Project",
+      "ContentRoot": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "images/Powerup.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Powerup.png"
     },
     {
       "Identity": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\images\\Wall.png",

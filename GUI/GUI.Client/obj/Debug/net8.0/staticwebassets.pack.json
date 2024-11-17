@@ -25,6 +25,10 @@
       "PackagePath": "staticwebassets\\images\\Background.png"
     },
     {
+      "Id": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\images\\Powerup.png",
+      "PackagePath": "staticwebassets\\images\\Powerup.png"
+    },
+    {
       "Id": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\images\\Wall.png",
       "PackagePath": "staticwebassets\\images\\Wall.png"
     },
