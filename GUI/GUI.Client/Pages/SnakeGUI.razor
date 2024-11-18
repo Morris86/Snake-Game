@@ -223,18 +223,22 @@
     private async Task DrawSnake(Player player)
     {
 
-        if (!player.Alive)
-        {
-            await context.SetStrokeStyleAsync("red"); // Use red for dead snakes
-            await context.SetFillStyleAsync("red");
-        }
-        else
-        {
-            // Use a unique color for the first 8 players; reuse colors for others
-            string color = player.ID < 8 ? playerColors[player.ID] : playerColors[player.ID % 8];
-            await context.SetStrokeStyleAsync(color);
-            await context.SetFillStyleAsync(color);
-        }
+        // if (!player.Alive)
+        // {
+        //     await context.SetStrokeStyleAsync("red"); // Use red for dead snakes
+        //     await context.SetFillStyleAsync("red");
+        // }
+        // else
+        // {
+        //     // Use a unique color for the first 8 players; reuse colors for others
+        //     string color = player.ID < 8 ? playerColors[player.ID] : playerColors[player.ID % 8];
+        // }
+
+        // Determine the snake color based on player ID or use red for dead snakes
+        string color = player.Alive ? (player.ID < 8 ? playerColors[player.ID] : playerColors[player.ID % 8]) : "red";
+
+        await context.SetStrokeStyleAsync(color);
+        await context.SetFillStyleAsync(color);
 
         await context.SetLineWidthAsync(10); // Set line width for snake
 
@@ -260,6 +264,17 @@
             await context.BeginPathAsync();
             await context.ArcAsync(segment.X, segment.Y, 5, 0, 2 * Math.PI); // Draw a circle with radius 5
             await context.FillAsync();
+        }
+
+        // Draw the player's name near the snake's head
+        if (player.Body.Count > 0)
+        {
+            double headX = player.Body[^1].X; // Last point is the head
+            double headY = player.Body[^1].Y;
+
+            // Set font and draw the player name
+            await context.SetFontAsync("12px Arial");
+            await context.FillTextAsync(player.Name, headX + 10, headY - 10); // Offset the name slightly from the head
         }
     }
 
