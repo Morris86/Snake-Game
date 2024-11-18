@@ -133,22 +133,6 @@
             Default constructor required for JSON deserialization.
             </summary>
         </member>
-        <member name="M:CS3500.Models.Player.Move">
-            <summary>
-            Moves the snake in the current direction, updating its body segments.
-            </summary>
-        </member>
-        <member name="M:CS3500.Models.Player.Grow">
-            <summary>
-            Grows the snake by adding a new segment at the end of the body.
-            </summary>
-        </member>
-        <member name="M:CS3500.Models.Player.Rotate(System.Double)">
-            <summary>
-            Rotates the snake's direction by a specified number of degrees.
-            </summary>
-            <param name="degrees">The degrees to rotate the direction vector.</param>
-        </member>
         <member name="T:CS3500.Models.Powerup">
             <summary>
             One of the types of objects in the game (part of the Model of MVC)
@@ -169,11 +153,6 @@
             Whether or not this powerup is active and part of the live game
             </summary>
         </member>
-        <member name="F:CS3500.Models.Powerup.rand">
-            <summary>
-            RNG used to decide when a powerup goes away
-            </summary>
-        </member>
         <member name="M:CS3500.Models.Powerup.#ctor(System.Int32,System.Int32,System.Int32)">
             <summary>
             Creates a new powerup with the given ID and x,y location
@@ -181,11 +160,6 @@
             <param name="id"></param>
             <param name="x"></param>
             <param name="y"></param>
-        </member>
-        <member name="M:CS3500.Models.Powerup.Step">
-            <summary>
-            Updates this powerup for one frame of the game.
-            </summary>
         </member>
         <member name="T:CS3500.Models.Vector2D">
             <summary>
@@ -203,65 +177,6 @@
             </summary>
             <param name="_x"></param>
             <param name="_y"></param>
-        </member>
-        <member name="M:CS3500.Models.Vector2D.#ctor(CS3500.Models.Vector2D)">
-            <summary>
-            Copy constructor
-            </summary>
-            <param name="other"></param>
-        </member>
-        <member name="M:CS3500.Models.Vector2D.Equals(System.Object)">
-            <summary>
-            Determine if this vector is equal to another
-            </summary>
-            <param name="obj">The other vector</param>
-            <returns></returns>
-        </member>
-        <member name="M:CS3500.Models.Vector2D.GetHashCode">
-            <summary>
-            Determine the hashcode for this vector
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CS3500.Models.Vector2D.ToString">
-            <summary>
-            Return a string representation of this vector for debug printing
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CS3500.Models.Vector2D.Clamp">
-            <summary>
-            Clamp x and y to be within the range -1 .. 1
-            </summary>
-        </member>
-        <member name="M:CS3500.Models.Vector2D.Rotate(System.Double)">
-            <summary>
-            Rotate this vector clockwise by degrees
-            Requires that this vector be normalized
-            </summary>
-            <param name="degrees"></param>
-        </member>
-        <member name="M:CS3500.Models.Vector2D.ToAngleDegrees">
-            <summary>
-            Return the angle as measured in degrees clockwise from up
-            Requires that this vector be normalized
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CS3500.Models.Vector2D.ToAngleRadians">
-            <summary>
-            Return the angle as measured in degrees clockwise from up
-            Requires that this vector be normalized
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CS3500.Models.Vector2D.AngleBetweenPoints(CS3500.Models.Vector2D,CS3500.Models.Vector2D)">
-            <summary>
-            Compute the clockwise angle of the vector pointing from b to a
-            </summary>
-            <param name="a"></param>
-            <param name="b"></param>
-            <returns></returns>
         </member>
         <member name="M:CS3500.Models.Vector2D.op_Addition(CS3500.Models.Vector2D,CS3500.Models.Vector2D)">
             <summary>
@@ -287,24 +202,6 @@
             </summary>
             <param name="v">The vector (left-hand side of the operator)</param>
             <param name="s">The scalar (right-hand side of the operator)</param>
-            <returns></returns>
-        </member>
-        <member name="M:CS3500.Models.Vector2D.Length">
-            <summary>
-            Compute the length of this vector
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CS3500.Models.Vector2D.Normalize">
-            <summary>
-            Set this vector's length to 1 without changing its direction
-            </summary>
-        </member>
-        <member name="M:CS3500.Models.Vector2D.Dot(CS3500.Models.Vector2D)">
-            <summary>
-            Compute the dot product of this vector with another vector
-            </summary>
-            <param name="v">The other vector</param>
             <returns></returns>
         </member>
         <member name="T:CS3500.Models.World">
@@ -337,12 +234,6 @@
             Creates a new world with the given size
             </summary>
             <param name="_size"></param>
-        </member>
-        <member name="M:CS3500.Models.World.#ctor(CS3500.Models.World)">
-            <summary>
-            Shallow copy constructor
-            </summary>
-            <param name="world"></param>
         </member>
         <member name="F:GUI.Client.Pages.SnakeGUI.backgroundImage">
             <summary>

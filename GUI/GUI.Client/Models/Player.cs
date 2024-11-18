@@ -73,38 +73,5 @@ namespace CS3500.Models
         {
             Body = new List<Vector2D>();
         }
-
-        /// <summary>
-        /// Moves the snake in the current direction, updating its body segments.
-        /// </summary>
-        public void Move()
-        {
-            // Calculate new head position based on direction
-            Vector2D newHead = Body[0] + Direction;
-
-            // Insert new head position at the beginning of the body
-            Body.Insert(0, newHead);
-
-            // Remove the last segment to simulate forward movement
-            Body.RemoveAt(Body.Count - 1);
-        }
-
-        /// <summary>
-        /// Grows the snake by adding a new segment at the end of the body.
-        /// </summary>
-        public void Grow()
-        {
-            // Duplicate the last segment to grow the body
-            Body.Add(new Vector2D(Body[^1]));
-        }
-
-        /// <summary>
-        /// Rotates the snake's direction by a specified number of degrees.
-        /// </summary>
-        /// <param name="degrees">The degrees to rotate the direction vector.</param>
-        public void Rotate(double degrees)
-        {
-            Direction.Rotate(degrees);
-        }
     }
 }

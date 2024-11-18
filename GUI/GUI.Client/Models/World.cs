@@ -42,17 +42,6 @@ namespace CS3500.Models
             Size = _size;
         }
 
-        /// <summary>
-        /// Shallow copy constructor
-        /// </summary>
-        /// <param name="world"></param>
-        public World( World world )
-        {
-            Players = new(world.Players);
-            Powerups = new(world.Powerups);
-            Size = world.Size;
-        }
-
         public void UpdatePlayer(Player player)
         {
             if (Players.ContainsKey(player.ID))

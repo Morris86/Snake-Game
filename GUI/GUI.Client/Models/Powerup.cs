@@ -28,11 +28,6 @@ namespace CS3500.Models
         [JsonPropertyName("died")]
         public bool Died { get; set; }
 
-        /// <summary>
-        /// RNG used to decide when a powerup goes away
-        /// </summary>
-        private Random rand = new();
-
         // Parameterless constructor for JSON deserialization
         public Powerup() { }
 
@@ -47,19 +42,5 @@ namespace CS3500.Models
             ID = id;
             Position = new Vector2D(x, y);
         }
-
-        /// <summary>
-        /// Updates this powerup for one frame of the game.
-        /// </summary>
-        public void Step()
-        {
-            // 0.1% chance to deactivate on each frame
-            if ( rand.Next( 1000 ) == 0 )
-            {
-                Died = false;
-                return;
-            }
-        }
-
     }
 }
