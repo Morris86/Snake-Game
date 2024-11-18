@@ -7,12 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GUI", "GUI\GUI\GUI.csproj",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GUI.Client", "GUI\GUI.Client\GUI.Client.csproj", "{95D8ED8F-7044-4803-8FEA-4D7E549FAB1E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatClient", "ChatClient\ChatClient\ChatClient.csproj", "{F5D6A92E-2D3B-48A9-A1B7-5C9438C999BF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatClient.Client", "ChatClient\ChatClient.Client\ChatClient.Client.csproj", "{E4B279A1-F4A9-4BB6-96AD-056F9B048237}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Networking", "Networking\Networking.csproj", "{71F05536-F6DC-4F72-B312-732CDC287560}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4E9B58B8-282B-4560-A748-1F17B709E511}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
