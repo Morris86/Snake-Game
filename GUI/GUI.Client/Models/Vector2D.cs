@@ -13,10 +13,10 @@ namespace CS3500.Models
     public class Vector2D
     {
         [JsonPropertyName("X")]
-        public double X { get; set; }
+        public int X { get; set; }
 
         [JsonPropertyName("Y")]
-        public double Y { get; set; }
+        public int Y { get; set; }
 
         /// <summary>
         /// Default constructor, needed for JSON serialize/deserialize
@@ -28,7 +28,7 @@ namespace CS3500.Models
         /// </summary>
         /// <param name="_x"></param>
         /// <param name="_y"></param>
-        public Vector2D(double x, double y)
+        public Vector2D(int x, int y)
         {
             X = x;
             Y = y;
@@ -64,7 +64,7 @@ namespace CS3500.Models
         /// <param name="v">The vector (left-hand side of the operator)</param>
         /// <param name="s">The scalar (right-hand side of the operator)</param>
         /// <returns></returns>
-        public static Vector2D operator *( Vector2D v, double s )
+        public static Vector2D operator *( Vector2D v, int s )
         {
             Vector2D retval = new Vector2D();
             retval.X = v.X * s;

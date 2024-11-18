@@ -171,7 +171,7 @@
             Default constructor, needed for JSON serialize/deserialize
             </summary>
         </member>
-        <member name="M:CS3500.Models.Vector2D.#ctor(System.Double,System.Double)">
+        <member name="M:CS3500.Models.Vector2D.#ctor(System.Int32,System.Int32)">
             <summary>
             Two param constructor for x and y.
             </summary>
@@ -194,7 +194,7 @@
             <param name="v2">The right hand side</param>
             <returns></returns>
         </member>
-        <member name="M:CS3500.Models.Vector2D.op_Multiply(CS3500.Models.Vector2D,System.Double)">
+        <member name="M:CS3500.Models.Vector2D.op_Multiply(CS3500.Models.Vector2D,System.Int32)">
             <summary>
             Multiply a vector by a scalar
             This has the effect of growing (if s greater than 1) or shrinking (if s less than 1),
