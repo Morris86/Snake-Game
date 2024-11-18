@@ -25,8 +25,8 @@
     <label>Player Name:</label>
     <input @bind="playerName" placeholder="Enter Player Name" style="margin-right: 5px;" />
 
-    <button @onclick="ConnectToServer">Connect</button>
-    <button @onclick="DisconnectFromServer" style="margin-left: 5px;">Disconnect</button>
+    <button @onclick="ConnectButton">Connect</button>
+    <button @onclick="DisconnectButton" style="margin-left: 5px;">Disconnect</button>
 
     <p>@statusMessage</p>
 </div>
@@ -60,50 +60,47 @@
     private readonly string[] playerColors = { "cyan", "yellow", "blue", "orange", "purple", "pink", "lime", "green" };
 
 
-    private void ConnectToServer()
+    private void ConnectButton()
     {
-        if (string.IsNullOrWhiteSpace(playerName))
+        if (networkController != null && networkController.IsConnected)
         {
-            statusMessage = "Player name is required!";
+            statusMessage = "Already connected to the server.";
+            InvokeAsync(StateHasChanged); // Update UI
             return;
         }
-        if (playerName.Length > 16)
-        {
-            statusMessage = "Player name must be 16 characters or less.";
-            return;
-        }
-        try
-        {
-            // Initialize networkController only when connecting
-            networkController = new NetworkController(serverAddress, portNumber);
-            networkController.OnError = errorMessage => statusMessage = errorMessage;
-            networkController.OnDisconnected = DisconnectFromServer;
 
-            networkController.SendPlayerName(playerName); // Send the player's name upon connecting
-            statusMessage = $"Connected to {serverAddress}:{portNumber} as {playerName}.";
-        }
-        catch (Exception ex)
+        if (networkController == null)
         {
-            statusMessage = $"Failed to connect: {ex.Message}";
+            networkController = new NetworkController(serverAddress, portNumber)
+                {
+                    OnError = async message =>
+                    {
+                        statusMessage = message;
+                        await InvokeAsync(StateHasChanged); // Update the UI
+                    },
+                    OnDisconnected = async () =>
+                    {
+                        await ClearCanvasLoop();
+                        await InvokeAsync(StateHasChanged); // Update the UI
+                    },
+                    OnStatusUpdate = async message =>
+                    {
+                        statusMessage = message;
+                        await InvokeAsync(StateHasChanged); // Update the UI
+                    }
+                };
         }
+
+        networkController.ConnectToServer(playerName);
     }
 
-    private async void DisconnectFromServer()
+    private async void DisconnectButton()
     {
-        if (networkController != null)
-        {
-            networkController.Close();
-            statusMessage = "Disconnected from the server.";
-            networkController = null;
-        }
-        else
-        {
-            statusMessage = "Disconnected from the server.";
-        }
+        networkController?.DisconnectFromServer();
+        networkController = null;
         await ClearCanvasLoop();
         await InvokeAsync(StateHasChanged);
     }
-
 
 
     protected override async Task OnAfterRenderAsync( bool firstRender )
@@ -133,7 +130,7 @@
 
     private async Task ClearCanvasLoop()
     {
-        int clearDuration = 1000; // Duration in milliseconds
+        int clearDuration = 300; // Duration in milliseconds
         int clearInterval = 100;  // Interval between clears in milliseconds
         int elapsed = 0;
 

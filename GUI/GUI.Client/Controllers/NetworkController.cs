@@ -9,8 +9,12 @@ namespace CS3500.NetworkController
 {
     public class NetworkController
     {
-        private readonly NetworkConnection networkConnection;
+        private string serverAddress;
+        private int port;
+        private NetworkConnection? networkConnection;
+        public bool IsConnected => networkConnection != null && networkConnection.IsConnected;
         public Action<string> OnError { get; set; }
+        public Action<string> OnStatusUpdate { get; set; } // Notify view of status changes
         public Action OnDisconnected { get; set; }
         public Action<Player> OnPlayerUpdate { get; set; }
         public Action<Powerup> OnPowerupUpdate { get; set; }
@@ -23,13 +27,37 @@ namespace CS3500.NetworkController
 
         public NetworkController(string serverAddress, int port)
         {
+            this.serverAddress = serverAddress;
+            this.port = port;
+            networkConnection = new NetworkConnection(); // Only initialize the connection
+        }
+
+
+        public void ConnectToServer(string playerName)
+        {
+            if (string.IsNullOrWhiteSpace(playerName))
+            {
+                OnError?.Invoke("Player name is required!");
+                return;
+            }
+
+            if (playerName.Length > 16)
+            {
+                OnError?.Invoke("Player name must be 16 characters or less.");
+                return;
+            }
+
             try
             {
-                networkConnection = new NetworkConnection();
-                networkConnection.Connect(serverAddress, port);
+                if (!networkConnection.IsConnected)
+                {
+                    networkConnection.Connect(serverAddress, port);
+                }
 
-                // Start receiving data asynchronously
-                new Thread(StartReceivingData).Start();
+                networkConnection.Send(playerName);
+                OnStatusUpdate?.Invoke($"Connected to server as {playerName}.");
+
+                new Thread(StartReceivingData).Start(); // Start receiving data asynchronously
             }
             catch (Exception ex)
             {
@@ -37,25 +65,47 @@ namespace CS3500.NetworkController
             }
         }
 
-        public void SendPlayerName(string name)
+        public void DisconnectFromServer()
         {
-            networkConnection.Send(name);
+            try
+            {
+                if (networkConnection != null && networkConnection.IsConnected)
+                {
+                    networkConnection.Disconnect();
+                }
+
+                // Cleanup resources
+                networkConnection = null;
+                TheWorld = null;
+
+                // Notify the status update
+                OnStatusUpdate?.Invoke("Disconnected from the server.");
+                OnDisconnected?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                OnStatusUpdate?.Invoke("Disconnected from the server.");
+            }
         }
 
         private void StartReceivingData()
         {
-            while (networkConnection.IsConnected)
+            try
             {
-                try
+                while (networkConnection != null && networkConnection.IsConnected)
                 {
                     string data = networkConnection.ReadLine();
-                    ProcessServerData(data);
+                    if (data != null)
+                    {
+                        ProcessServerData(data);
+                    }
                 }
-                catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                if (networkConnection != null && networkConnection.IsConnected)
                 {
                     OnError?.Invoke($"Network error: {ex.Message}");
-                    OnDisconnected?.Invoke();
-                    break;
                 }
             }
         }
@@ -158,9 +208,9 @@ namespace CS3500.NetworkController
             networkConnection.Send(command);
         }
 
-        public void Close()
-        {
-            networkConnection?.Disconnect();
-        }
+        //public void Close()
+        //{
+        //    networkConnection?.Disconnect();
+        //}
     }
 }
