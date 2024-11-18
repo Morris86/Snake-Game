@@ -28,13 +28,13 @@ namespace CS3500.Models
         /// The first element represents the head of the snake.
         /// </summary>
         [JsonPropertyName("body")]
-        public List<Vector2D> Body { get; set; }
+        public List<Point2D> Body { get; set; }
 
         /// <summary>
         /// The direction of the snake's movement.
         /// </summary>
         [JsonPropertyName("dir")]
-        public Vector2D Direction { get; set; }
+        public Point2D Direction { get; set; }
 
         /// <summary>
         /// The player's score.
@@ -71,7 +71,7 @@ namespace CS3500.Models
         /// </summary>
         public Player()
         {
-            Body = new List<Vector2D>();
+            Body = new List<Point2D>();
         }
     }
 }

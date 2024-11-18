@@ -20,7 +20,7 @@ namespace CS3500.Models
         /// This powerup's position
         /// </summary>
         [JsonPropertyName("loc")]
-        public Vector2D Position { get; set; }
+        public Point2D Position { get; set; }
 
         /// <summary>
         /// Whether or not this powerup is active and part of the live game
@@ -40,7 +40,7 @@ namespace CS3500.Models
         public Powerup(int id, int x, int y)
         {
             ID = id;
-            Position = new Vector2D(x, y);
+            Position = new Point2D(x, y);
         }
     }
 }

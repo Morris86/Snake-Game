@@ -10,7 +10,7 @@ namespace CS3500.Models
     /// <summary>
     /// A class to represent a Vector in 2D space
     /// </summary>
-    public class Vector2D
+    public class Point2D
     {
         [JsonPropertyName("X")]
         public int X { get; set; }
@@ -21,14 +21,14 @@ namespace CS3500.Models
         /// <summary>
         /// Default constructor, needed for JSON serialize/deserialize
         /// </summary>
-        public Vector2D() { }
+        public Point2D() { }
 
         /// <summary>
         /// Two param constructor for x and y.
         /// </summary>
         /// <param name="_x"></param>
         /// <param name="_y"></param>
-        public Vector2D(int x, int y)
+        public Point2D(int x, int y)
         {
             X = x;
             Y = y;
@@ -40,9 +40,9 @@ namespace CS3500.Models
         /// <param name="v1">The left hand side</param>
         /// <param name="v2">The right hand side</param>
         /// <returns></returns>
-        public static Vector2D operator +( Vector2D v1, Vector2D v2 )
+        public static Point2D operator +( Point2D v1, Point2D v2 )
         {
-            return new Vector2D( v1.X + v2.X, v1.Y + v2.Y );
+            return new Point2D( v1.X + v2.X, v1.Y + v2.Y );
         }
 
         /// <summary>
@@ -51,9 +51,9 @@ namespace CS3500.Models
         /// <param name="v1">The left hand side</param>
         /// <param name="v2">The right hand side</param>
         /// <returns></returns>
-        public static Vector2D operator -( Vector2D v1, Vector2D v2 )
+        public static Point2D operator -( Point2D v1, Point2D v2 )
         {
-            return new Vector2D( v1.X - v2.X, v1.Y - v2.Y );
+            return new Point2D( v1.X - v2.X, v1.Y - v2.Y );
         }
 
         /// <summary>
@@ -64,9 +64,9 @@ namespace CS3500.Models
         /// <param name="v">The vector (left-hand side of the operator)</param>
         /// <param name="s">The scalar (right-hand side of the operator)</param>
         /// <returns></returns>
-        public static Vector2D operator *( Vector2D v, int s )
+        public static Point2D operator *( Point2D v, int s )
         {
-            Vector2D retval = new Vector2D();
+            Point2D retval = new Point2D();
             retval.X = v.X * s;
             retval.Y = v.X * s;
             return retval;
