@@ -115,92 +115,107 @@ namespace CS3500.NetworkController
             // If we haven't received the initial integer data fully, handle it
             if (!receivedInitialData)
             {
-                if (int.TryParse(data, out int parsedValue))
-                {
-                    if (!playerIDReceived)
-                    {
-                        // First integer from the server is treated as the player ID
-                        playerID = parsedValue;
-                        playerIDReceived = true;
-                        Console.WriteLine($"Player ID received from server: {playerID}");
-                    }
-                    else
-                    {
-                        // Second integer is the world size
-                        worldSize = parsedValue;
-                        TheWorld = new World(worldSize);
-                        receivedInitialData = true; // Now we have both initial values
-                        Console.WriteLine($"World size received and set: {worldSize}");
-                        Console.WriteLine($"TheWorld initialized in NetworkController? {TheWorld != null}");
+                ProcessInitialData(data);
+                return;
+            }
 
-                        // Now that TheWorld is initialized, set the update actions
-                        OnPlayerUpdate = player => TheWorld.UpdatePlayer(player);
-                        OnPowerupUpdate = powerup => TheWorld.UpdatePowerup(powerup);
-                    }
+            try
+            {
+                if (data.Contains("\"snake\""))
+                {
+                    ProcessSnakeData(data);
+                }
+                else if (data.Contains("\"power\""))
+                {
+                    ProcessPowerupData(data);
+                }
+                else if (data.Contains("\"wall\""))
+                {
+                    ProcessWallData(data);
+                }
+                else
+                {
+                    // Inline handling of unrecognized data
+                    Console.WriteLine("Unrecognized data received: " + data);
                 }
             }
-            else
+            catch (JsonException ex)
             {
-                try
+                Console.WriteLine($"JSON parsing error: {ex.Message} - Data: {data}");
+            }
+        }
+
+
+        private void ProcessInitialData(string data)
+        {
+            if (int.TryParse(data, out int parsedValue))
+            {
+                if (!playerIDReceived)
                 {
-                    // Detect and process each type of JSON object correctly
-                    if (data.Contains("\"snake\""))
-                    {
-                        var player = JsonSerializer.Deserialize<Player>(data);
-                        if (player != null)
-                        {
-                            if (player.Disconnected)
-                            {
-                                // Remove the player from the world if they disconnected
-                                TheWorld.RemovePlayer(player.ID);
-                            }
-                            else
-                            {
-                                // Otherwise, update or add the player normally
-                                TheWorld.UpdatePlayer(player);
-                                OnPlayerUpdate?.Invoke(player); // Notify view
-                            }
-                        }
-                    }
-                    else if (data.Contains("\"power\""))
-                    {
-                        var powerup = JsonSerializer.Deserialize<Powerup>(data);
-                        if (powerup != null)
-                        {
-                            //Console.WriteLine($"Powerup JSON detected. Updating powerup ID: {powerup.ID}, Location: {powerup.Position}");
-                            if (powerup.Died) // If the power-up is marked as "died" by the server, it should be removed
-                            {
-                                //Console.WriteLine($"Powerup with ID {powerup.ID} has been consumed. Removing from game.");
-                                TheWorld.RemovePowerup(powerup.ID); // Remove it from the game's state
-                            }
-                            else
-                            {
-                                TheWorld.UpdatePowerup(powerup); // Otherwise, just update its position
-                                OnPowerupUpdate?.Invoke(powerup);    // Notify the view, if necessary
-                            }
-                        }
-                    }
-                    else if (data.Contains("\"wall\""))
-                    {
-                        var wall = JsonSerializer.Deserialize<Wall>(data);
-                        if (wall != null)
-                        {
-                            TheWorld.AddWall(wall);
-                            OnWallUpdate?.Invoke(wall); // Trigger an update for the UI to redraw with the new wall data.
-                        }
-                    }
-                    else
-                    {
-                        // Log unrecognized data only once
-                        Console.WriteLine("Unrecognized data received: " + data);
-                    }
+                    playerID = parsedValue;
+                    playerIDReceived = true;
+                    Console.WriteLine($"Player ID received from server: {playerID}");
                 }
-                catch (JsonException ex)
+                else
                 {
-                    Console.WriteLine($"JSON parsing error: {ex.Message} - Data: {data}");
+                    worldSize = parsedValue;
+                    TheWorld = new World(worldSize);
+                    receivedInitialData = true;
+                    Console.WriteLine($"World size received and set: {worldSize}");
+                    Console.WriteLine($"TheWorld initialized in NetworkController? {TheWorld != null}");
+
+                    // Set the update actions for players and powerups
+                    OnPlayerUpdate = player => TheWorld.UpdatePlayer(player);
+                    OnPowerupUpdate = powerup => TheWorld.UpdatePowerup(powerup);
                 }
             }
         }
+
+        private void ProcessSnakeData(string data)
+        {
+            var player = JsonSerializer.Deserialize<Player>(data);
+            if (player != null)
+            {
+                if (player.Disconnected)
+                {
+                    TheWorld.RemovePlayer(player.ID);
+                }
+                else
+                {
+                    TheWorld.UpdatePlayer(player);
+                    OnPlayerUpdate?.Invoke(player);
+                }
+            }
+        }
+
+        private void ProcessPowerupData(string data)
+        {
+            var powerup = JsonSerializer.Deserialize<Powerup>(data);
+            if (powerup != null)
+            {
+                if (powerup.Died)
+                {
+                    TheWorld.RemovePowerup(powerup.ID);
+                }
+                else
+                {
+                    TheWorld.UpdatePowerup(powerup);
+                    OnPowerupUpdate?.Invoke(powerup);
+                }
+            }
+        }
+
+        private void ProcessWallData(string data)
+        {
+            var wall = JsonSerializer.Deserialize<Wall>(data);
+            if (wall != null)
+            {
+                TheWorld.AddWall(wall);
+                OnWallUpdate?.Invoke(wall);
+            }
+        }
+
+
 
         public void SendMoveCommand(string direction)
         {
@@ -208,9 +223,5 @@ namespace CS3500.NetworkController
             networkConnection.Send(command);
         }
 
-        //public void Close()
-        //{
-        //    networkConnection?.Disconnect();
-        //}
     }
 }

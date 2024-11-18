@@ -222,18 +222,6 @@
 
     private async Task DrawSnake(Player player)
     {
-
-        // if (!player.Alive)
-        // {
-        //     await context.SetStrokeStyleAsync("red"); // Use red for dead snakes
-        //     await context.SetFillStyleAsync("red");
-        // }
-        // else
-        // {
-        //     // Use a unique color for the first 8 players; reuse colors for others
-        //     string color = player.ID < 8 ? playerColors[player.ID] : playerColors[player.ID % 8];
-        // }
-
         // Determine the snake color based on player ID or use red for dead snakes
         string color = player.Alive ? (player.ID < 8 ? playerColors[player.ID] : playerColors[player.ID % 8]) : "red";
 
