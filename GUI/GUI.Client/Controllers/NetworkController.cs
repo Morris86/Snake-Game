@@ -9,8 +9,6 @@ namespace CS3500.NetworkController
 {
     public class NetworkController
     {
-        private string serverAddress;
-        private int port;
         private NetworkConnection? networkConnection;
         public bool IsConnected => networkConnection != null && networkConnection.IsConnected;
         public Action<string> OnError { get; set; }
@@ -18,7 +16,8 @@ namespace CS3500.NetworkController
         public Action OnDisconnected { get; set; }
         public Action<Player> OnPlayerUpdate { get; set; }
         public Action<Powerup> OnPowerupUpdate { get; set; }
-        public Action<Wall> OnWallUpdate { get; set; }
+        private string serverAddress;
+        private int port;
         public World TheWorld { get; private set; }
         public int playerID { get; private set; }
         private int worldSize;
@@ -211,7 +210,6 @@ namespace CS3500.NetworkController
             if (wall != null)
             {
                 TheWorld.AddWall(wall);
-                OnWallUpdate?.Invoke(wall);
             }
         }
 

@@ -150,32 +150,6 @@
             <param name="_x"></param>
             <param name="_y"></param>
         </member>
-        <member name="M:CS3500.Models.Point2D.op_Addition(CS3500.Models.Point2D,CS3500.Models.Point2D)">
-            <summary>
-            Add two vectors with the + operator
-            </summary>
-            <param name="v1">The left hand side</param>
-            <param name="v2">The right hand side</param>
-            <returns></returns>
-        </member>
-        <member name="M:CS3500.Models.Point2D.op_Subtraction(CS3500.Models.Point2D,CS3500.Models.Point2D)">
-            <summary>
-            Subtract two vectors with the - operator
-            </summary>
-            <param name="v1">The left hand side</param>
-            <param name="v2">The right hand side</param>
-            <returns></returns>
-        </member>
-        <member name="M:CS3500.Models.Point2D.op_Multiply(CS3500.Models.Point2D,System.Int32)">
-            <summary>
-            Multiply a vector by a scalar
-            This has the effect of growing (if s greater than 1) or shrinking (if s less than 1),
-            without changing the direction.
-            </summary>
-            <param name="v">The vector (left-hand side of the operator)</param>
-            <param name="s">The scalar (right-hand side of the operator)</param>
-            <returns></returns>
-        </member>
         <member name="T:CS3500.Models.Powerup">
             <summary>
             One of the types of objects in the game (part of the Model of MVC)
