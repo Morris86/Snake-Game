@@ -1,12 +1,10 @@
-﻿// Author: Daniel Kopta, Fall 2017
-// Staff solution for CS 3500 final project
-// University of Utah
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace CS3500.Models
 {
     /// <summary>
-    /// One of the types of objects in the game (part of the Model of MVC)
+    /// Represents a powerup object in the game. 
+    /// Powerups can be collected by players to affect gameplay.
     /// </summary>
     public class Powerup
     {
@@ -23,20 +21,23 @@ namespace CS3500.Models
         public Point2D Position { get; set; }
 
         /// <summary>
-        /// Whether or not this powerup is active and part of the live game
+        /// Indicates whether this powerup has been collected and is no longer active.
         /// </summary>
         [JsonPropertyName("died")]
         public bool Died { get; set; }
 
-        // Parameterless constructor for JSON deserialization
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Powerup"/> class.
+        /// This parameterless constructor is required for JSON serialization/deserialization.
+        /// </summary>
         public Powerup() { }
 
         /// <summary>
-        /// Creates a new powerup with the given ID and x,y location
+        /// Initializes a new instance of the <see cref="Powerup"/> class with the specified ID and position.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="id">The unique identifier for the powerup.</param>
+        /// <param name="x">The X-coordinate of the powerup's position.</param>
+        /// <param name="y">The Y-coordinate of the powerup's position.</param>
         public Powerup(int id, int x, int y)
         {
             ID = id;

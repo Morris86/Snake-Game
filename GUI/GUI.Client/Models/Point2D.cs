@@ -1,33 +1,36 @@
-﻿// Author: Daniel Kopta, Fall 2017
-// Staff solution for CS 3500 final project
-// University of Utah
-
-using System;
+﻿using System;
 using System.Text.Json.Serialization;
 
 namespace CS3500.Models
 {
     /// <summary>
-    /// A class to represent a Vector in 2D space
+    /// Represents a point or vector in 2D space.
     /// </summary>
     public class Point2D
     {
+        /// <summary>
+        /// The X-coordinate of the point in 2D space.
+        /// </summary>
         [JsonPropertyName("X")]
         public int X { get; set; }
 
+        /// <summary>
+        /// The Y-coordinate of the point in 2D space.
+        /// </summary>
         [JsonPropertyName("Y")]
         public int Y { get; set; }
 
         /// <summary>
-        /// Default constructor, needed for JSON serialize/deserialize
+        /// Initializes a new instance of the <see cref="Point2D"/> class.
+        /// This default constructor is required for JSON serialization/deserialization.
         /// </summary>
         public Point2D() { }
 
         /// <summary>
-        /// Two param constructor for x and y.
+        /// Initializes a new instance of the <see cref="Point2D"/> class with the specified coordinates.
         /// </summary>
-        /// <param name="_x"></param>
-        /// <param name="_y"></param>
+        /// <param name="x">The X-coordinate of the point.</param>
+        /// <param name="y">The Y-coordinate of the point.</param>
         public Point2D(int x, int y)
         {
             X = x;

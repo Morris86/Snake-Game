@@ -170,7 +170,7 @@
         await context.SaveAsync();
 
         // Centering based on the player's head position
-        if (networkController.TheWorld.Players.TryGetValue(networkController.playerID, out Player currentPlayer))
+        if (networkController.TheWorld.Players.TryGetValue(networkController.playerID, out Player? currentPlayer))
         {
             // Get the head coordinates of the player
             double headX = currentPlayer.Body.Last().X;

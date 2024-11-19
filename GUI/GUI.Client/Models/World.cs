@@ -7,34 +7,35 @@ using System.Numerics;
 namespace CS3500.Models
 {
     /// <summary>
-    /// The Model part of MVC, represents all objects in the "game"
+    /// Represents the game world, containing all objects in the game.
+    /// Acts as the Model in the MVC architecture.
     /// </summary>
     public class World
     {
         /// <summary>
-        /// The players in the game
+        /// A dictionary of players in the game, keyed by their unique IDs.
         /// </summary>
         public Dictionary<int, Player> Players { get; private set; } = new Dictionary<int, Player>();
 
         /// <summary>
-        /// The powerups in the game
+        /// A dictionary of powerups in the game, keyed by their unique IDs.
         /// </summary>
         public Dictionary<int, Powerup> Powerups { get; private set; }
 
         /// <summary>
-        /// The walls in the game
+        /// A dictionary of walls in the game, keyed by their unique IDs.
         /// </summary>
         public Dictionary<int, Wall> Walls { get; private set; } = new Dictionary<int, Wall>();
 
         /// <summary>
-        /// The size of a single side of the square world
+        /// The size of one side of the square game world.
         /// </summary>
         public int Size { get; private set; }
 
         /// <summary>
-        /// Creates a new world with the given size
+        /// Initializes a new instance of the <see cref="World"/> class with the specified size.
         /// </summary>
-        /// <param name="_size"></param>
+        /// <param name="_size">The size of one side of the square world.</param>
         public World( int _size )
         {
             Players = new Dictionary<int, Player>();
@@ -42,6 +43,10 @@ namespace CS3500.Models
             Size = _size;
         }
 
+        /// <summary>
+        /// Updates the data for an existing player or adds a new player to the world.
+        /// </summary>
+        /// <param name="player">The player to update or add.</param>
         public void UpdatePlayer(Player player)
         {
             if (Players.ContainsKey(player.ID))
@@ -56,6 +61,10 @@ namespace CS3500.Models
             }
         }
 
+        /// <summary>
+        /// Updates the data for an existing powerup or adds a new powerup to the world.
+        /// </summary>
+        /// <param name="powerup">The powerup to update or add.</param>
         public void UpdatePowerup(Powerup powerup)
         {
             if (powerup == null) return;
@@ -71,6 +80,10 @@ namespace CS3500.Models
             }
         }
 
+        /// <summary>
+        /// Removes a player from the world by their ID.
+        /// </summary>
+        /// <param name="playerID">The ID of the player to remove.</param>
         public void RemovePlayer(int playerID)
         {
             if (Players.ContainsKey(playerID))
@@ -79,15 +92,22 @@ namespace CS3500.Models
             }
         }
 
+        /// <summary>
+        /// Removes a powerup from the world by its ID.
+        /// </summary>
+        /// <param name="powerupID">The ID of the powerup to remove.</param>
         public void RemovePowerup(int powerupID)
         {
             if (Powerups.ContainsKey(powerupID))
             {
                 Powerups.Remove(powerupID); // This removes the power-up from the dictionary
-                //Console.WriteLine($"Powerup {powerupID} removed from game world. Remaining power-ups: {string.Join(", ", Powerups.Keys)}");
             }
         }
 
+        /// <summary>
+        /// Adds a wall to the world if it is not already present.
+        /// </summary>
+        /// <param name="wall">The wall to add.</param>
         public void AddWall(Wall wall)
         {
             if (!Walls.ContainsKey(wall.ID))

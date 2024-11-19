@@ -77,6 +77,140 @@
             Releases all resources used by the NetworkConnection.
             </summary>
         </member>
+        <member name="T:CS3500.NetworkController.NetworkController">
+            <summary>
+            Handles the network communication with the Snake server and updates the game state accordingly.
+            </summary>
+        </member>
+        <member name="F:CS3500.NetworkController.NetworkController.networkConnection">
+            <summary>
+            Manages the connection to the server.
+            </summary>
+        </member>
+        <member name="P:CS3500.NetworkController.NetworkController.IsConnected">
+            <summary>
+            Indicates whether the client is currently connected to the server.
+            </summary>
+        </member>
+        <member name="P:CS3500.NetworkController.NetworkController.OnError">
+            <summary>
+            Invoked when an error occurs during network communication.
+            </summary>
+        </member>
+        <member name="P:CS3500.NetworkController.NetworkController.OnStatusUpdate">
+            <summary>
+            Invoked to notify the view of status changes.
+            </summary>
+        </member>
+        <member name="P:CS3500.NetworkController.NetworkController.OnDisconnected">
+            <summary>
+            Invoked when the client disconnects from the server.
+            </summary>
+        </member>
+        <member name="P:CS3500.NetworkController.NetworkController.OnPlayerUpdate">
+            <summary>
+            Invoked when a player's data is updated.
+            </summary>
+        </member>
+        <member name="P:CS3500.NetworkController.NetworkController.OnPowerupUpdate">
+            <summary>
+            Invoked when a powerup's data is updated.
+            </summary>
+        </member>
+        <member name="F:CS3500.NetworkController.NetworkController.serverAddress">
+            <summary>
+            The server's IP address or hostname.
+            </summary>
+        </member>
+        <member name="F:CS3500.NetworkController.NetworkController.port">
+            <summary>
+            The port number for connecting to the server.
+            </summary>
+        </member>
+        <member name="P:CS3500.NetworkController.NetworkController.TheWorld">
+            <summary>
+            Represents the game world, including players, walls, and powerups.
+            </summary>
+        </member>
+        <member name="P:CS3500.NetworkController.NetworkController.playerID">
+            <summary>
+            The unique player ID assigned by the server.
+            </summary>
+        </member>
+        <member name="F:CS3500.NetworkController.NetworkController.worldSize">
+            <summary>
+            The size of the game world (width and height).
+            </summary>
+        </member>
+        <member name="F:CS3500.NetworkController.NetworkController.receivedInitialData">
+            <summary>
+            Indicates whether the initial data has been received from the server.
+            </summary>
+        </member>
+        <member name="F:CS3500.NetworkController.NetworkController.playerIDReceived">
+            <summary>
+            Indicates whether the player ID has been received from the server.
+            </summary>
+        </member>
+        <member name="M:CS3500.NetworkController.NetworkController.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the NetworkController class with the specified server address and port.
+            </summary>
+            <param name="serverAddress">The server's IP address or hostname.</param>
+            <param name="port">The port number for the connection.</param>
+        </member>
+        <member name="M:CS3500.NetworkController.NetworkController.ConnectToServer(System.String)">
+            <summary>
+            Connects to the server and sends the player's name.
+            </summary>
+            <param name="playerName">The name of the player.</param>
+        </member>
+        <member name="M:CS3500.NetworkController.NetworkController.DisconnectFromServer">
+            <summary>
+            Disconnects from the server and cleans up resources.
+            </summary>
+        </member>
+        <member name="M:CS3500.NetworkController.NetworkController.StartReceivingData">
+            <summary>
+            Starts receiving data from the server asynchronously.
+            </summary>
+        </member>
+        <member name="M:CS3500.NetworkController.NetworkController.ProcessServerData(System.String)">
+            <summary>
+            Processes data received from the server.
+            </summary>
+            <param name="data">The data received from the server.</param>
+        </member>
+        <member name="M:CS3500.NetworkController.NetworkController.ProcessInitialData(System.String)">
+            <summary>
+            Processes initial data received from the server (e.g., player ID and world size).
+            </summary>
+            <param name="data">The initial data string.</param>
+        </member>
+        <member name="M:CS3500.NetworkController.NetworkController.ProcessSnakeData(System.String)">
+            <summary>
+            Processes snake data received from the server.
+            </summary>
+            <param name="data">The JSON string representing a snake.</param>
+        </member>
+        <member name="M:CS3500.NetworkController.NetworkController.ProcessPowerupData(System.String)">
+            <summary>
+            Processes powerup data received from the server.
+            </summary>
+            <param name="data">The JSON string representing a powerup.</param>
+        </member>
+        <member name="M:CS3500.NetworkController.NetworkController.ProcessWallData(System.String)">
+            <summary>
+            Processes wall data received from the server.
+            </summary>
+            <param name="data">The JSON string representing a wall.</param>
+        </member>
+        <member name="M:CS3500.NetworkController.NetworkController.SendMoveCommand(System.String)">
+            <summary>
+            Sends a move command to the server indicating the player's direction.
+            </summary>
+            <param name="direction">The desired direction ("up", "down", "left", "right").</param>
+        </member>
         <member name="T:CS3500.Models.Player">
             <summary>
             One of the types of objects in the game (part of the Model of MVC)

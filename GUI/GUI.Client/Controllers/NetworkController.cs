@@ -7,23 +7,86 @@ using System.Numerics;
 
 namespace CS3500.NetworkController
 {
+    /// <summary>
+    /// Handles the network communication with the Snake server and updates the game state accordingly.
+    /// </summary>
     public class NetworkController
     {
+        /// <summary>
+        /// Manages the connection to the server.
+        /// </summary>
         private NetworkConnection? networkConnection;
-        public bool IsConnected => networkConnection != null && networkConnection.IsConnected;
-        public Action<string> OnError { get; set; }
-        public Action<string> OnStatusUpdate { get; set; } // Notify view of status changes
-        public Action OnDisconnected { get; set; }
-        public Action<Player> OnPlayerUpdate { get; set; }
-        public Action<Powerup> OnPowerupUpdate { get; set; }
-        private string serverAddress;
-        private int port;
-        public World TheWorld { get; private set; }
-        public int playerID { get; private set; }
-        private int worldSize;
-        private bool receivedInitialData = false;
-        private bool playerIDReceived = false; // Track if player ID is received
 
+        /// <summary>
+        /// Indicates whether the client is currently connected to the server.
+        /// </summary>
+        public bool IsConnected => networkConnection != null && networkConnection.IsConnected;
+
+        /// <summary>
+        /// Invoked when an error occurs during network communication.
+        /// </summary>
+        public Action<string> OnError { get; set; }
+
+        /// <summary>
+        /// Invoked to notify the view of status changes.
+        /// </summary>
+        public Action<string> OnStatusUpdate { get; set; }
+
+        /// <summary>
+        /// Invoked when the client disconnects from the server.
+        /// </summary>
+        public Action OnDisconnected { get; set; }
+
+        /// <summary>
+        /// Invoked when a player's data is updated.
+        /// </summary>
+        public Action<Player> OnPlayerUpdate { get; set; }
+
+        /// <summary>
+        /// Invoked when a powerup's data is updated.
+        /// </summary>
+        public Action<Powerup> OnPowerupUpdate { get; set; }
+
+        /// <summary>
+        /// The server's IP address or hostname.
+        /// </summary>
+        private readonly string serverAddress;
+
+        /// <summary>
+        /// The port number for connecting to the server.
+        /// </summary>
+        private readonly int port;
+
+        /// <summary>
+        /// Represents the game world, including players, walls, and powerups.
+        /// </summary>
+        public World? TheWorld { get; private set; }
+
+        /// <summary>
+        /// The unique player ID assigned by the server.
+        /// </summary>
+        public int playerID { get; private set; }
+
+        /// <summary>
+        /// The size of the game world (width and height).
+        /// </summary>
+        private int worldSize;
+
+        /// <summary>
+        /// Indicates whether the initial data has been received from the server.
+        /// </summary>
+        private bool receivedInitialData = false;
+
+        /// <summary>
+        /// Indicates whether the player ID has been received from the server.
+        /// </summary>
+        private bool playerIDReceived = false;
+
+        /// <summary>
+        /// Initializes a new instance of the NetworkController class with the specified server address and port.
+        /// </summary>
+        /// <param name="serverAddress">The server's IP address or hostname.</param>
+        /// <param name="port">The port number for the connection.</param>
         public NetworkController(string serverAddress, int port)
         {
             this.serverAddress = serverAddress;
@@ -31,7 +94,10 @@ namespace CS3500.NetworkController
             networkConnection = new NetworkConnection(); // Only initialize the connection
         }
 
-
+        /// <summary>
+        /// Connects to the server and sends the player's name.
+        /// </summary>
+        /// <param name="playerName">The name of the player.</param>
         public void ConnectToServer(string playerName)
         {
             if (string.IsNullOrWhiteSpace(playerName))
@@ -48,12 +114,12 @@ namespace CS3500.NetworkController
 
             try
             {
-                if (!networkConnection.IsConnected)
+                if (networkConnection?.IsConnected == false)
                 {
                     networkConnection.Connect(serverAddress, port);
                 }
 
-                networkConnection.Send(playerName);
+                networkConnection?.Send(playerName);
                 OnStatusUpdate?.Invoke($"Connected to server as {playerName}.");
 
                 new Thread(StartReceivingData).Start(); // Start receiving data asynchronously
@@ -64,6 +130,9 @@ namespace CS3500.NetworkController
             }
         }
 
+        /// <summary>
+        /// Disconnects from the server and cleans up resources.
+        /// </summary>
         public void DisconnectFromServer()
         {
             try
@@ -81,12 +150,15 @@ namespace CS3500.NetworkController
                 OnStatusUpdate?.Invoke("Disconnected from the server.");
                 OnDisconnected?.Invoke();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 OnStatusUpdate?.Invoke("Disconnected from the server.");
             }
         }
 
+        /// <summary>
+        /// Starts receiving data from the server asynchronously.
+        /// </summary>
         private void StartReceivingData()
         {
             try
@@ -109,6 +181,10 @@ namespace CS3500.NetworkController
             }
         }
 
+        /// <summary>
+        /// Processes data received from the server.
+        /// </summary>
+        /// <param name="data">The data received from the server.</param>
         private void ProcessServerData(string data)
         {
             // If we haven't received the initial integer data fully, handle it
@@ -144,7 +220,10 @@ namespace CS3500.NetworkController
             }
         }
 
-
+        /// <summary>
+        /// Processes initial data received from the server (e.g., player ID and world size).
+        /// </summary>
+        /// <param name="data">The initial data string.</param>
         private void ProcessInitialData(string data)
         {
             if (int.TryParse(data, out int parsedValue))
@@ -164,12 +243,16 @@ namespace CS3500.NetworkController
                     Console.WriteLine($"TheWorld initialized in NetworkController? {TheWorld != null}");
 
                     // Set the update actions for players and powerups
-                    OnPlayerUpdate = player => TheWorld.UpdatePlayer(player);
-                    OnPowerupUpdate = powerup => TheWorld.UpdatePowerup(powerup);
+                    OnPlayerUpdate = player => TheWorld?.UpdatePlayer(player);
+                    OnPowerupUpdate = powerup => TheWorld?.UpdatePowerup(powerup);
                 }
             }
         }
 
+        /// <summary>
+        /// Processes snake data received from the server.
+        /// </summary>
+        /// <param name="data">The JSON string representing a snake.</param>
         private void ProcessSnakeData(string data)
         {
             var player = JsonSerializer.Deserialize<Player>(data);
@@ -177,16 +260,20 @@ namespace CS3500.NetworkController
             {
                 if (player.Disconnected)
                 {
-                    TheWorld.RemovePlayer(player.ID);
+                    TheWorld?.RemovePlayer(player.ID);
                 }
                 else
                 {
-                    TheWorld.UpdatePlayer(player);
+                    TheWorld?.UpdatePlayer(player);
                     OnPlayerUpdate?.Invoke(player);
                 }
             }
         }
 
+        /// <summary>
+        /// Processes powerup data received from the server.
+        /// </summary>
+        /// <param name="data">The JSON string representing a powerup.</param>
         private void ProcessPowerupData(string data)
         {
             var powerup = JsonSerializer.Deserialize<Powerup>(data);
@@ -194,31 +281,37 @@ namespace CS3500.NetworkController
             {
                 if (powerup.Died)
                 {
-                    TheWorld.RemovePowerup(powerup.ID);
+                    TheWorld?.RemovePowerup(powerup.ID);
                 }
                 else
                 {
-                    TheWorld.UpdatePowerup(powerup);
+                    TheWorld?.UpdatePowerup(powerup);
                     OnPowerupUpdate?.Invoke(powerup);
                 }
             }
         }
 
+        /// <summary>
+        /// Processes wall data received from the server.
+        /// </summary>
+        /// <param name="data">The JSON string representing a wall.</param>
         private void ProcessWallData(string data)
         {
             var wall = JsonSerializer.Deserialize<Wall>(data);
             if (wall != null)
             {
-                TheWorld.AddWall(wall);
+                TheWorld?.AddWall(wall);
             }
         }
 
-
-
+        /// <summary>
+        /// Sends a move command to the server indicating the player's direction.
+        /// </summary>
+        /// <param name="direction">The desired direction ("up", "down", "left", "right").</param>
         public void SendMoveCommand(string direction)
         {
             var command = JsonSerializer.Serialize(new { moving = direction });
-            networkConnection.Send(command);
+            networkConnection?.Send(command);
         }
 
     }
