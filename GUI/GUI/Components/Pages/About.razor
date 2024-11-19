@@ -1,7 +1,57 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>About</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>About the Snake Game Project</h1>
 
-Welcome to your new app.
+<p>Welcome to the Snake Game Project! This page documents the design decisions, features, and mechanics of the game. Please review the details below to understand what works, what doesn’t, and what makes this project unique.</p>
+
+<h2>Design Decisions</h2>
+<ul>
+    <li>
+        <b>World Initialization from a Settings File:</b>
+        The world reads a settings file to configure the game dynamically, allowing for adjustable settings such as:
+        <ul>
+            <li><b>Starting Length of the Snake:</b> Determines how long the snake is at the beginning of the game.</li>
+            <li><b>Food Density:</b> Controls how much food spawns based on the number of players.</li>
+            <li><b>Recycle Rate:</b> Specifies how much food spawns when a snake dies.</li>
+        </ul>
+    </li>
+    <li>
+        <b>Server and Client Architecture:</b>
+        The server handles multiple clients, managing player movement and distributing the game state efficiently using JSON messages.
+    </li>
+    <li>
+        <b>Dynamic Food Generation:</b>
+        Food spawns dynamically based on player count, density settings, and the recycle rate for a balanced and engaging experience.
+    </li>
+</ul>
+
+<h2>Key Features</h2>
+<ul>
+    <li><b>Interactive Gameplay Mechanics:</b> Snakes can eat food, collide with walls or other snakes, and respawn after dying.</li>
+    <li><b>Multiplayer Support:</b> The server handles multiple clients in real-time, ensuring a smooth experience for all players.</li>
+    <li><b>Customizable Settings:</b> Players can adjust the starting snake length, food density, and recycle rate for varied gameplay.</li>
+    <li><b>Responsive GUI:</b> The client updates in real-time and animations at 50 FPS.</li>
+</ul>
+
+<h2>Game Mechanics</h2>
+<ul>
+    <li>Snakes can eat food, move, turn, and collide with walls, food, or other snakes.</li>
+    <li>The world spawns new food dynamically and handles snake respawns after death.</li>
+    <li>The server processes player commands and broadcasts the game state to clients.</li>
+</ul>
+
+<h2>Notable Additions</h2>
+<ul>
+    <li><b>Snake Explosion Animations:</b> Added animations for snake deaths for a polished look.</li>
+    <li><b>Server Optimization:</b> Improved handling for large-scale games with many players and food objects.</li>
+</ul>
+
+<h2>Known Issues</h2>
+<ul>
+    <li>Given AI client doesn't work as well with over 20 clients.</li>
+    <li>Rare lag spikes during high-density food generation.</li>
+</ul>
+
+<p>Thank you for reviewing this project. Feel free to test various settings and provide feedback on the gameplay and features!</p>
