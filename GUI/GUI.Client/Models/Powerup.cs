@@ -30,7 +30,10 @@ namespace CS3500.Models
         /// Initializes a new instance of the <see cref="Powerup"/> class.
         /// This parameterless constructor is required for JSON serialization/deserialization.
         /// </summary>
-        public Powerup() { }
+        public Powerup()
+        {
+            Position = new Point2D(0, 0);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Powerup"/> class with the specified ID and position.

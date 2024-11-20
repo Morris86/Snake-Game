@@ -463,7 +463,11 @@
             IP address of the game server. Default value is "localhost."
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:GUI.Client.Pages.SnakeGUI.portNumber" -->
+        <member name="F:GUI.Client.Pages.SnakeGUI.portNumber">
+            <summary>
+            Port number for connecting to the server. Default value is 11000.
+            </summary>
+        </member>
         <member name="F:GUI.Client.Pages.SnakeGUI.playerName">
             <summary>
             Name of the player to identify them on the server.

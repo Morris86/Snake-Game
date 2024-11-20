@@ -18,19 +18,23 @@ namespace CS3500.Models
         /// The starting point of this wall in the game world.
         /// </summary>
         [JsonPropertyName("p1")]
-        public Point2D? Point1 { get; set; }
+        public Point2D? Point1 { get; set; } = new Point2D(0, 0);
 
         /// <summary>
         /// The ending point of this wall in the game world.
         /// </summary>
         [JsonPropertyName("p2")]
-        public Point2D? Point2 { get; set; }
+        public Point2D? Point2 { get; set; } = new Point2D(0, 0);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Wall"/> class.
         /// This parameterless constructor is required for JSON serialization/deserialization.
         /// </summary>
-        public Wall() { }
+        public Wall()
+        {
+            Point1 = new Point2D(0, 0);
+            Point2 = new Point2D(0, 0);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Wall"/> class with the specified ID and endpoints.

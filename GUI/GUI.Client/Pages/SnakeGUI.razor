@@ -60,6 +60,7 @@
 
     /// <summary>
     /// Port number for connecting to the server. Default value is 11000.
+    /// </summary>
     private int portNumber = 11000;
 
     /// <summary>
@@ -236,7 +237,7 @@
         lock (drawingLock)
         {
             // Ensure you're referencing TheWorld from networkController
-            drawingCopy = networkController.TheWorld != null ? new World(networkController.TheWorld) : null;
+            drawingCopy = TheWorld != null ? new World(TheWorld) : null;
         }
 
         if (drawingCopy == null)
@@ -255,7 +256,7 @@
         await context.SaveAsync();
 
         // Centering based on the player's head position
-        if (TheWorld.Players.TryGetValue(networkController.playerID, out Player? currentPlayer))
+        if (TheWorld?.Players != null && networkController?.playerID != null && TheWorld.Players.TryGetValue(networkController.playerID, out Player? currentPlayer))
         {
             // Get the head coordinates of the player
             double headX = currentPlayer.Body.Last().X;
@@ -420,7 +421,7 @@
 
         if (direction != "none")
         {
-            networkController.SendMoveCommand(direction);
+            networkController?.SendMoveCommand(direction);
         }
     }
 

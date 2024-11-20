@@ -72,6 +72,8 @@ namespace CS3500.Models
         public Player()
         {
             Body = new List<Point2D>();
+            Name = string.Empty;
+            Direction = new Point2D(0, 0);
         }
 
 

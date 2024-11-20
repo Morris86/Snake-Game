@@ -96,7 +96,14 @@ namespace CS3500.NetworkController
         {
             this.serverAddress = serverAddress;
             this.port = port;
-            networkConnection = new NetworkConnection(); // Only initialize the connection
+            networkConnection = new NetworkConnection();
+
+            // Initialize the action properties
+            OnError = _ => { };
+            OnStatusUpdate = _ => { };
+            OnDisconnected = () => { };
+            OnPlayerUpdate = _ => { };
+            OnPowerupUpdate = _ => { };
         }
 
         /// <summary>

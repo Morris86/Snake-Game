@@ -41,7 +41,7 @@ namespace CS3500.Models
             Players = new Dictionary<int, Player>();
             Powerups = new Dictionary<int, Powerup>();
             Walls = new Dictionary<int, Wall>();
-            Size = 0; // Default size
+            Size = 0;
         }
 
         /// <summary>
