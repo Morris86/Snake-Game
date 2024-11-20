@@ -78,6 +78,12 @@
     private NetworkController? networkController;
 
     /// <summary>
+    /// Provides easy access to TheWorld from networkController.
+    /// Returns null if networkController or TheWorld is null.
+    /// </summary>
+    private World? TheWorld => networkController?.TheWorld;
+
+    /// <summary>
     /// C# reference to the html element for the background image
     /// </summary>
     private ElementReference backgroundImage;
@@ -178,7 +184,7 @@
     {
         while (true)
         {
-            if (networkController?.TheWorld != null) // Only draw when TheWorld is initialized
+            if (TheWorld != null) // Only draw when TheWorld is initialized
             {
                 await DrawFrame();
             }
@@ -219,8 +225,16 @@
     /// </summary>
     private async Task DrawFrame()
     {
-        // Exit early if TheWorld is not initialized yet
-        if (networkController?.TheWorld == null)
+        World? drawingCopy;
+
+        // Lock and create a copy of TheWorld from networkController
+        lock (networkController.WorldLock)
+        {
+            // Ensure you're referencing TheWorld from networkController
+            drawingCopy = networkController.TheWorld != null ? new World(networkController.TheWorld) : null;
+        }
+
+        if (drawingCopy == null)
         {
             return;
         }
@@ -236,7 +250,7 @@
         await context.SaveAsync();
 
         // Centering based on the player's head position
-        if (networkController.TheWorld.Players.TryGetValue(networkController.playerID, out Player? currentPlayer))
+        if (TheWorld.Players.TryGetValue(networkController.playerID, out Player? currentPlayer))
         {
             // Get the head coordinates of the player
             double headX = currentPlayer.Body.Last().X;
@@ -251,30 +265,30 @@
             await context.TranslateAsync(-headX, -headY);
 
             // Set the scale and calculate the center offset for background centering
-            double largeBackgroundSize = networkController.TheWorld.Size * 1.5; // Example: 1.5x world size for a buffer
+            double largeBackgroundSize = TheWorld.Size * 1.5; // Example: 1.5x world size for a buffer
 
             // Draw a larger solid background to avoid empty edges
             await context.SetFillStyleAsync("black"); // Or any background color you prefer
             await context.FillRectAsync( -largeBackgroundSize / 2, -largeBackgroundSize / 2, largeBackgroundSize, largeBackgroundSize);
 
             // Draw the image background:
-            await context.DrawImageAsync(backgroundImage, -networkController.TheWorld.Size / 2, -networkController.TheWorld.Size / 2, networkController.TheWorld.Size, networkController.TheWorld.Size);
+            await context.DrawImageAsync(backgroundImage, -TheWorld.Size / 2, -TheWorld.Size / 2, TheWorld.Size, TheWorld.Size);
         }
 
         // Draw each player in TheWorld
-        foreach (var player in networkController.TheWorld.Players.Values)
+        foreach (var player in drawingCopy.Players.Values)
         {
             await DrawSnake(player);
         }
 
         // Draw each powerup in TheWorld
-        foreach (var powerup in networkController.TheWorld.Powerups.Values)
+        foreach (var powerup in drawingCopy.Powerups.Values)
         {
             await DrawPowerup(powerup);
         }
 
         // Draw each wall segment
-        foreach (var wall in networkController.TheWorld.Walls.Values)
+        foreach (var wall in drawingCopy.Walls.Values)
         {
             await DrawWall(wall);
         }
@@ -385,7 +399,7 @@
     [JSInvokable]
     public void HandleKeyPress(string key)
     {
-        if (networkController?.TheWorld == null)
+        if (TheWorld == null)
         {
             return;
         }

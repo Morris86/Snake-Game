@@ -83,6 +83,16 @@ namespace CS3500.NetworkController
         private bool playerIDReceived = false;
 
         /// <summary>
+        /// Lock object to synchronize access
+        /// </summary>
+        private readonly object networkLock = new object();
+
+        /// <summary>
+        /// Exposes the lock object for synchronizing access to TheWorld.
+        /// </summary>
+        public object WorldLock => networkLock;
+
+        /// <summary>
         /// Initializes a new instance of the NetworkController class with the specified server address and port.
         /// </summary>
         /// <param name="serverAddress">The server's IP address or hostname.</param>
@@ -137,16 +147,20 @@ namespace CS3500.NetworkController
         {
             try
             {
-                if (networkConnection != null && networkConnection.IsConnected)
+                lock (networkLock)
                 {
-                    networkConnection.Disconnect();
+                    // Safely disconnect the network connection
+                    if (networkConnection != null && networkConnection.IsConnected)
+                    {
+                        networkConnection.Disconnect();
+                    }
+
+                    // Cleanup resources
+                    networkConnection = null;
+                    TheWorld = null;
                 }
 
-                // Cleanup resources
-                networkConnection = null;
-                TheWorld = null;
-
-                // Notify the status update
+                // Notify the status update outside the lock to avoid blocking
                 OnStatusUpdate?.Invoke("Disconnected from the server.");
                 OnDisconnected?.Invoke();
             }
@@ -163,9 +177,21 @@ namespace CS3500.NetworkController
         {
             try
             {
-                while (networkConnection != null && networkConnection.IsConnected)
+                while (true)
                 {
-                    string data = networkConnection.ReadLine();
+                    string? data = null;
+
+                    // Lock around both the condition and ReadLine
+                    lock (networkLock)
+                    {
+                        if (networkConnection == null || !networkConnection.IsConnected)
+                        {
+                            break; // Exit the loop if the connection is closed
+                        }
+
+                        data = networkConnection.ReadLine();
+                    }
+
                     if (data != null)
                     {
                         ProcessServerData(data);

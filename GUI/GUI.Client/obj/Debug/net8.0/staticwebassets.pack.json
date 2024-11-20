@@ -1,35 +1,35 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\morri\\source\\repos\\game-bugsquashers_game\\GUI\\GUI.Client\\Pages\\SnakeGUI.razor.js",
+      "Id": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\Pages\\SnakeGUI.razor.js",
       "PackagePath": "staticwebassets\\Pages\\SnakeGUI.razor.js"
     },
     {
-      "Id": "C:\\Users\\morri\\source\\repos\\game-bugsquashers_game\\GUI\\GUI.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "Id": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
       "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
     },
     {
-      "Id": "C:\\Users\\morri\\source\\repos\\game-bugsquashers_game\\GUI\\GUI.Client\\obj\\Debug\\net8.0\\compressed\\e17j2xq7v6.gz",
+      "Id": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\obj\\Debug\\net8.0\\compressed\\e17j2xq7v6.gz",
       "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
     },
     {
-      "Id": "C:\\Users\\morri\\source\\repos\\game-bugsquashers_game\\GUI\\GUI.Client\\wwwroot\\appsettings.Development.json",
+      "Id": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\appsettings.Development.json",
       "PackagePath": "staticwebassets\\appsettings.Development.json"
     },
     {
-      "Id": "C:\\Users\\morri\\source\\repos\\game-bugsquashers_game\\GUI\\GUI.Client\\wwwroot\\appsettings.json",
+      "Id": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\appsettings.json",
       "PackagePath": "staticwebassets\\appsettings.json"
     },
     {
-      "Id": "C:\\Users\\morri\\source\\repos\\game-bugsquashers_game\\GUI\\GUI.Client\\wwwroot\\images\\Background.png",
+      "Id": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\images\\Background.png",
       "PackagePath": "staticwebassets\\images\\Background.png"
     },
     {
-      "Id": "C:\\Users\\morri\\source\\repos\\game-bugsquashers_game\\GUI\\GUI.Client\\wwwroot\\images\\Powerup.png",
+      "Id": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\images\\Powerup.png",
       "PackagePath": "staticwebassets\\images\\Powerup.png"
     },
     {
-      "Id": "C:\\Users\\morri\\source\\repos\\game-bugsquashers_game\\GUI\\GUI.Client\\wwwroot\\images\\Wall.png",
+      "Id": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\wwwroot\\images\\Wall.png",
       "PackagePath": "staticwebassets\\images\\Wall.png"
     },
     {

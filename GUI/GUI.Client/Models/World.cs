@@ -33,6 +33,12 @@ namespace CS3500.Models
         public int Size { get; private set; }
 
         /// <summary>
+        /// Default constructor required for JSON serialization/deserialization.
+        /// Initializes all dictionaries to empty and sets a default size.
+        /// </summary>
+        public World() { }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class with the specified size.
         /// </summary>
         /// <param name="_size">The size of one side of the square world.</param>
@@ -40,7 +46,19 @@ namespace CS3500.Models
         {
             Players = new Dictionary<int, Player>();
             Powerups = new Dictionary<int, Powerup>();
+            Walls = new Dictionary<int, Wall>();
             Size = _size;
+        }
+
+        /// <summary>
+        /// Create a copy of the world
+        /// </summary>
+        public World(World original)
+        {
+            Size = original.Size;
+            Players = new Dictionary<int, Player>(original.Players);
+            Powerups = new Dictionary<int, Powerup>(original.Powerups);
+            Walls = new Dictionary<int, Wall>(original.Walls);
         }
 
         /// <summary>
@@ -76,7 +94,6 @@ namespace CS3500.Models
             else
             {
                 Powerups.Add(powerup.ID, powerup);
-                //Console.WriteLine($"Powerup {powerup.ID} updated. Current power-ups: {string.Join(", ", Powerups.Keys)}");
             }
         }
 

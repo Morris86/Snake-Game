@@ -152,6 +152,16 @@
             Indicates whether the player ID has been received from the server.
             </summary>
         </member>
+        <member name="F:CS3500.NetworkController.NetworkController.networkLock">
+            <summary>
+            Lock object to synchronize access
+            </summary>
+        </member>
+        <member name="P:CS3500.NetworkController.NetworkController.WorldLock">
+            <summary>
+            Exposes the lock object for synchronizing access to TheWorld.
+            </summary>
+        </member>
         <member name="M:CS3500.NetworkController.NetworkController.#ctor(System.String,System.Int32)">
             <summary>
             Initializes a new instance of the NetworkController class with the specified server address and port.
@@ -391,11 +401,22 @@
             The size of one side of the square game world.
             </summary>
         </member>
+        <member name="M:CS3500.Models.World.#ctor">
+            <summary>
+            Default constructor required for JSON serialization/deserialization.
+            Initializes all dictionaries to empty and sets a default size.
+            </summary>
+        </member>
         <member name="M:CS3500.Models.World.#ctor(System.Int32)">
             <summary>
             Initializes a new instance of the <see cref="T:CS3500.Models.World"/> class with the specified size.
             </summary>
             <param name="_size">The size of one side of the square world.</param>
+        </member>
+        <member name="M:CS3500.Models.World.#ctor(CS3500.Models.World)">
+            <summary>
+            Create a copy of the world
+            </summary>
         </member>
         <member name="M:CS3500.Models.World.UpdatePlayer(CS3500.Models.Player)">
             <summary>
@@ -427,10 +448,137 @@
             </summary>
             <param name="wall">The wall to add.</param>
         </member>
+        <member name="F:GUI.Client.Pages.SnakeGUI.canvasReference">
+            <summary>
+            Reference to the canvas element for rendering the game.
+            </summary>
+        </member>
+        <member name="F:GUI.Client.Pages.SnakeGUI.context">
+            <summary>
+            2D context for drawing on the canvas.
+            </summary>
+        </member>
+        <member name="F:GUI.Client.Pages.SnakeGUI.jsModule">
+            <summary>
+            JavaScript module reference for additional functionality.
+            </summary>
+        </member>
+        <member name="F:GUI.Client.Pages.SnakeGUI.serverAddress">
+            <summary>
+            IP address of the game server. Default value is "localhost."
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "F:GUI.Client.Pages.SnakeGUI.portNumber" -->
+        <member name="F:GUI.Client.Pages.SnakeGUI.playerName">
+            <summary>
+            Name of the player to identify them on the server.
+            </summary>
+        </member>
+        <member name="F:GUI.Client.Pages.SnakeGUI.statusMessage">
+            <summary>
+            Status message to provide feedback to the user (e.g., connection status).
+            </summary>
+        </member>
+        <member name="F:GUI.Client.Pages.SnakeGUI.networkController">
+            <summary>
+            The network controller responsible for communicating with the game server.
+            </summary>
+        </member>
+        <member name="P:GUI.Client.Pages.SnakeGUI.TheWorld">
+            <summary>
+            Provides easy access to TheWorld from networkController.
+            Returns null if networkController or TheWorld is null.
+            </summary>
+        </member>
         <member name="F:GUI.Client.Pages.SnakeGUI.backgroundImage">
             <summary>
             C# reference to the html element for the background image
             </summary>
+        </member>
+        <member name="F:GUI.Client.Pages.SnakeGUI.wallImage">
+            <summary>
+            Reference to the wall image element.
+            </summary>
+        </member>
+        <member name="F:GUI.Client.Pages.SnakeGUI.powerupImage">
+            <summary>
+            Reference to the powerup image element.
+            </summary>
+        </member>
+        <member name="F:GUI.Client.Pages.SnakeGUI.ViewWidth">
+            <summary>
+            Width of the game view in pixels.
+            </summary>
+        </member>
+        <member name="F:GUI.Client.Pages.SnakeGUI.ViewHeight">
+            <summary>
+            Height of the game view in pixels.
+            </summary>
+        </member>
+        <member name="F:GUI.Client.Pages.SnakeGUI.playerColors">
+            <summary>
+            Array of colors to represent players in the game.
+            </summary>
+        </member>
+        <member name="M:GUI.Client.Pages.SnakeGUI.ConnectButton">
+            <summary>
+            Handles the Connect button click to initiate a connection to the game server.
+            </summary>
+        </member>
+        <member name="M:GUI.Client.Pages.SnakeGUI.DisconnectButton">
+            <summary>
+            Handles the Disconnect button click to stop communication with the game server.
+            </summary>
+        </member>
+        <member name="M:GUI.Client.Pages.SnakeGUI.OnAfterRenderAsync(System.Boolean)">
+            <summary>
+            Called after the component has been rendered to initialize the JavaScript module and start the game loop.
+            </summary>
+            <param name="firstRender">Indicates if this is the first time the component has been rendered.</param>
+        </member>
+        <member name="M:GUI.Client.Pages.SnakeGUI.GameLoop">
+            <summary>
+            Main game loop responsible for continuously updating and rendering the game state.
+            </summary>
+        </member>
+        <member name="M:GUI.Client.Pages.SnakeGUI.ClearCanvasLoop">
+            <summary>
+            Clears the canvas over a specified duration to reset the game view.
+            </summary>
+        </member>
+        <member name="M:GUI.Client.Pages.SnakeGUI.ClearCanvas">
+            <summary>
+            Clears the entire canvas.
+            </summary>
+        </member>
+        <member name="M:GUI.Client.Pages.SnakeGUI.DrawFrame">
+            <summary>
+            Draws a single frame of the game, including players, powerups, walls, and the background.
+            </summary>
+        </member>
+        <member name="M:GUI.Client.Pages.SnakeGUI.DrawSnake(CS3500.Models.Player)">
+            <summary>
+            Draws a snake on the canvas based on its current state.
+            </summary>
+            <param name="player">The player whose snake to draw.</param>
+        </member>
+        <member name="M:GUI.Client.Pages.SnakeGUI.DrawPowerup(CS3500.Models.Powerup)">
+            <summary>
+            Draws a powerup on the canvas.
+            </summary>
+            <param name="powerup">The powerup to draw.</param>
+        </member>
+        <member name="M:GUI.Client.Pages.SnakeGUI.DrawWall(CS3500.Models.Wall)">
+            <summary>
+            Draws a wall on the canvas.
+            </summary>
+            <param name="wall">The wall to draw.</param>
+        </member>
+        <member name="M:GUI.Client.Pages.SnakeGUI.HandleKeyPress(System.String)">
+            <summary>
+            Handles key press events and sends the corresponding move command to the server.
+            </summary>
+            <param name="key">The key that was pressed.</param>
         </member>
     </members>
 </doc>
