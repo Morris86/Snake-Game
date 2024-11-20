@@ -84,6 +84,11 @@
     private World? TheWorld => networkController?.TheWorld;
 
     /// <summary>
+    /// Lock object to prevent race condition when drawing
+    /// </summary>
+    private readonly object drawingLock = new object();
+
+    /// <summary>
     /// C# reference to the html element for the background image
     /// </summary>
     private ElementReference backgroundImage;
@@ -228,7 +233,7 @@
         World? drawingCopy;
 
         // Lock and create a copy of TheWorld from networkController
-        lock (networkController.WorldLock)
+        lock (drawingLock)
         {
             // Ensure you're referencing TheWorld from networkController
             drawingCopy = networkController.TheWorld != null ? new World(networkController.TheWorld) : null;

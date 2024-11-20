@@ -36,7 +36,13 @@ namespace CS3500.Models
         /// Default constructor required for JSON serialization/deserialization.
         /// Initializes all dictionaries to empty and sets a default size.
         /// </summary>
-        public World() { }
+        public World()
+        {
+            Players = new Dictionary<int, Player>();
+            Powerups = new Dictionary<int, Powerup>();
+            Walls = new Dictionary<int, Wall>();
+            Size = 0; // Default size
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class with the specified size.

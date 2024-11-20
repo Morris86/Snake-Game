@@ -18,13 +18,13 @@ namespace CS3500.Models
         /// The starting point of this wall in the game world.
         /// </summary>
         [JsonPropertyName("p1")]
-        public Point2D Point1 { get; set; }
+        public Point2D? Point1 { get; set; }
 
         /// <summary>
         /// The ending point of this wall in the game world.
         /// </summary>
         [JsonPropertyName("p2")]
-        public Point2D Point2 { get; set; }
+        public Point2D? Point2 { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Wall"/> class.

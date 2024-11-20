@@ -157,11 +157,6 @@
             Lock object to synchronize access
             </summary>
         </member>
-        <member name="P:CS3500.NetworkController.NetworkController.WorldLock">
-            <summary>
-            Exposes the lock object for synchronizing access to TheWorld.
-            </summary>
-        </member>
         <member name="M:CS3500.NetworkController.NetworkController.#ctor(System.String,System.Int32)">
             <summary>
             Initializes a new instance of the NetworkController class with the specified server address and port.
@@ -488,6 +483,11 @@
             <summary>
             Provides easy access to TheWorld from networkController.
             Returns null if networkController or TheWorld is null.
+            </summary>
+        </member>
+        <member name="F:GUI.Client.Pages.SnakeGUI.drawingLock">
+            <summary>
+            Lock object to prevent race condition when drawing
             </summary>
         </member>
         <member name="F:GUI.Client.Pages.SnakeGUI.backgroundImage">

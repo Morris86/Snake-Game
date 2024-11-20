@@ -18,7 +18,7 @@ namespace CS3500.Models
         /// This powerup's position
         /// </summary>
         [JsonPropertyName("loc")]
-        public Point2D Position { get; set; }
+        public Point2D? Position { get; set; }
 
         /// <summary>
         /// Indicates whether this powerup has been collected and is no longer active.

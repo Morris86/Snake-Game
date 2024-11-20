@@ -21,7 +21,7 @@ namespace CS3500.Models
         /// The player's name.
         /// </summary>
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// The segments of the snake's body.
@@ -34,7 +34,7 @@ namespace CS3500.Models
         /// The direction of the snake's movement.
         /// </summary>
         [JsonPropertyName("dir")]
-        public Point2D Direction { get; set; }
+        public Point2D? Direction { get; set; }
 
         /// <summary>
         /// The player's score.
@@ -73,5 +73,7 @@ namespace CS3500.Models
         {
             Body = new List<Point2D>();
         }
+
+
     }
 }

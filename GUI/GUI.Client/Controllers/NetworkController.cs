@@ -88,11 +88,6 @@ namespace CS3500.NetworkController
         private readonly object networkLock = new object();
 
         /// <summary>
-        /// Exposes the lock object for synchronizing access to TheWorld.
-        /// </summary>
-        public object WorldLock => networkLock;
-
-        /// <summary>
         /// Initializes a new instance of the NetworkController class with the specified server address and port.
         /// </summary>
         /// <param name="serverAddress">The server's IP address or hostname.</param>
