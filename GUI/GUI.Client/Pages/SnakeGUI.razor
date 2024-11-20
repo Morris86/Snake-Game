@@ -38,28 +38,78 @@
 
 @code
 {
-
+    /// <summary>
+    /// Reference to the canvas element for rendering the game.
+    /// </summary>
     private BECanvasComponent canvasReference = null!;
+
+    /// <summary>
+    /// 2D context for drawing on the canvas.
+    /// </summary>
     private Canvas2DContext context = null!;
+
+    /// <summary>
+    /// JavaScript module reference for additional functionality.
+    /// </summary>
     private IJSObjectReference jsModule = null!;
 
-    private string serverAddress = "localhost"; // Default IP
-    private int portNumber = 11000; // Default Port
+    /// <summary>
+    /// IP address of the game server. Default value is "localhost."
+    /// </summary>
+    private string serverAddress = "localhost";
+
+    /// <summary>
+    /// Port number for connecting to the server. Default value is 11000.
+    private int portNumber = 11000;
+
+    /// <summary>
+    /// Name of the player to identify them on the server.
+    /// </summary>
     private string playerName = "";
+
+    /// <summary>
+    /// Status message to provide feedback to the user (e.g., connection status).
+    /// </summary>
     private string statusMessage = "";
+
+    /// <summary>
+    /// The network controller responsible for communicating with the game server.
+    /// </summary>
     private NetworkController? networkController;
 
     /// <summary>
     /// C# reference to the html element for the background image
     /// </summary>
     private ElementReference backgroundImage;
+
+    /// <summary>
+    /// Reference to the wall image element.
+    /// </summary>
     private ElementReference wallImage;
+
+    /// <summary>
+    /// Reference to the powerup image element.
+    /// </summary>
     private ElementReference powerupImage;
+
+    /// <summary>
+    /// Width of the game view in pixels.
+    /// </summary>
     private const int ViewWidth = 1000;
+
+    /// <summary>
+    /// Height of the game view in pixels.
+    /// </summary>
     private const int ViewHeight = 1000;
+
+    /// <summary>
+    /// Array of colors to represent players in the game.
+    /// </summary>
     private readonly string[] playerColors = { "cyan", "yellow", "blue", "orange", "purple", "pink", "lime", "green" };
 
-
+    /// <summary>
+    /// Handles the Connect button click to initiate a connection to the game server.
+    /// </summary>
     private void ConnectButton()
     {
         if (networkController != null && networkController.IsConnected)
@@ -94,6 +144,9 @@
         networkController.ConnectToServer(playerName);
     }
 
+    /// <summary>
+    /// Handles the Disconnect button click to stop communication with the game server.
+    /// </summary>
     private async void DisconnectButton()
     {
         networkController?.DisconnectFromServer();
@@ -102,7 +155,10 @@
         await InvokeAsync(StateHasChanged);
     }
 
-
+    /// <summary>
+    /// Called after the component has been rendered to initialize the JavaScript module and start the game loop.
+    /// </summary>
+    /// <param name="firstRender">Indicates if this is the first time the component has been rendered.</param>
     protected override async Task OnAfterRenderAsync( bool firstRender )
     {
         if ( firstRender )
@@ -115,6 +171,9 @@
         }
     }
 
+    /// <summary>
+    /// Main game loop responsible for continuously updating and rendering the game state.
+    /// </summary>
     private async void GameLoop()
     {
         while (true)
@@ -122,12 +181,14 @@
             if (networkController?.TheWorld != null) // Only draw when TheWorld is initialized
             {
                 await DrawFrame();
-                //Console.WriteLine("Drawing frames");
             }
-            await Task.Delay(20); // 50 FPS
+            await Task.Delay(20); // 50 FPS, if you wish to change the server frameRate, then you have to also change this
         }
     }
 
+    /// <summary>
+    /// Clears the canvas over a specified duration to reset the game view.
+    /// </summary>
     private async Task ClearCanvasLoop()
     {
         int clearDuration = 300; // Duration in milliseconds
@@ -142,6 +203,9 @@
         }
     }
 
+    /// <summary>
+    /// Clears the entire canvas.
+    /// </summary>
     private async Task ClearCanvas()
     {
         if (context != null)
@@ -150,7 +214,9 @@
         }
     }
 
-
+    /// <summary>
+    /// Draws a single frame of the game, including players, powerups, walls, and the background.
+    /// </summary>
     private async Task DrawFrame()
     {
         // Exit early if TheWorld is not initialized yet
@@ -219,7 +285,10 @@
         await context.EndBatchAsync();
     }
 
-
+    /// <summary>
+    /// Draws a snake on the canvas based on its current state.
+    /// </summary>
+    /// <param name="player">The player whose snake to draw.</param>
     private async Task DrawSnake(Player player)
     {
         // Determine the snake color based on player ID or use red for dead snakes
@@ -266,6 +335,10 @@
         }
     }
 
+    /// <summary>
+    /// Draws a powerup on the canvas.
+    /// </summary>
+    /// <param name="powerup">The powerup to draw.</param>
     private async Task DrawPowerup(Powerup powerup)
     {
         // Calculate the position to center the image
@@ -276,6 +349,10 @@
         await context.DrawImageAsync(powerupImage, powerupX, powerupY, 16, 16);
     }
 
+    /// <summary>
+    /// Draws a wall on the canvas.
+    /// </summary>
+    /// <param name="wall">The wall to draw.</param>
     private async Task DrawWall(Wall wall)
     {
         // Calculate the distance between Point1 and Point2
@@ -301,7 +378,10 @@
         }
     }
 
-
+    /// <summary>
+    /// Handles key press events and sends the corresponding move command to the server.
+    /// </summary>
+    /// <param name="key">The key that was pressed.</param>
     [JSInvokable]
     public void HandleKeyPress(string key)
     {

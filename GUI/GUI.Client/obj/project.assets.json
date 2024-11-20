@@ -1766,11 +1766,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\morri\\Source\\Repos\\Snake-Game\\GUI\\GUI.Client\\GUI.Client.csproj",
+      "projectUniqueName": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\GUI.Client.csproj",
       "projectName": "GUI.Client",
-      "projectPath": "C:\\Users\\morri\\Source\\Repos\\Snake-Game\\GUI\\GUI.Client\\GUI.Client.csproj",
+      "projectPath": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\GUI.Client.csproj",
       "packagesPath": "C:\\Users\\morri\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\morri\\Source\\Repos\\Snake-Game\\GUI\\GUI.Client\\obj\\",
+      "outputPath": "C:\\Users\\morri\\source\\repos\\Snake-Game\\GUI\\GUI.Client\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\morri\\AppData\\Roaming\\NuGet\\NuGet.Config",

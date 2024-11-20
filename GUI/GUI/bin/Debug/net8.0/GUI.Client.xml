@@ -269,24 +269,36 @@
         </member>
         <member name="T:CS3500.Models.Point2D">
             <summary>
-            A class to represent a Vector in 2D space
+            Represents a point or vector in 2D space.
+            </summary>
+        </member>
+        <member name="P:CS3500.Models.Point2D.X">
+            <summary>
+            The X-coordinate of the point in 2D space.
+            </summary>
+        </member>
+        <member name="P:CS3500.Models.Point2D.Y">
+            <summary>
+            The Y-coordinate of the point in 2D space.
             </summary>
         </member>
         <member name="M:CS3500.Models.Point2D.#ctor">
             <summary>
-            Default constructor, needed for JSON serialize/deserialize
+            Initializes a new instance of the <see cref="T:CS3500.Models.Point2D"/> class.
+            This default constructor is required for JSON serialization/deserialization.
             </summary>
         </member>
         <member name="M:CS3500.Models.Point2D.#ctor(System.Int32,System.Int32)">
             <summary>
-            Two param constructor for x and y.
+            Initializes a new instance of the <see cref="T:CS3500.Models.Point2D"/> class with the specified coordinates.
             </summary>
-            <param name="_x"></param>
-            <param name="_y"></param>
+            <param name="x">The X-coordinate of the point.</param>
+            <param name="y">The Y-coordinate of the point.</param>
         </member>
         <member name="T:CS3500.Models.Powerup">
             <summary>
-            One of the types of objects in the game (part of the Model of MVC)
+            Represents a powerup object in the game. 
+            Powerups can be collected by players to affect gameplay.
             </summary>
         </member>
         <member name="P:CS3500.Models.Powerup.ID">
@@ -301,47 +313,119 @@
         </member>
         <member name="P:CS3500.Models.Powerup.Died">
             <summary>
-            Whether or not this powerup is active and part of the live game
+            Indicates whether this powerup has been collected and is no longer active.
+            </summary>
+        </member>
+        <member name="M:CS3500.Models.Powerup.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CS3500.Models.Powerup"/> class.
+            This parameterless constructor is required for JSON serialization/deserialization.
             </summary>
         </member>
         <member name="M:CS3500.Models.Powerup.#ctor(System.Int32,System.Int32,System.Int32)">
             <summary>
-            Creates a new powerup with the given ID and x,y location
+            Initializes a new instance of the <see cref="T:CS3500.Models.Powerup"/> class with the specified ID and position.
             </summary>
-            <param name="id"></param>
-            <param name="x"></param>
-            <param name="y"></param>
+            <param name="id">The unique identifier for the powerup.</param>
+            <param name="x">The X-coordinate of the powerup's position.</param>
+            <param name="y">The Y-coordinate of the powerup's position.</param>
+        </member>
+        <member name="T:CS3500.Models.Wall">
+            <summary>
+            Represents a wall object in the game.
+            Walls are obstacles that players cannot pass through.
+            </summary>
+        </member>
+        <member name="P:CS3500.Models.Wall.ID">
+            <summary>
+            The unique identifier for this wall.
+            </summary>
+        </member>
+        <member name="P:CS3500.Models.Wall.Point1">
+            <summary>
+            The starting point of this wall in the game world.
+            </summary>
+        </member>
+        <member name="P:CS3500.Models.Wall.Point2">
+            <summary>
+            The ending point of this wall in the game world.
+            </summary>
+        </member>
+        <member name="M:CS3500.Models.Wall.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CS3500.Models.Wall"/> class.
+            This parameterless constructor is required for JSON serialization/deserialization.
+            </summary>
+        </member>
+        <member name="M:CS3500.Models.Wall.#ctor(System.Int32,CS3500.Models.Point2D,CS3500.Models.Point2D)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CS3500.Models.Wall"/> class with the specified ID and endpoints.
+            </summary>
+            <param name="id">The unique identifier for the wall.</param>
+            <param name="point1">The starting point of the wall.</param>
+            <param name="point2">The ending point of the wall.</param>
         </member>
         <member name="T:CS3500.Models.World">
             <summary>
-            The Model part of MVC, represents all objects in the "game"
+            Represents the game world, containing all objects in the game.
+            Acts as the Model in the MVC architecture.
             </summary>
         </member>
         <member name="P:CS3500.Models.World.Players">
             <summary>
-            The players in the game
+            A dictionary of players in the game, keyed by their unique IDs.
             </summary>
         </member>
         <member name="P:CS3500.Models.World.Powerups">
             <summary>
-            The powerups in the game
+            A dictionary of powerups in the game, keyed by their unique IDs.
             </summary>
         </member>
         <member name="P:CS3500.Models.World.Walls">
             <summary>
-            The walls in the game
+            A dictionary of walls in the game, keyed by their unique IDs.
             </summary>
         </member>
         <member name="P:CS3500.Models.World.Size">
             <summary>
-            The size of a single side of the square world
+            The size of one side of the square game world.
             </summary>
         </member>
         <member name="M:CS3500.Models.World.#ctor(System.Int32)">
             <summary>
-            Creates a new world with the given size
+            Initializes a new instance of the <see cref="T:CS3500.Models.World"/> class with the specified size.
             </summary>
-            <param name="_size"></param>
+            <param name="_size">The size of one side of the square world.</param>
+        </member>
+        <member name="M:CS3500.Models.World.UpdatePlayer(CS3500.Models.Player)">
+            <summary>
+            Updates the data for an existing player or adds a new player to the world.
+            </summary>
+            <param name="player">The player to update or add.</param>
+        </member>
+        <member name="M:CS3500.Models.World.UpdatePowerup(CS3500.Models.Powerup)">
+            <summary>
+            Updates the data for an existing powerup or adds a new powerup to the world.
+            </summary>
+            <param name="powerup">The powerup to update or add.</param>
+        </member>
+        <member name="M:CS3500.Models.World.RemovePlayer(System.Int32)">
+            <summary>
+            Removes a player from the world by their ID.
+            </summary>
+            <param name="playerID">The ID of the player to remove.</param>
+        </member>
+        <member name="M:CS3500.Models.World.RemovePowerup(System.Int32)">
+            <summary>
+            Removes a powerup from the world by its ID.
+            </summary>
+            <param name="powerupID">The ID of the powerup to remove.</param>
+        </member>
+        <member name="M:CS3500.Models.World.AddWall(CS3500.Models.Wall)">
+            <summary>
+            Adds a wall to the world if it is not already present.
+            </summary>
+            <param name="wall">The wall to add.</param>
         </member>
         <member name="F:GUI.Client.Pages.SnakeGUI.backgroundImage">
             <summary>
