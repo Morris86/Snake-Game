@@ -1,6 +1,5 @@
-﻿// Author: Daniel Kopta, Fall 2017
-// CS 3500 game lab
-// University of Utah
+﻿// Author: Morris Lu, Anurup Kumar Fall 2024
+
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 

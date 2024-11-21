@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Author: Morris Lu, Anurup Kumar Fall 2024
+
+using System;
 using System.Text.Json.Serialization;
 
 namespace CS3500.Models

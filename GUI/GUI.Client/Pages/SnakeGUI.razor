@@ -1,4 +1,6 @@
-﻿@page "/snake"
+﻿<!-- Author: Morris Lu, Anurup Kumar Fall 2024 -->
+
+@page "/snake"
 @rendermode InteractiveServer
 @using Blazor.Extensions
 @using Blazor.Extensions.Canvas
@@ -124,13 +126,6 @@
     /// </summary>
     private void ConnectButton()
     {
-        if (networkController != null && networkController.IsConnected)
-        {
-            statusMessage = "Already connected to the server.";
-            InvokeAsync(StateHasChanged); // Update UI
-            return;
-        }
-
         if (networkController == null)
         {
             networkController = new NetworkController(serverAddress, portNumber)
@@ -362,7 +357,7 @@
     private async Task DrawPowerup(Powerup powerup)
     {
         // Calculate the position to center the image
-        double powerupX = powerup.Position.X - 8; // Center 16x16 image on position
+        double powerupX = powerup!.Position!.X - 8; // Center 16x16 image on position
         double powerupY = powerup.Position.Y - 8;
 
         // Draw the powerup image
@@ -376,7 +371,7 @@
     private async Task DrawWall(Wall wall)
     {
         // Calculate the distance between Point1 and Point2
-        double deltaX = wall.Point2.X - wall.Point1.X;
+        double deltaX = wall!.Point2!.X - wall!.Point1!.X;
         double deltaY = wall.Point2.Y - wall.Point1.Y;
         double distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
 

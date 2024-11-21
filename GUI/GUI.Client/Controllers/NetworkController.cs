@@ -1,4 +1,6 @@
-﻿using CS3500.Models;
+﻿// Author: Morris Lu, Anurup Kumar Fall 2024
+
+using CS3500.Models;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -126,15 +128,26 @@ namespace CS3500.NetworkController
 
             try
             {
-                if (networkConnection?.IsConnected == false)
+                if (networkConnection != null && networkConnection.IsConnected)
                 {
-                    networkConnection.Connect(serverAddress, port);
+                    OnError?.Invoke("Already connected to the server.");
+                    return;
                 }
 
-                networkConnection?.Send(playerName);
+                // Initialize or reinitialize network connection
+                networkConnection = new NetworkConnection();
+                networkConnection.Connect(serverAddress, port);
+
+                // Reset TheWorld and related states
+                TheWorld = null;
+                receivedInitialData = false;
+                playerIDReceived = false;
+
+                networkConnection.Send(playerName);
                 OnStatusUpdate?.Invoke($"Connected to server as {playerName}.");
 
-                new Thread(StartReceivingData).Start(); // Start receiving data asynchronously
+                // Start the receiving thread
+                new Thread(StartReceivingData).Start();
             }
             catch (Exception ex)
             {
@@ -191,7 +204,17 @@ namespace CS3500.NetworkController
                             break; // Exit the loop if the connection is closed
                         }
 
-                        data = networkConnection.ReadLine();
+                        try
+                        {
+                            data = networkConnection.ReadLine();
+                        }
+                        catch (IOException ex)
+                        {
+                            // Handle when the server connection is abruptly closed
+                            OnError?.Invoke($"Connection lost: {ex.Message}");
+                            DisconnectFromServer(); // Trigger disconnection cleanup
+                            return;
+                        }
                     }
 
                     if (data != null)
@@ -208,6 +231,7 @@ namespace CS3500.NetworkController
                 }
             }
         }
+
 
         /// <summary>
         /// Processes data received from the server.

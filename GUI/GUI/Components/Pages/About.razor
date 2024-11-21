@@ -1,4 +1,6 @@
-﻿@page "/"
+﻿<!--- Author: Morris Lu, Anurup Kumar Fall 2024 --->
+
+@page "/"
 
 <PageTitle>About</PageTitle>
 
@@ -8,50 +10,34 @@
 
 <h2>Design Decisions</h2>
 <ul>
-    <li>
-        <b>World Initialization from a Settings File:</b>
-        The world reads a settings file to configure the game dynamically, allowing for adjustable settings such as:
-        <ul>
-            <li><b>Starting Length of the Snake:</b> Determines how long the snake is at the beginning of the game.</li>
-            <li><b>Food Density:</b> Controls how much food spawns based on the number of players.</li>
-            <li><b>Recycle Rate:</b> Specifies how much food spawns when a snake dies.</li>
-        </ul>
-    </li>
-    <li>
-        <b>Server and Client Architecture:</b>
-        The server handles multiple clients, managing player movement and distributing the game state efficiently using JSON messages.
-    </li>
-    <li>
-        <b>Dynamic Food Generation:</b>
-        Food spawns dynamically based on player count, density settings, and the recycle rate for a balanced and engaging experience.
-    </li>
+    <li><strong>MVC Architecture:</strong> The project is structured using a Model-View-Controller pattern for separation of concerns, improving readability and maintainability.</li>
+    <li><strong>Drawing Copy Optimization:</strong> A separate <code>drawingCopy</code> is used for rendering, reducing lag by isolating drawing operations from live game state updates.</li>
+    <li><strong>Custom Locking Mechanisms:</strong> Separate locks were implemented for the network controller and rendering logic to handle race conditions efficiently.</li>
+    <li><strong>Error Handling:</strong> Extensive error handling ensures that disconnections, invalid data, and navigation errors are managed gracefully without crashing the application.</li>
 </ul>
 
-<h2>Key Features</h2>
+<h2>Implemented Features</h2>
 <ul>
-    <li><b>Interactive Gameplay Mechanics:</b> Snakes can eat food, collide with walls or other snakes, and respawn after dying.</li>
-    <li><b>Multiplayer Support:</b> The server handles multiple clients in real-time, ensuring a smooth experience for all players.</li>
-    <li><b>Customizable Settings:</b> Players can adjust the starting snake length, food density, and recycle rate for varied gameplay.</li>
-    <li><b>Responsive GUI:</b> The client updates in real-time and animations at 50 FPS.</li>
+    <li><strong>Real-Time Multiplayer Gameplay:</strong> Players can connect to the server, control their snake using WASD keys, and compete with others in real-time.</li>
+    <li><strong>Dynamic Rendering:</strong> The game dynamically draws snakes, powerups, and walls on the canvas, ensuring smooth updates at 50 frames per second.</li>
+    <li><strong>Centered Viewport:</strong> The game viewport centers on the player's snake, providing an intuitive and immersive experience.</li>
+    <li><strong>Custom Graphics:</strong> Powerups, walls, and snakes are visually distinct, with unique colors assigned to each player.</li>
+    <li><strong>Robust Navigation:</strong> Handles unexpected server shutdown, client would disconnect after the server is closed.</li>
 </ul>
 
-<h2>Game Mechanics</h2>
-<ul>
-    <li>Snakes can eat food, move, turn, and collide with walls, food, or other snakes.</li>
-    <li>The world spawns new food dynamically and handles snake respawns after death.</li>
-    <li>The server processes player commands and broadcasts the game state to clients.</li>
-</ul>
+<h2>Instructions for Graders</h2>
+<ol>
+    <li>Start the game server provided in the assignment materials.</li>
+    <li>Launch the Blazor client and navigate to the main page.</li>
+    <li>Enter a server address, port number, and player name, then click "Connect."</li>
+    <li>Use the WASD keys to control your snake. Observe the smooth gameplay, dynamic updates, and accurate collision handling.</li>
+    <li>Navigate to the About page only after stopping the game.</li>
+</ol>
 
-<h2>Notable Additions</h2>
+<h2>Limitations or Known Issues</h2>
 <ul>
-    <li><b>Snake Explosion Animations:</b> Added animations for snake deaths for a polished look.</li>
-    <li><b>Server Optimization:</b> Improved handling for large-scale games with many players and food objects.</li>
-</ul>
-
-<h2>Known Issues</h2>
-<ul>
-    <li>Given AI client doesn't work as well with over 20 clients.</li>
-    <li>Rare lag spikes during high-density food generation.</li>
+    <li><strong>About Page Accessibility:</strong> Currently, the About page is accessible during gameplay, which could cause navigation-related exceptions. A planned update will disable the page while the game is running.</li>
+    <li><strong>Latency Effects:</strong> Players may notice slight delays in movement due to network latency, especially on slower connections.</li>
 </ul>
 
 <p>Thank you for reviewing this project. Feel free to test various settings and provide feedback on the gameplay and features!</p>
