@@ -240,64 +240,71 @@
             return;
         }
 
-        await context.BeginBatchAsync();
-
-        // Clip the view to avoid drawing outside the canvas
-        await context.BeginPathAsync();
-        await context.RectAsync(0, 0, ViewWidth, ViewHeight);
-        await context.ClipAsync();
-
-        // Save the context state before applying transformations
-        await context.SaveAsync();
-
-        // Centering based on the player's head position
-        if (TheWorld?.Players != null && networkController?.playerID != null && TheWorld.Players.TryGetValue(networkController.playerID, out Player? currentPlayer))
+        try
         {
-            // Get the head coordinates of the player
-            double headX = currentPlayer.Body.Last().X;
-            double headY = currentPlayer.Body.Last().Y;
+            await context.BeginBatchAsync();
 
-            // Calculate offsets to center the view on the player's head
-            double offsetX = -(headX - (ViewWidth / 2));
-            double offsetY = -(headY - (ViewHeight / 2));
+            // Clip the view to avoid drawing outside the canvas
+            await context.BeginPathAsync();
+            await context.RectAsync(0, 0, ViewWidth, ViewHeight);
+            await context.ClipAsync();
 
-            // Center on origin and move to player's head position
-            await context.TranslateAsync(ViewWidth / 2, ViewHeight / 2);
-            await context.TranslateAsync(-headX, -headY);
+            // Save the context state before applying transformations
+            await context.SaveAsync();
 
-            // Set the scale and calculate the center offset for background centering
-            double largeBackgroundSize = TheWorld.Size * 1.5; // Example: 1.5x world size for a buffer
+            // Centering based on the player's head position
+            if (TheWorld?.Players != null && networkController?.playerID != null && TheWorld.Players.TryGetValue(networkController.playerID, out Player? currentPlayer))
+            {
+                // Get the head coordinates of the player
+                double headX = currentPlayer.Body.Last().X;
+                double headY = currentPlayer.Body.Last().Y;
 
-            // Draw a larger solid background to avoid empty edges
-            await context.SetFillStyleAsync("black"); // Or any background color you prefer
-            await context.FillRectAsync( -largeBackgroundSize / 2, -largeBackgroundSize / 2, largeBackgroundSize, largeBackgroundSize);
+                // Calculate offsets to center the view on the player's head
+                double offsetX = -(headX - (ViewWidth / 2));
+                double offsetY = -(headY - (ViewHeight / 2));
 
-            // Draw the image background:
-            await context.DrawImageAsync(backgroundImage, -TheWorld.Size / 2, -TheWorld.Size / 2, TheWorld.Size, TheWorld.Size);
+                // Center on origin and move to player's head position
+                await context.TranslateAsync(ViewWidth / 2, ViewHeight / 2);
+                await context.TranslateAsync(-headX, -headY);
+
+                // Set the scale and calculate the center offset for background centering
+                double largeBackgroundSize = TheWorld.Size * 1.5; // Example: 1.5x world size for a buffer
+
+                // Draw a larger solid background to avoid empty edges
+                await context.SetFillStyleAsync("black"); // Or any background color you prefer
+                await context.FillRectAsync(-largeBackgroundSize / 2, -largeBackgroundSize / 2, largeBackgroundSize, largeBackgroundSize);
+
+                // Draw the image background:
+                await context.DrawImageAsync(backgroundImage, -TheWorld.Size / 2, -TheWorld.Size / 2, TheWorld.Size, TheWorld.Size);
+            }
+
+            // Draw each player in TheWorld
+            foreach (var player in drawingCopy.Players.Values)
+            {
+                await DrawSnake(player);
+            }
+
+            // Draw each powerup in TheWorld
+            foreach (var powerup in drawingCopy.Powerups.Values)
+            {
+                await DrawPowerup(powerup);
+            }
+
+            // Draw each wall segment
+            foreach (var wall in drawingCopy.Walls.Values)
+            {
+                await DrawWall(wall);
+            }
+
+            // Restore the transformation matrix to the original state after drawing
+            await context.RestoreAsync();
+
+            await context.EndBatchAsync();
         }
-
-        // Draw each player in TheWorld
-        foreach (var player in drawingCopy.Players.Values)
+        catch (JSException ex)
         {
-            await DrawSnake(player);
+            networkController?.DisconnectFromServer();
         }
-
-        // Draw each powerup in TheWorld
-        foreach (var powerup in drawingCopy.Powerups.Values)
-        {
-            await DrawPowerup(powerup);
-        }
-
-        // Draw each wall segment
-        foreach (var wall in drawingCopy.Walls.Values)
-        {
-            await DrawWall(wall);
-        }
-
-        // Restore the transformation matrix to the original state after drawing
-        await context.RestoreAsync();
-
-        await context.EndBatchAsync();
     }
 
     /// <summary>
