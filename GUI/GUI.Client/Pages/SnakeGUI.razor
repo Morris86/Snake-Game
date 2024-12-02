@@ -301,7 +301,15 @@
 
             await context.EndBatchAsync();
         }
-        catch (JSException ex)
+        catch (JSException)
+        {
+            networkController?.DisconnectFromServer();
+        }
+        catch (Microsoft.JSInterop.JSDisconnectedException)
+        {
+            networkController?.DisconnectFromServer();
+        }
+        catch (Exception)
         {
             networkController?.DisconnectFromServer();
         }

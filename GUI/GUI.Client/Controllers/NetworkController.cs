@@ -284,15 +284,12 @@ namespace CS3500.NetworkController
                 {
                     playerID = parsedValue;
                     playerIDReceived = true;
-                    Console.WriteLine($"Player ID received from server: {playerID}");
                 }
                 else
                 {
                     worldSize = parsedValue;
                     TheWorld = new World(worldSize);
                     receivedInitialData = true;
-                    Console.WriteLine($"World size received and set: {worldSize}");
-                    Console.WriteLine($"TheWorld initialized in NetworkController? {TheWorld != null}");
 
                     // Set the update actions for players and powerups
                     OnPlayerUpdate = player => TheWorld?.UpdatePlayer(player);

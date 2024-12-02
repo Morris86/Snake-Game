@@ -1,5 +1,4 @@
 ﻿<!--- Author: Morris Lu, Anurup Kumar Fall 2024 --->
-
 @page "/"
 
 <PageTitle>About</PageTitle>
@@ -14,6 +13,7 @@
     <li><strong>Drawing Copy Optimization:</strong> A separate <code>drawingCopy</code> is used for rendering, reducing lag by isolating drawing operations from live game state updates.</li>
     <li><strong>Custom Locking Mechanisms:</strong> Separate locks were implemented for the network controller and rendering logic to handle race conditions efficiently.</li>
     <li><strong>Error Handling:</strong> Extensive error handling ensures that disconnections, invalid data, and navigation errors are managed gracefully without crashing the application.</li>
+    <li><strong>Visual design:</strong> Custom made visuals and textures to make the game more engaging.</li>
 </ul>
 
 <h2>Implemented Features</h2>
@@ -21,8 +21,10 @@
     <li><strong>Real-Time Multiplayer Gameplay:</strong> Players can connect to the server, control their snake using WASD keys, and compete with others in real-time.</li>
     <li><strong>Dynamic Rendering:</strong> The game dynamically draws snakes, powerups, and walls on the canvas, ensuring smooth updates at 50 frames per second.</li>
     <li><strong>Centered Viewport:</strong> The game viewport centers on the player's snake, providing an intuitive and immersive experience.</li>
-    <li><strong>Custom Graphics:</strong> Powerups, walls, and snakes are visually distinct, with unique colors assigned to each player. Pllayer name would also apear besides the snakes.</li>
-    <li><strong>Robust Navigation:</strong> Handles unexpected server shutdown, client would disconnect after the server is closed.</li>
+    <li><strong>Custom Graphics:</strong> Powerups, walls, and snakes are visually distinct, with unique colors assigned to each player. Player names also appear next to the snakes.</li>
+    <li><strong>Background Theme:</strong> The background has been updated to black and light blue, inspired by Tron, adding a sleek and futuristic aesthetic to the game.</li>
+    <li><strong>Robust Navigation:</strong> Handles unexpected server shutdown; the client will disconnect after the server is closed.</li>
+    <li><strong>Named Snakes:</strong> Each snake now has a unique name displayed alongside it, enhancing player identification.</li>
 </ul>
 
 <h2>Instructions for Graders</h2>
@@ -36,6 +38,9 @@
 <h2>Limitations or Known Issues</h2>
 <ul>
     <li><strong>Latency Effects:</strong> Players may notice slight delays in movement due to network latency, especially on slower connections.</li>
+    <li><strong>Bug Fixes:</strong> Fixed an issue where an exception was thrown when the About page was accessed after connecting to the server.</li>
 </ul>
 
 <p>Thank you for reviewing this project. Feel free to test various settings and provide feedback on the gameplay and features!</p>
+
+
