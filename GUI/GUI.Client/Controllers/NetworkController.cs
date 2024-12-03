@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using CS3500.NetworkLibrary;
 using System.Numerics;
+using MySql.Data.MySqlClient;
 
 namespace CS3500.NetworkController
 {
@@ -89,6 +90,15 @@ namespace CS3500.NetworkController
         /// </summary>
         private readonly object networkLock = new object();
 
+        private int currentGameId; // Tracks the current game ID
+        private DateTime gameStartTime; // Tracks the game start time
+        private Dictionary<int, Player> trackedPlayers = new Dictionary<int, Player>(); // Tracks player data by ID
+        private Dictionary<int, int> playerMaxScores = new Dictionary<int, int>(); // Tracks max scores for players
+        private Dictionary<int, DateTime> playerEnterTimes = new Dictionary<int, DateTime>(); // Tracks player enter times
+        private Dictionary<int, DateTime?> playerLeaveTimes = new Dictionary<int, DateTime?>(); // Tracks player leave times
+
+
+
         /// <summary>
         /// Initializes a new instance of the NetworkController class with the specified server address and port.
         /// </summary>
@@ -138,6 +148,9 @@ namespace CS3500.NetworkController
                 networkConnection = new NetworkConnection();
                 networkConnection.Connect(serverAddress, port);
 
+                // Initialize game tracking
+                StartGame();
+
                 // Reset TheWorld and related states
                 TheWorld = null;
                 receivedInitialData = false;
@@ -168,6 +181,9 @@ namespace CS3500.NetworkController
                     if (networkConnection != null && networkConnection.IsConnected)
                     {
                         networkConnection.Disconnect();
+
+                        // Ensure game tracking is finalized
+                        EndGame();
                     }
 
                     // Cleanup resources
@@ -309,10 +325,23 @@ namespace CS3500.NetworkController
             {
                 if (player.Disconnected)
                 {
+                    // Handle player disconnection
+                    TrackPlayerDisconnection(player);
                     TheWorld?.RemovePlayer(player.ID);
                 }
                 else
                 {
+                    // Handle new or updated player
+                    if (!trackedPlayers.ContainsKey(player.ID))
+                    {
+                        TrackNewPlayer(player);
+                    }
+                    else
+                    {
+                        UpdatePlayerScore(player);
+                    }
+
+                    // Update the world and notify listeners
                     TheWorld?.UpdatePlayer(player);
                     OnPlayerUpdate?.Invoke(player);
                 }
@@ -362,6 +391,157 @@ namespace CS3500.NetworkController
             var command = JsonSerializer.Serialize(new { moving = direction });
             networkConnection?.Send(command);
         }
+
+        /// <summary>
+        /// The connection string.
+        /// </summary>
+        private const string connectionString = "server=atr.eng.utah.edu;" +
+                                                "database=u1495290;" +
+                                                "uid=u1495290;" +
+                                                "password=BugSquashers;";
+
+
+        public void StartGame()
+        {
+            gameStartTime = DateTime.Now;
+            string startTimeStr = gameStartTime.ToString("yyyy-MM-dd HH:mm:ss");
+
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+
+                // Create and configure the command
+                MySqlCommand command = conn.CreateCommand();
+                command.CommandText = "INSERT INTO Games (StartTime) VALUES (@StartTime); SELECT LAST_INSERT_ID();";
+                command.Parameters.AddWithValue("@StartTime", startTimeStr);
+
+                // Execute and retrieve the game ID
+                currentGameId = Convert.ToInt32(command.ExecuteScalar());
+            }
+
+            Console.WriteLine($"Game started with ID: {currentGameId}");
+        }
+
+        private void TrackNewPlayer(Player player)
+        {
+            if (!trackedPlayers.ContainsKey(player.ID))
+            {
+                trackedPlayers[player.ID] = player;
+                playerEnterTimes[player.ID] = DateTime.Now;
+                playerMaxScores[player.ID] = player.Score;
+
+                string enterTimeStr = playerEnterTimes[player.ID].ToString("yyyy-MM-dd HH:mm:ss");
+                string playerName = player.Name?.Replace("'", "''") ?? "Unknown";
+
+                using (var conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    // Create and configure the command
+                    MySqlCommand command = conn.CreateCommand();
+                    command.CommandText = "INSERT INTO Players (ID, Name, MaxScore, EnterTime, GameID) " +
+                                          "VALUES (@ID, @Name, @MaxScore, @EnterTime, @GameID);";
+                    command.Parameters.AddWithValue("@ID", player.ID);
+                    command.Parameters.AddWithValue("@Name", playerName);
+                    command.Parameters.AddWithValue("@MaxScore", player.Score);
+                    command.Parameters.AddWithValue("@EnterTime", enterTimeStr);
+                    command.Parameters.AddWithValue("@GameID", currentGameId);
+
+                    // Execute the command
+                    command.ExecuteNonQuery();
+                }
+
+                Console.WriteLine($"Player {playerName} (ID: {player.ID}) added to game {currentGameId}");
+            }
+        }
+
+        private void UpdatePlayerScore(Player player)
+        {
+            if (trackedPlayers.ContainsKey(player.ID) && player.Score > playerMaxScores[player.ID])
+            {
+                playerMaxScores[player.ID] = player.Score;
+
+                using (var conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    // Create and configure the command
+                    MySqlCommand command = conn.CreateCommand();
+                    command.CommandText = "UPDATE Players SET MaxScore = @MaxScore " +
+                                          "WHERE ID = @ID AND GameID = @GameID;";
+                    command.Parameters.AddWithValue("@MaxScore", player.Score);
+                    command.Parameters.AddWithValue("@ID", player.ID);
+                    command.Parameters.AddWithValue("@GameID", currentGameId);
+
+                    // Execute the command
+                    command.ExecuteNonQuery();
+                }
+
+                Console.WriteLine($"Player (ID: {player.ID}) score updated to {player.Score}");
+            }
+        }
+
+        private void TrackPlayerDisconnection(Player player)
+        {
+            if (trackedPlayers.ContainsKey(player.ID) && !playerLeaveTimes.ContainsKey(player.ID))
+            {
+                playerLeaveTimes[player.ID] = DateTime.Now;
+                string leaveTimeStr = playerLeaveTimes[player.ID]?.ToString("yyyy-MM-dd HH:mm:ss");
+
+                using (var conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    // Create and configure the command
+                    MySqlCommand command = conn.CreateCommand();
+                    command.CommandText = "UPDATE Players SET LeaveTime = @LeaveTime " +
+                                          "WHERE ID = @ID AND GameID = @GameID;";
+                    command.Parameters.AddWithValue("@LeaveTime", leaveTimeStr);
+                    command.Parameters.AddWithValue("@ID", player.ID);
+                    command.Parameters.AddWithValue("@GameID", currentGameId);
+
+                    // Execute the command
+                    command.ExecuteNonQuery();
+                }
+
+                Console.WriteLine($"Player (ID: {player.ID}) disconnected at {leaveTimeStr}");
+            }
+        }
+
+        private void EndGame()
+        {
+            string endTimeStr = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+
+                // Update the game's end time
+                MySqlCommand command = conn.CreateCommand();
+                command.CommandText = "UPDATE Games SET EndTime = @EndTime WHERE ID = @ID;";
+                command.Parameters.AddWithValue("@EndTime", endTimeStr);
+                command.Parameters.AddWithValue("@ID", currentGameId);
+                command.ExecuteNonQuery();
+
+                // Ensure the main player's LeaveTime matches the game's EndTime
+                if (trackedPlayers.ContainsKey(playerID))
+                {
+                    MySqlCommand updatePlayerCommand = conn.CreateCommand();
+                    updatePlayerCommand.CommandText = "UPDATE Players SET LeaveTime = @LeaveTime " +
+                                                      "WHERE ID = @PlayerID AND GameID = @GameID;";
+                    updatePlayerCommand.Parameters.AddWithValue("@LeaveTime", endTimeStr);
+                    updatePlayerCommand.Parameters.AddWithValue("@PlayerID", playerID);
+                    updatePlayerCommand.Parameters.AddWithValue("@GameID", currentGameId);
+                    updatePlayerCommand.ExecuteNonQuery();
+
+                    Console.WriteLine($"Main player (ID: {playerID}) leave time updated to {endTimeStr}");
+                }
+            }
+
+            Console.WriteLine($"Game {currentGameId} ended at {endTimeStr}");
+        }
+
+
 
     }
 }

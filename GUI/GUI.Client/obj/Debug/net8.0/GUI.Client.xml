@@ -216,6 +216,11 @@
             </summary>
             <param name="direction">The desired direction ("up", "down", "left", "right").</param>
         </member>
+        <member name="F:CS3500.NetworkController.NetworkController.connectionString">
+            <summary>
+            The connection string.
+            </summary>
+        </member>
         <member name="T:CS3500.Models.Player">
             <summary>
             One of the types of objects in the game (part of the Model of MVC)
