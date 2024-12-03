@@ -40,8 +40,9 @@ namespace CS3500.NetworkLibrary
             _tcpClient = tcpClient;
             if (IsConnected)
             {
-                _reader = new StreamReader(_tcpClient.GetStream(), Encoding.UTF8);
-                _writer = new StreamWriter(_tcpClient.GetStream(), Encoding.UTF8) { AutoFlush = true };
+                _writer = new StreamWriter(tcpClient.GetStream(), new UTF8Encoding(false)) { AutoFlush = true };
+                _reader = new StreamReader(tcpClient.GetStream(), new UTF8Encoding(false));
+
             }
         }
 
